@@ -45,14 +45,7 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
     }
 
     override fun placeStone(rowIndex: Int, colIndex: Int, playerType: Player) {
-        val stone = if (playerType == Player.WithWhiteStone) {
-            R.drawable.white_stone
-        } else {
-            R.drawable.black_stone
-        }
-
-        imageViews[rowIndex][colIndex].setImageResource(stone)
-
+        imageViews[rowIndex][colIndex].setImageResource(playerType.resourceId)
     }
 
     override fun showWinner(winner: Player) {

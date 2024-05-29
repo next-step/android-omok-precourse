@@ -39,5 +39,4 @@ class OmokModel: OmokContract.OmokModel {
     override fun addTurnCount() {
         TODO("Not yet implemented")
     }
-
 }
