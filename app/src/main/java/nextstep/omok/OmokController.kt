@@ -6,5 +6,8 @@ class OmokController(
 	private val board = OmokBoard()
 	private val curPlayer = Player.BLACK
 
+	init {
+		view.updateTurnInfo(curPlayer)
+	}
 
 }
