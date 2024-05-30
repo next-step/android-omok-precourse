@@ -1250,7 +1250,8 @@
                 android:id="@+id/white_turn_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/turn_check" />
+                android:src="@drawable/turn_check"
+                android:visibility="invisible" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
