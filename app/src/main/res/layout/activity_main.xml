@@ -1211,6 +1211,7 @@
                 android:layout_marginBottom="3dp"/>
 
             <ImageView
+                android:id="@+id/black_turn_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/turn_check" />
@@ -1233,6 +1234,7 @@
                 android:layout_marginBottom="3dp"/>
 
             <ImageView
+                android:id="@+id/white_turn_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/turn_check" />
