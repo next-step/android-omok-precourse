@@ -1197,18 +1197,18 @@
         app:layout_constraintTop_toBottomOf="@id/board">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/black_stone"
-                android:layout_marginBottom="3dp"/>
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/black_stone" />
 
             <ImageView
                 android:id="@+id/black_turn_image"
@@ -1218,20 +1218,33 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/place_stone_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/place_btn"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/white_stone"
-                android:layout_marginBottom="3dp"/>
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/white_stone" />
 
             <ImageView
                 android:id="@+id/white_turn_image"
