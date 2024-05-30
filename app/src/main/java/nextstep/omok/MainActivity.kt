@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
@@ -42,11 +43,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun placeStone(viewToPlace: ImageView) {
         if (isBlackTurn) {
-            viewToPlace.setImageResource(R.drawable.black_stone)
+            viewToPlace.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.dashed_stone))
+            //viewToPlace.setImageResource(R.drawable.black_stone)
             blackTurnImageView.visibility = View.INVISIBLE
             whiteTurnImageView.visibility = View.VISIBLE
         } else {
-            viewToPlace.setImageResource(R.drawable.white_stone)
+            viewToPlace.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.dashed_stone))
+            //viewToPlace.setImageResource(R.drawable.white_stone)
             whiteTurnImageView.visibility = View.INVISIBLE
             blackTurnImageView.visibility = View.VISIBLE
         }
