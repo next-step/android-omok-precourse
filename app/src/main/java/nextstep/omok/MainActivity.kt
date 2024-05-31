@@ -1,7 +1,6 @@
 package nextstep.omok
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -13,14 +12,19 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
-    var isBlackTurn = true
-    var readyToPlace = false
-    lateinit var board: TableLayout
-    lateinit var blackTurnImageView: ImageView
-    lateinit var whiteTurnImageView: ImageView
-    lateinit var placeStoneBtn: Button
-    lateinit var cellToPlace: ImageView
-    lateinit var prevCellToPlace: ImageView
+    private var isBlackTurn = true
+    private var readyToPlace = false
+    private val NO_STONE = 0
+    private val BLACK_STONE = 1
+    private val WHITE_STONE = 2
+    private lateinit var board: TableLayout
+    private lateinit var blackTurnImageView: ImageView
+    private lateinit var whiteTurnImageView: ImageView
+    private lateinit var placeStoneBtn: Button
+    private lateinit var previewedCell: ImageView
+    private lateinit var boardList: MutableList<MutableList<Int>>
+    private lateinit var pointToPlace: Pair<Int, Int>
+    private lateinit var deltaList: MutableList<Pair<Int, Int>>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,12 +40,21 @@ class MainActivity : AppCompatActivity() {
      * - `blackTurnImageView`: 흑돌 차례를 나타내는 이미지 뷰.
      * - `whiteTurnImageView`: 백돌 차례를 나타내는 이미지 뷰.
      * - `placeStoneBtn`: 돌을 보드에 두는 버튼.
+     * - `boardList` : 보드의 각 칸에 놓인 돌을 저장(black : 1, white : 2, null : 0)
+     * - 'deltaList' : 오목이 완성됐는 지 체크하기 위한 좌표 변화량 리스트
      */
     private fun initVariables() {
         board = findViewById(R.id.board)
         blackTurnImageView = findViewById(R.id.black_turn_image)
         whiteTurnImageView = findViewById(R.id.white_turn_image)
         placeStoneBtn = findViewById(R.id.place_stone_btn)
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
+        deltaList = mutableListOf(
+            Pair(-1, 0), Pair(1, 0), // 세로
+            Pair(0, -1), Pair(0, 1), // 가로
+            Pair(-1, -1), Pair(1, 1), // '\' 대각선 방향
+            Pair(-1, 1), Pair(1, -1)   // '/' 대각선 방향
+        )
     }
 
 
@@ -53,12 +66,23 @@ class MainActivity : AppCompatActivity() {
         board
             .children
             .filterIsInstance<TableRow>()
-            .flatMap { it.children }
+            .forEachIndexed { rowIndex, row ->
+                setOnClickListenerForRow(row, rowIndex)
+            }
+    }
+
+    /**
+     * 보드의 각 칸(이미지 뷰)에 클릭 리스너 설정.
+     * 칸을 클릭하면 해당 칸이 맞는 지 미리 보여주는 동작 수행.
+     *
+     * @param row 클릭 리스너를 설정할 행
+     * @param rowIndex 클릭 리스너를 설정할 행의 index
+     */
+    private fun setOnClickListenerForRow(row: TableRow, rowIndex: Int) {
+        row.children
             .filterIsInstance<ImageView>()
-            .forEach { cell ->
-                cell.setOnClickListener {
-                    previewStone(cell)
-                }
+            .forEachIndexed { colIndex, cell ->
+                cell.setOnClickListener { previewStone(cell, rowIndex, colIndex) }
             }
     }
 
@@ -67,20 +91,25 @@ class MainActivity : AppCompatActivity() {
      * 놓을 위치를 변경 하고자 할 땐 이전 칸의 미리 보기 삭제.
      * 칸에 돌이 없을 때만 동작.
      *
+     * - `readyToPlace`: 현재 미리보기가 보여지고 있는 경우 true 아니면 false
+     * - `previewedCell`: 미리보기 중인 칸의 ImageView
+     * - `pointTopPlace`: 미리보기 중인 칸의 xy 좌표 쌍
+     *
      * @param cell 클릭한 칸을 나타내는 이미지 뷰
+     * @param rowIndex 클릭한 칸의 행 index
+     * @param colIndex 클린한 칸의 열 index
      */
-    private fun previewStone(cell: ImageView) {
+    private fun previewStone(cell: ImageView, rowIndex: Int, colIndex: Int) {
         if (readyToPlace) {
-            prevCellToPlace.setImageDrawable(null)
+            previewedCell.setImageDrawable(null)
         }
-        if (cell.drawable == null) {
+        if (boardList[rowIndex][colIndex] == NO_STONE) {
             cell.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.dashed_stone))
             readyToPlace = true
-            cellToPlace = cell
-            prevCellToPlace = cell
+            previewedCell = cell
+            pointToPlace = Pair(rowIndex, colIndex)
         }
     }
-
 
     /**
      * '두기' 버튼에 대한 클릭 리스너 설정.
@@ -100,19 +129,86 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * 차례에 맞게 선택한 칸에 돌을 두는 함수.
-     * 돌을 두고 나면 차례를 바꿈.
+     * 돌을 두고 나면 오목이 완성 됐는지 체크.
+     * 오목이 완성이 안 됐다면 차례를 바꿈
      */
     private fun placeStone() {
         if (isBlackTurn) {
-            cellToPlace.setImageResource(R.drawable.black_stone)
+            previewedCell.setImageResource(R.drawable.black_stone)
+            boardList[pointToPlace.first][pointToPlace.second] = 1
+            if (checkForCompleteOmok(BLACK_STONE)) {
+                Toast.makeText(this, "win", Toast.LENGTH_SHORT).show()
+            }
             blackTurnImageView.visibility = View.INVISIBLE
             whiteTurnImageView.visibility = View.VISIBLE
         } else {
-            cellToPlace.setImageResource(R.drawable.white_stone)
+            previewedCell.setImageResource(R.drawable.white_stone)
+            boardList[pointToPlace.first][pointToPlace.second] = 2
+            if (checkForCompleteOmok(WHITE_STONE)) {
+                Toast.makeText(this, "win", Toast.LENGTH_SHORT).show()
+            }
             whiteTurnImageView.visibility = View.INVISIBLE
             blackTurnImageView.visibility = View.VISIBLE
         }
         isBlackTurn = !isBlackTurn
+    }
+
+    /**
+     * 오목이 완성 됐는지 확인하는 함수.
+     * 세로, 가로, \ 대각선, / 대각선 방향으로 순회하며 체크
+     *
+     * @param turn 현재 차례를 알려주는 변수(흑돌 : 1, 백돌: 2)
+     * @return 오목이 완성된 경우 true, 아닌 경우 false를 return
+     */
+    private fun checkForCompleteOmok(turn: Int): Boolean {
+        for (i in 0 until 4) {
+            if (countStone(deltaList[2 * i], turn) + countStone(deltaList[2 * i + 1], turn) >= 4) {
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * 현재 방향에 놓여진 자신의 돌을 세는 함수.
+     *
+     * @param deltaXY 가야할 방향에 대한 xy 좌표 pair
+     * @param turn 현재 차례를 알려 주는 변수(흑돌 : 1, 백돌: 2)
+     * @return 현재 방향에 놓여진 자신의 돌의 수
+     */
+    private fun countStone(deltaXY: Pair<Int, Int>, turn: Int): Int {
+        var count = 0
+        var curX = pointToPlace.first + deltaXY.first
+        var curY = pointToPlace.second + deltaXY.second
+
+        while (isInBoard(curX, curY) && isMyStone(curX, curY, turn)) {
+            count++
+            curX += deltaXY.first
+            curY += deltaXY.second
+        }
+        return count
+    }
+
+    /**
+     * 현재 좌표가 board 범위 안에 있는 좌표인지 체크하는 함수.
+     *
+     * @param curX 현재 x 좌표
+     * @param curY 현재 y 좌표
+     * @return 현재 좌표가 범위 안에 있으면 true 아니면 false
+     */
+    private fun isInBoard(curX: Int, curY: Int): Boolean {
+        return (curX in 0 until 15 && curY in 0 until 15)
+    }
+
+    /**
+     * 현재 좌표에 놓인 돌이 본인의 돌인지 확인 하는 함수.
+     *
+     * @param curX 현재 x 좌표
+     * @param curY 현재 y 좌표
+     * @return 현재 좌표의 돌이 본인의 돌이면 true 아니면 false
+     */
+    private fun isMyStone(curX: Int, curY: Int, turn: Int): Boolean {
+        return boardList[curX][curY] == turn
     }
 
 }
