@@ -26,4 +26,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun setupRow(tableRow: TableRow, rowIndex: Int) {
+        tableRow.children.filterIsInstance<ImageView>().forEachIndexed { columnIndex, imageView ->
+            imageView.setOnClickListener { handleCellClick(rowIndex, columnIndex) }
+        }
+    }
+
+    private fun handleCellClick(rowIndex: Int, columnIndex: Int) {
+        placeStone(rowIndex, columnIndex)?.let {
+            if (it) {
+                if (checkWin(rowIndex, columnIndex)) {
+                    endGame()
+                } else {
+                    togglePlayer()
+                }
+            }
+        }
+    }
+
 }
