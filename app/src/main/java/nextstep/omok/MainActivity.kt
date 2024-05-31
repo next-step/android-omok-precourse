@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity() {
         return false
     }
     // 각 방향별 연속 개수 확인
-    private fun checkDirection(x: Int, y: Int, dx: Int, dy: Int, count: Int): Int {
-        var x = x // 세로
-        var y = y // 가로
+    private fun checkDirection(row: Int, col: Int, dx: Int, dy: Int, count: Int): Int {
+        var x = row // 세로
+        var y = col // 가로
         var count = count // 연속 개수
         while (true) {
             x += dx // 좌표 이동
