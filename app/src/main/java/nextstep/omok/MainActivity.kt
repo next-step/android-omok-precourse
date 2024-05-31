@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         whiteTurnImageView = findViewById(R.id.white_turn_image)
         placeStoneBtn = findViewById(R.id.place_stone_btn)
         restartBtn = findViewById(R.id.restart_btn)
+
         boardList = MutableList(15) { MutableList(15) { NO_STONE } }
         deltaList = mutableListOf(
             Pair(-1, 0), Pair(1, 0), // 세로
@@ -66,7 +67,6 @@ class MainActivity : AppCompatActivity() {
             Pair(-1, 1), Pair(1, -1)   // '/' 대각선 방향
         )
     }
-
 
     /**
      * 클릭 리스너들을 설정하는 함수
@@ -132,7 +132,6 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * 보드의 각 칸(이미지 뷰)에 클릭 리스너 설정.
-     * 칸을 클릭하면 해당 칸이 맞는 지 미리 보여주는 동작 수행.
      */
     private fun setOnClickListenerForStones() {
         board
@@ -202,42 +201,48 @@ class MainActivity : AppCompatActivity() {
     /**
      * 차례에 맞게 선택한 칸에 돌을 두는 함수.
      * 돌을 두고 나면 오목이 완성 됐는지 체크.
-     * 오목이 완성이 안 됐다면 차례를 바꿈
+     * 오목이 완성이 안 됐다면 차례를 바꿈.
      */
     private fun placeStone() {
-        if (isBlackTurn) {
-            previewedCell.setImageResource(R.drawable.black_stone)
-            boardList[pointToPlace.first][pointToPlace.second] = BLACK_STONE
-            if (checkForCompleteOmok(BLACK_STONE)) {
-                showGameOverDialog("흑돌 승리!!")
-                return
-            }
-        } else {
-            previewedCell.setImageResource(R.drawable.white_stone)
-            boardList[pointToPlace.first][pointToPlace.second] = WHITE_STONE
-            if (checkForCompleteOmok(WHITE_STONE)) {
-                showGameOverDialog("백돌 승리!!")
-                return
-            }
+        val stoneType = if (isBlackTurn) BLACK_STONE else WHITE_STONE
+        val stoneDrawable = if (isBlackTurn) R.drawable.black_stone else R.drawable.white_stone
+
+        previewedCell.setImageResource(stoneDrawable)
+        boardList[pointToPlace.first][pointToPlace.second] = stoneType
+
+        if (checkForCompleteOmok(stoneType)) {
+            showGameOverDialog(stoneType)
+            return
         }
         isBlackTurn = !isBlackTurn
         changeTurnImage()
     }
 
     /**
-     * 오목이 완성 됐는지 확인하는 함수.
+     * 한 방향이라도 오목이 완성 됐는지 확인하는 함수.
      * 세로, 가로, \ 대각선, / 대각선 방향으로 순회하며 체크
      *
-     * @param turn 현재 차례를 알려주는 변수(흑돌 : 1, 백돌: 2)
+     * @param stoneType 현재 차례를 알려주는 변수(흑돌 : 1, 백돌: 2)
      * @return 오목이 완성된 경우 true, 아닌 경우 false
      */
-    private fun checkForCompleteOmok(turn: Int): Boolean {
+    private fun checkForCompleteOmok(stoneType: Int): Boolean {
         for (i in 0 until 4) {
-            if (countStone(deltaList[2 * i], turn) + countStone(deltaList[2 * i + 1], turn) >= 4) {
+            if (completeOmok(2 * i, stoneType)) {
                 return true
             }
         }
         return false
+    }
+
+    /**
+     * 오목이 완성 됐는지 확인하는 함수
+     *
+     * @param deltaIndex deltaList 중 시작할 Index
+     * @param stoneType 확인할 돌의 유형 값
+     * @return 오목이 완성 된 경우 true 아니면 false
+     */
+    private fun completeOmok(deltaIndex: Int, stoneType: Int): Boolean {
+        return countStone(deltaList[deltaIndex], stoneType) + countStone(deltaList[deltaIndex + 1], stoneType) >= 4
     }
 
     /**
@@ -276,10 +281,11 @@ class MainActivity : AppCompatActivity() {
      *
      * @param curX 현재 x 좌표
      * @param curY 현재 y 좌표
+     * @param stoneType 현재 차례 돌 유형
      * @return 현재 좌표의 돌이 본인의 돌이면 true 아니면 false
      */
-    private fun isMyStone(curX: Int, curY: Int, turn: Int): Boolean {
-        return boardList[curX][curY] == turn
+    private fun isMyStone(curX: Int, curY: Int, stoneType: Int): Boolean {
+        return boardList[curX][curY] == stoneType
     }
 
 
@@ -290,16 +296,16 @@ class MainActivity : AppCompatActivity() {
      * - `window`: 대화 상자 window 객체
      * - `layoutParams`: 대화 상자의 속성을 설정하기 위한 객체
      *
-     * @param resultMessage 게임 결과 메시지 String
+     * @param stoneType 승자가 백돌인지 흑돌인지를 나타내는 변수
      */
-    private fun showGameOverDialog(resultMessage: String) {
+    private fun showGameOverDialog(stoneType: Int) {
         val dialog = Dialog(this)
         setGameOverDialog(dialog)
 
         resultTextView = dialog.findViewById(R.id.result_textview)
         gameOverRestartBtn = dialog.findViewById(R.id.game_over_restart_btn)
 
-        resultTextView.text = resultMessage
+        setTextForResultTextView(stoneType)
         setOnClickListenerForGameOverRestartBtn(dialog)
 
         val window = dialog.window
@@ -307,6 +313,19 @@ class MainActivity : AppCompatActivity() {
         setLayoutParams(layoutParams, window!!)
         window.attributes = layoutParams
         dialog.show()
+    }
+
+    /**
+     * 게임 결과 text view의 text를 설정하는 함수.
+     *
+     * @param stoneType 승자가 백돌인지 흑돌인지를 나타내는 변수
+     */
+    private fun setTextForResultTextView(stoneType: Int) {
+        if (stoneType == BLACK_STONE) {
+            resultTextView.text = "흑돌 승리!!"
+        } else {
+            resultTextView.text = "백돌 승리!!"
+        }
     }
 
     /**
