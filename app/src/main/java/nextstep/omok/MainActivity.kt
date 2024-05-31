@@ -45,4 +45,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun placeStone(rowIndex: Int, columnIndex: Int): Boolean? {
+        return if (boardState[rowIndex][columnIndex] == Player.NONE) {
+            boardState[rowIndex][columnIndex] = currentPlayer
+            updateBoardView(rowIndex, columnIndex)
+            true
+        } else {
+            null
+        }
+    }
+
+    private fun updateBoardView(rowIndex: Int, columnIndex: Int) {
+        getCellImageView(rowIndex, columnIndex)?.let { cell ->
+            val resource = when (currentPlayer) {
+                Player.BLACK -> R.drawable.black_stone
+                Player.WHITE -> R.drawable.white_stone
+                else -> android.R.color.transparent
+            }
+            cell.setImageResource(resource)
+            cell.isEnabled = false
+        }
+    }
+
+
+
 }
