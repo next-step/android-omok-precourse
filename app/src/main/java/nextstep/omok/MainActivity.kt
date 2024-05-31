@@ -66,7 +66,20 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-
-
-
+    // 각 방향별 연속 개수 확인
+    private fun checkDirection(x: Int, y: Int, dx: Int, dy: Int, count: Int): Int {
+        var x = x // 세로
+        var y = y // 가로
+        var count = count // 연속 개수
+        while (true) {
+            x += dx // 좌표 이동
+            y += dy // 좌표 이동
+            // 보드 범위 벗어 나거나 현재 플레이어 돌과 다른 경우 break
+            if (x < 0 || y < 0 || x >= boardSize || y >= boardSize || !isCurrentPlayerStone(x, y)) {
+                break
+            }
+            count++
+        }
+        return count
+    }
 }
