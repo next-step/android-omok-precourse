@@ -111,4 +111,22 @@ class MainActivity : AppCompatActivity() {
         currentPlayer = Player.BLACK
     }
 
+
+    private fun endGame() {
+        Toast.makeText(this, "${currentPlayer.name} 승리 하셨습니다 축하축하!!!!!", Toast.LENGTH_LONG).show()
+        resetBoard()
+    }
+
+       private fun getCellImageView(rowIndex: Int, columnIndex: Int): ImageView? {
+        val board = findViewById<TableLayout>(R.id.board)
+        return board.getChildAt(rowIndex)?.let { row ->
+            (row as TableRow).getChildAt(columnIndex) as? ImageView
+        }
+    }
+
+    enum class Player {
+        BLACK, WHITE, NONE
+    }
+
+
 }
