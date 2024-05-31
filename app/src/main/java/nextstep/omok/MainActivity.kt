@@ -68,6 +68,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkWin(rowIndex: Int, columnIndex: Int): Boolean {
+        return listOf(
+            checkDirection(rowIndex, columnIndex, 1, 0),
+            checkDirection(rowIndex, columnIndex, 0, 1),
+            checkDirection(rowIndex, columnIndex, 1, 1),
+            checkDirection(rowIndex, columnIndex, 1, -1)
+        ).any { it }
+    }
+
+    private fun checkDirection(row: Int, col: Int, dRow: Int, dCol: Int): Boolean {
+        val count = 1 + countStones(row, col, dRow, dCol) + countStones(row, col, -dRow, -dCol)
+        return count >= 5
+    }
+
+    private fun countStones(row: Int, col: Int, dRow: Int, dCol: Int): Int {
+        var count = 0
+        var r = row + dRow
+        var c = col + dCol
+        while (r in 0 until boardSize && c in 0 until boardSize && boardState[r][c] == currentPlayer) {
+            count++
+            r += dRow
+            c += dCol
+        }
+        return count
+    }
+
+
 
 
 }
