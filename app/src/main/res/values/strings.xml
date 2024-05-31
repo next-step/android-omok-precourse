@@ -2,5 +2,6 @@
     <string name="app_name">Omok</string>
     <string name="place_btn">두  기</string>
     <string name="restart_btn">다시 시작</string>
+    <string name="ok_btn">확 인</string>
 
 </resources>
