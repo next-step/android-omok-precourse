@@ -2,12 +2,14 @@ package nextstep.omok
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
+import androidx.core.view.size
 
 class OmokSystem (
     val context: Context,
@@ -15,9 +17,17 @@ class OmokSystem (
     private val BLACK = "흑"
     private val WHITE = "백"
     private val scoreCombo = 5
+    private val rowSize: Int
+    private val colSize: Int
 
     private var nowStone = BLACK
     private val cache = Cache()
+    init {
+        rowSize = board.childCount
+        colSize = (board.getChildAt(0) as TableRow).childCount
+    }
+
+    // 각 이미지뷰에 onClickListener를 부착하는 함수
     fun registerClickListener() {
         board.children.forEachIndexed { row, tableRow ->
             tableRow as TableRow
@@ -33,6 +43,7 @@ class OmokSystem (
     // 이미지뷰를 터치했을 때 수행할 한턴의 동작
     private fun performTurn(row: Int, col: Int) {
         putStone(row, col)
+        calculateCombo(row, col)
     }
 
     // 돌을 착수하는 함수
@@ -60,9 +71,108 @@ class OmokSystem (
     private fun isPositionEmpty(imgView: ImageView): Boolean {
         if (imgView.drawable == null)
             return true
-        else
+        else {
             Toast.makeText(context, "이미 돌이 착수된 자리입니다!", Toast.LENGTH_SHORT).show()
             return false
+        }
+    }
+
+    // 콤보를 계산하는 함수
+    // 4가지 방향에 대해 가장 큰 콤보를 반환
+    private fun calculateCombo(row: Int, col: Int): Int {
+        return maxOf(
+            checkVerticalCombo(row, col),
+            checkHorizontalCombo(row, col),
+            checkUpperRightCombo(row, col),
+            checkUpperLeftCombo(row, col)
+        )
+    }
+
+    // 4가지 방향 각각에 대해 콤보를 계산하는 함수
+    // 각각의 함수는 calculateCombo함수 내부에서 호출되어 사용
+    // 점수를 내는 기준인 scoreCombo개수까지만 인접한 돌을 셈
+    // 수직 방향
+    private fun checkVerticalCombo(row: Int, col: Int) : Int {
+        var combo = 1
+        val targetStone = getBoardImageView(row, col)
+
+        for (d in 1..<scoreCombo) {
+            if (row - d < 0 ||
+                targetStone.drawable != getBoardImageView(row - d, col).drawable)
+                break
+            combo++
+        }
+        for (d in 1..<scoreCombo) {
+            if (row + d >= rowSize ||
+                targetStone.drawable != getBoardImageView(row + d, col).drawable)
+                break
+            combo++
+        }
+
+        return combo
+    }
+
+    // 수평 방향
+    private fun checkHorizontalCombo(row: Int, col: Int) : Int {
+        var combo = 1
+        val targetStone = getBoardImageView(row, col)
+
+        for (d in 1..<scoreCombo) {
+            if (col - d < 0 ||
+                targetStone.drawable != getBoardImageView(row, col - d).drawable)
+                break
+            combo++
+        }
+        for (d in 1..<scoreCombo) {
+            if (col + d >= colSize ||
+                targetStone.drawable != getBoardImageView(row, col + d).drawable)
+                break
+            combo++
+        }
+
+        return combo
+    }
+
+    // 오른쪽 위를 향하는 대각선 방향
+    private fun checkUpperRightCombo(row: Int, col: Int) : Int {
+        var combo = 1
+        val targetStone = getBoardImageView(row, col)
+
+        for (d in 1..<scoreCombo) {
+            if (col - d < 0 || row + d >= rowSize ||
+                targetStone.drawable != getBoardImageView(row + d, col - d).drawable)
+                break
+            combo++
+        }
+        for (d in 1..<scoreCombo) {
+            if (col + d >= colSize || row - d < 0 ||
+                targetStone.drawable != getBoardImageView(row - d, col + d).drawable)
+                break
+            combo++
+        }
+
+        return combo
+    }
+
+    // 왼쪽 위를 향하는 대각선 방향
+    private fun checkUpperLeftCombo(row: Int, col: Int) : Int {
+        var combo = 1
+        val targetStone = getBoardImageView(row, col)
+
+        for (d in 1..<scoreCombo) {
+            if (col + d >= colSize || row + d >= rowSize ||
+                targetStone.drawable != getBoardImageView(row + d, col + d).drawable)
+                break
+            combo++
+        }
+        for (d in 1..<scoreCombo) {
+            if (col - d < 0 || row - d < 0 ||
+                targetStone.drawable != getBoardImageView(row - d, col - d).drawable)
+                break
+            combo++
+        }
+
+        return combo
     }
 
     // 돌을 착수 할 때마다 Drawable을 얻어오는 동작을 줄이기 위해 캐시로 갖고있는 클래스
