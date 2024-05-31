@@ -5,15 +5,15 @@
 ## 구현 화면
 1. 게임 시작 / 다시 시작 화면　　　　　2. 게임 중 화면(흑돌 차례)
 
-<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/startImage.png width="200" height="350"><img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/playing_black.png width="200" height="350">
+<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/startImage.png width="200" height="350">　　　　　<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/playing_black.png width="200" height="350">
 
 3. 게임 중 화면(백돌 차례)　　　　　4. 돌을 둘 곳 미리보기 화면
 
-<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/playing_white.png width="200" height="350"><img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/previewImage.png width="200" height="350">
+<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/playing_white.png width="200" height="350">　　　　　<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/previewImage.png width="200" height="350">
 
 5. 게임 결과 화면(흑돌 승)　　　　　6. 게임 결과 화면(백돌 승)
 
-<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/win_black.png width="200" height="350"><img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/win_white.png width="200" height="350">
+<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/win_black.png width="200" height="350">　　　　　<img src=https://github.com/ichanguk/android-omok/blob/ichanguk/images/win_white.png width="200" height="350">
 
 ## feature
 1. 보드에 흑돌 / 백돌을 번갈아 둘 수 있는 기능
