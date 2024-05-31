@@ -87,4 +87,16 @@ class MainActivity : AppCompatActivity() {
         val imageView = board[row][col]
         return imageView?.tag == currentPlayer
     }
+    // 보드 초기화
+    private fun resetBoard() {
+        for (i in 0 until boardSize) {
+            for (j in 0 until boardSize) {
+                board[i][j]?.apply {
+                    setImageDrawable(null) // 보드 안에 있는 돌들을 다 지움
+                    tag = "$i,$j" // 태그에 세로, 가로 설정
+                }
+            }
+        }
+        currentPlayer = "black" // 플레이어 초기화
+    }
 }
