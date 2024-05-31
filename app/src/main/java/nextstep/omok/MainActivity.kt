@@ -25,13 +25,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var boardList: MutableList<MutableList<Int>>
     private lateinit var pointToPlace: Pair<Int, Int>
     private lateinit var deltaList: MutableList<Pair<Int, Int>>
+    private lateinit var restartBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initVariables()
-        setOnClickListenerForStones()
-        setOnClickListenerForPlaceStoneBtn()
+        setClickListeners()
     }
 
     /**
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
      * - `blackTurnImageView`: 흑돌 차례를 나타내는 이미지 뷰.
      * - `whiteTurnImageView`: 백돌 차례를 나타내는 이미지 뷰.
      * - `placeStoneBtn`: 돌을 보드에 두는 버튼.
+     * - `restartBtn`: 다시 시작을 위한 버튼.
      * - `boardList` : 보드의 각 칸에 놓인 돌을 저장(black : 1, white : 2, null : 0)
      * - 'deltaList' : 오목이 완성됐는 지 체크하기 위한 좌표 변화량 리스트
      */
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         blackTurnImageView = findViewById(R.id.black_turn_image)
         whiteTurnImageView = findViewById(R.id.white_turn_image)
         placeStoneBtn = findViewById(R.id.place_stone_btn)
+        restartBtn = findViewById(R.id.restart_btn)
         boardList = MutableList(15) { MutableList(15) { NO_STONE } }
         deltaList = mutableListOf(
             Pair(-1, 0), Pair(1, 0), // 세로
@@ -57,6 +59,68 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+
+    /**
+     * 클릭 리스너들을 설정하는 함수
+     */
+    private fun setClickListeners() {
+        setOnClickListenerForStones()
+        setOnClickListenerForPlaceStoneBtn()
+        setOnClickListenerForRestartBtn()
+    }
+
+    /**
+     * 다시 시작 버튼의 클릭 리스너를 설정하는 함수.
+     */
+    private fun setOnClickListenerForRestartBtn() {
+        restartBtn.setOnClickListener {
+            restart()
+        }
+    }
+
+    /**
+     * 게임을 다시 시작하는 함수.
+     * 변수와 view들을 reset.
+     */
+    private fun restart() {
+        resetVariables()
+        resetBoardView()
+        changeTurnImage()
+    }
+
+
+    /**
+     * 처음 상태로 변수들을 reset하는 함수.
+     */
+    private fun resetVariables() {
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
+        isBlackTurn = true
+    }
+
+    /**
+     * 보드의 이미지(돌)들을 모두 비우는 함수.
+     */
+    private fun resetBoardView() {
+        board
+            .children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { cell -> cell.setImageDrawable(null) }
+    }
+
+    /**
+     * turn을 표시하는 image의 visibility를 바꿔주는 함수.
+     */
+    private fun changeTurnImage() {
+        if (isBlackTurn) {
+            whiteTurnImageView.visibility = View.INVISIBLE
+            blackTurnImageView.visibility = View.VISIBLE
+        } else {
+            blackTurnImageView.visibility = View.INVISIBLE
+            whiteTurnImageView.visibility = View.VISIBLE
+        }
+    }
 
     /**
      * 보드의 각 칸(이미지 뷰)에 클릭 리스너 설정.
@@ -139,18 +203,15 @@ class MainActivity : AppCompatActivity() {
             if (checkForCompleteOmok(BLACK_STONE)) {
                 Toast.makeText(this, "win", Toast.LENGTH_SHORT).show()
             }
-            blackTurnImageView.visibility = View.INVISIBLE
-            whiteTurnImageView.visibility = View.VISIBLE
         } else {
             previewedCell.setImageResource(R.drawable.white_stone)
             boardList[pointToPlace.first][pointToPlace.second] = 2
             if (checkForCompleteOmok(WHITE_STONE)) {
                 Toast.makeText(this, "win", Toast.LENGTH_SHORT).show()
             }
-            whiteTurnImageView.visibility = View.INVISIBLE
-            blackTurnImageView.visibility = View.VISIBLE
         }
         isBlackTurn = !isBlackTurn
+        changeTurnImage()
     }
 
     /**
