@@ -1,11 +1,16 @@
 package nextstep.omok
 
+import android.app.Dialog
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val NO_STONE = 0
     private val BLACK_STONE = 1
     private val WHITE_STONE = 2
+
     private lateinit var board: TableLayout
     private lateinit var blackTurnImageView: ImageView
     private lateinit var whiteTurnImageView: ImageView
@@ -26,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pointToPlace: Pair<Int, Int>
     private lateinit var deltaList: MutableList<Pair<Int, Int>>
     private lateinit var restartBtn: Button
+    private lateinit var resultTextView: TextView
+    private lateinit var gameOverRestartBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -199,15 +207,17 @@ class MainActivity : AppCompatActivity() {
     private fun placeStone() {
         if (isBlackTurn) {
             previewedCell.setImageResource(R.drawable.black_stone)
-            boardList[pointToPlace.first][pointToPlace.second] = 1
+            boardList[pointToPlace.first][pointToPlace.second] = BLACK_STONE
             if (checkForCompleteOmok(BLACK_STONE)) {
-                Toast.makeText(this, "win", Toast.LENGTH_SHORT).show()
+                showGameOverDialog("흑돌 승리!!")
+                return
             }
         } else {
             previewedCell.setImageResource(R.drawable.white_stone)
-            boardList[pointToPlace.first][pointToPlace.second] = 2
+            boardList[pointToPlace.first][pointToPlace.second] = WHITE_STONE
             if (checkForCompleteOmok(WHITE_STONE)) {
-                Toast.makeText(this, "win", Toast.LENGTH_SHORT).show()
+                showGameOverDialog("백돌 승리!!")
+                return
             }
         }
         isBlackTurn = !isBlackTurn
@@ -219,7 +229,7 @@ class MainActivity : AppCompatActivity() {
      * 세로, 가로, \ 대각선, / 대각선 방향으로 순회하며 체크
      *
      * @param turn 현재 차례를 알려주는 변수(흑돌 : 1, 백돌: 2)
-     * @return 오목이 완성된 경우 true, 아닌 경우 false를 return
+     * @return 오목이 완성된 경우 true, 아닌 경우 false
      */
     private fun checkForCompleteOmok(turn: Int): Boolean {
         for (i in 0 until 4) {
@@ -272,4 +282,68 @@ class MainActivity : AppCompatActivity() {
         return boardList[curX][curY] == turn
     }
 
+
+    /**
+     * 게임 종료 시 대화상자를 보여주는 함수.
+     * - `resultTextView`: 결과 메시지를 보여주는 text view.
+     * - `gameOverRestartBtn`: 다시 시작을 위한 button.
+     * - `window`: 대화 상자 window 객체
+     * - `layoutParams`: 대화 상자의 속성을 설정하기 위한 객체
+     *
+     * @param resultMessage 게임 결과 메시지 String
+     */
+    private fun showGameOverDialog(resultMessage: String) {
+        val dialog = Dialog(this)
+        setGameOverDialog(dialog)
+
+        resultTextView = dialog.findViewById(R.id.result_textview)
+        gameOverRestartBtn = dialog.findViewById(R.id.game_over_restart_btn)
+
+        resultTextView.text = resultMessage
+        setOnClickListenerForGameOverRestartBtn(dialog)
+
+        val window = dialog.window
+        val layoutParams = WindowManager.LayoutParams()
+        setLayoutParams(layoutParams, window!!)
+        window.attributes = layoutParams
+        dialog.show()
+    }
+
+    /**
+     * gameOverDialog를 설정하는 함수.
+     *
+     * @param dialog gameOverDialog
+     */
+    private fun setGameOverDialog(dialog: Dialog) {
+        dialog.setContentView(R.layout.dialog_game_over)
+        dialog.setTitle("게임 종료")
+        dialog.setCancelable(false)
+    }
+
+    /**
+     * 대화상자의 다시 시작 버튼에 클릭 리스너를 설정하는 함수.
+     * 클릭하면 대화상자를 닫고 게임이 재시작 되도록 한다.
+     *
+     * @param dialog gameOverDialog
+     */
+    private fun setOnClickListenerForGameOverRestartBtn(dialog: Dialog) {
+        gameOverRestartBtn.setOnClickListener {
+            dialog.dismiss()
+            restart()
+        }
+    }
+
+    /**
+     * 대화 상자의 속성을 설정하기 위한 함수.
+     *
+     * @param layoutParams 대화 상자의 속성을 설정하기 위한 객체
+     * @param window 대화 상자 window 객체
+     */
+    private fun setLayoutParams(layoutParams:WindowManager.LayoutParams, window: Window) {
+        layoutParams.copyFrom(window.attributes)
+        layoutParams.gravity = Gravity.BOTTOM
+        layoutParams.width = 700
+        layoutParams.height = 500
+        layoutParams.y = 250
+    }
 }
