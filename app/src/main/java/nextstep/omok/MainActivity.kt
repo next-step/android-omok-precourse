@@ -17,10 +17,10 @@ class MainActivity : AppCompatActivity() {
     private var currentPlayer = "black"
     // 좌표 방향 리스트
     private val directions = listOf(
-        listOf(1 to 0, -1 to 0),  // Horizontal
-        listOf(0 to 1, 0 to -1),  // Vertical
-        listOf(1 to 1, -1 to -1), // Diagonal \
-        listOf(1 to -1, -1 to 1)  // Diagonal /
+        listOf(1 to 0, -1 to 0),  // 세로
+        listOf(0 to 1, 0 to -1),  // 가로
+        listOf(1 to 1, -1 to -1), // 대각선 \
+        listOf(1 to -1, -1 to 1)  // 대각선 /
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
 
 }
