@@ -31,6 +31,20 @@ class MainActivity : AppCompatActivity() {
                         colIndex++ }
                 rowIndex++ }
     }
-
+    // 돌 놓는 함수
+    private fun onStonePlaced(view: ImageView) {
+        if (view.tag != "black" && view.tag != "white") {  // 아직 돌이 놓이지 않은 경우에만
+            val (row, col) = (view.tag as String).split(",").map { it.toInt() }  // 태그에서 좌표 추출
+            // 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
+            view.setImageResource(if (currentPlayer == "black") R.drawable.black_stone else R.drawable.white_stone)
+            view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
+            if (checkWin(row, col)) {   // 승리 조건 확인
+                Toast.makeText(this, "$currentPlayer wins!", Toast.LENGTH_LONG).show() // 승리 메시지
+                resetBoard() // 보드 초기화
+            } else {
+                currentPlayer = if (currentPlayer == "black") "white" else "black" // 플레이어 변경
+            }
+        }
+    }
 
 }
