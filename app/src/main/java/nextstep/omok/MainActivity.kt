@@ -99,5 +99,16 @@ class MainActivity : AppCompatActivity() {
         currentPlayer = if (currentPlayer == Player.BLACK) Player.WHITE else Player.BLACK
     }
 
+    private fun resetBoard() {
+        boardState = Array(boardSize) { Array(boardSize) { Player.NONE } }
+        val board = findViewById<TableLayout>(R.id.board)
+        board.children.filterIsInstance<TableRow>().forEach { tableRow ->
+            tableRow.children.filterIsInstance<ImageView>().forEach { imageView ->
+                imageView.setImageResource(android.R.color.transparent)
+                imageView.isEnabled = true
+            }
+        }
+        currentPlayer = Player.BLACK
+    }
 
 }
