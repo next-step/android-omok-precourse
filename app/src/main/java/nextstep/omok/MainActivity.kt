@@ -15,6 +15,13 @@ class MainActivity : AppCompatActivity() {
     private val boardSize = 15
     // 현재 플레이어(black or white)
     private var currentPlayer = "black"
+    // 좌표 방향 리스트
+    private val directions = listOf(
+        listOf(1 to 0, -1 to 0),  // Horizontal
+        listOf(0 to 1, 0 to -1),  // Vertical
+        listOf(1 to 1, -1 to -1), // Diagonal \
+        listOf(1 to -1, -1 to 1)  // Diagonal /
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,5 +53,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
