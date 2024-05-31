@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var restartBtn: Button
     private lateinit var resultTextView: TextView
     private lateinit var gameOverRestartBtn: Button
+    private lateinit var winnerImageView: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -302,17 +303,50 @@ class MainActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         setGameOverDialog(dialog)
 
-        resultTextView = dialog.findViewById(R.id.result_textview)
-        gameOverRestartBtn = dialog.findViewById(R.id.game_over_restart_btn)
-
-        setTextForResultTextView(stoneType)
-        setOnClickListenerForGameOverRestartBtn(dialog)
+        initDialogViews(dialog)
+        setDialogViews(dialog, stoneType)
 
         val window = dialog.window
         val layoutParams = WindowManager.LayoutParams()
         setLayoutParams(layoutParams, window!!)
         window.attributes = layoutParams
         dialog.show()
+    }
+
+    /**
+     * 대화 상자에 사용되는 view들을 초기화하는 함수.
+     *
+     * @param dialog gameOverDialog
+     */
+    private fun initDialogViews(dialog: Dialog) {
+        winnerImageView = dialog.findViewById(R.id.winner_image)
+        resultTextView = dialog.findViewById(R.id.result_textview)
+        gameOverRestartBtn = dialog.findViewById(R.id.game_over_restart_btn)
+    }
+
+    /**
+     * 대화 상자에 사용되는 view들을 설정하는 함수.
+     *
+     * @param dialog gameOverDialog
+     * @param stoneType 승자가 백돌인지 흑돌인지를 나타내는 변수
+     */
+    private fun setDialogViews(dialog: Dialog, stoneType: Int) {
+        setImageForWinnerImageView(stoneType)
+        setTextForResultTextView(stoneType)
+        setOnClickListenerForGameOverRestartBtn(dialog)
+    }
+
+    /**
+     * 승자에 따라 winnerImageView의 이미지를 설정하는 함수.
+     *
+     * @param stoneType 승자가 백돌인지 흑돌인지를 나타내는 변수
+     */
+    private fun setImageForWinnerImageView(stoneType: Int) {
+        if (stoneType == BLACK_STONE) {
+            winnerImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.black_stone))
+        } else {
+            winnerImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.white_stone))
+        }
     }
 
     /**
