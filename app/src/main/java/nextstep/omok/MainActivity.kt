@@ -58,8 +58,8 @@ class MainActivity : AppCompatActivity() {
         for (direction in directions) { // 가로, 세로, 대각선 방향으로 연속되어 있는지 확인.
             var count = 1 // 돌의 연속 개수
             for ((dx, dy) in direction) {
-                var x = row
-                var y = col
+                val x = row
+                val y = col
                 count = checkDirection(x, y, dx, dy, count) // 각 방향별 연속 개수 확인
             }
             if (count >= 5) return true
