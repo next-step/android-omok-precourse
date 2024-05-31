@@ -95,6 +95,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun togglePlayer() {
+        currentPlayer = if (currentPlayer == Player.BLACK) Player.WHITE else Player.BLACK
+    }
 
 
 }
