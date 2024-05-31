@@ -1,6 +1,8 @@
 package nextstep.omok
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -45,11 +47,13 @@ class MainActivity : AppCompatActivity() {
             // 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
             view.setImageResource(if (currentPlayer == "black") R.drawable.black_stone else R.drawable.white_stone)
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
-            if (checkWin(row, col)) {   // 승리 조건 확인
-                Toast.makeText(this, "$currentPlayer wins!", Toast.LENGTH_LONG).show() // 승리 메시지
-                resetBoard() // 보드 초기화
-            } else {
-                currentPlayer = if (currentPlayer == "black") "white" else "black" // 플레이어 변경
+            view.post {
+                if (checkWin(row, col)) { // 승리 조건 확인
+                    Toast.makeText(this, "$currentPlayer wins!", Toast.LENGTH_LONG).show() // 승리 메시지
+                    Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
+                } else {
+                    currentPlayer = if (currentPlayer == "black") "white" else "black" // 플레이어 변경
+                }
             }
         }
     }
