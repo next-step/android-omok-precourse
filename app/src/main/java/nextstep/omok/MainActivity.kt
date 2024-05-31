@@ -4,20 +4,26 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
+    private var currentPlayer = Player.BLACK
+    private val boardSize = 15
+    private var boardState = Array(boardSize) { Array(boardSize) { Player.NONE } }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val board = findViewById<TableLayout>(R.id.board)
-        board
-            .children
-            .filterIsInstance<TableRow>()
-            .flatMap { it.children }
-            .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+        setupBoard()
     }
+
+    private fun setupBoard() {
+        val board = findViewById<TableLayout>(R.id.board)
+        board.children.filterIsInstance<TableRow>().forEachIndexed { rowIndex, tableRow ->
+            setupRow(tableRow, rowIndex)
+        }
+    }
+
 }
