@@ -82,4 +82,9 @@ class MainActivity : AppCompatActivity() {
         }
         return count
     }
+    // 현재 플레이어 돌과 같은지 확인
+    private fun isCurrentPlayerStone(row: Int, col: Int): Boolean {
+        val imageView = board[row][col]
+        return imageView?.tag == currentPlayer
+    }
 }
