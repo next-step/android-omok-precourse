@@ -19,4 +19,25 @@ class MainActivity : AppCompatActivity() {
         board = Board(tableLayout, ::onCellClicked)
         board.initialize()
     }
+
+    private fun onCellClicked(row: Int, col: Int) {
+        val result = gameLogic.placeStone(row, col)
+        when (result) {
+            is GameResult.Success -> board.updateCell(row, col, result.player)
+            is GameResult.Win -> handleWin(row, col, result.player)
+            is GameResult.Occupied -> showToast("Cell is already occupied")
+            is GameResult.Invalid -> showToast("Invalid move")
+        }
+    }
+
+    private fun handleWin(row: Int, col: Int, player: Player) {
+        board.updateCell(row, col, player)
+        showToast("${player.name} wins!")
+        board.reset()
+        gameLogic.reset()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 }
