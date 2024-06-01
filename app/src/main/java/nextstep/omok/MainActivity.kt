@@ -1,5 +1,6 @@
 package nextstep.omok
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TableLayout
@@ -52,5 +53,11 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun showWinner(): {
+        val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
+        val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
+        val intent = Intent(this, WinnerActivity::class.java).apply{
+            putExtra("winnerMessage", winnerMessage)
+        }
+        startActivity(intent)
     }
 }
