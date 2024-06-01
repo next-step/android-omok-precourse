@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity() {
      *
      * - `readyToPlace`: 현재 미리보기가 보여지고 있는 경우 true 아니면 false
      * - `previewedCell`: 미리보기 중인 칸의 ImageView
-     * - `pointTopPlace`: 미리보기 중인 칸의 xy 좌표 쌍
+     * - `pointTopPlace`: 미리보기 중인 칸의 (row, col) 좌표 쌍
      *
      * @param cell 클릭한 칸을 나타내는 이미지 뷰
      * @param rowIndex 클릭한 칸의 행 index
@@ -249,19 +249,19 @@ class MainActivity : AppCompatActivity() {
     /**
      * 현재 방향에 놓여진 자신의 돌을 세는 함수.
      *
-     * @param deltaXY 가야할 방향에 대한 xy 좌표 pair
+     * @param deltaRC 가야할 방향에 대한 (row, col) 좌표 pair
      * @param turn 현재 차례를 알려 주는 변수(흑돌 : 1, 백돌: 2)
      * @return 현재 방향에 놓여진 자신의 돌의 수
      */
-    private fun countStone(deltaXY: Pair<Int, Int>, turn: Int): Int {
+    private fun countStone(deltaRC: Pair<Int, Int>, turn: Int): Int {
         var count = 0
-        var curX = pointToPlace.first + deltaXY.first
-        var curY = pointToPlace.second + deltaXY.second
+        var curRow = pointToPlace.first + deltaRC.first
+        var curCol = pointToPlace.second + deltaRC.second
 
-        while (isInBoard(curX, curY) && isMyStone(curX, curY, turn)) {
+        while (isInBoard(curRow, curCol) && isMyStone(curRow, curCol, turn)) {
             count++
-            curX += deltaXY.first
-            curY += deltaXY.second
+            curRow += deltaRC.first
+            curCol += deltaRC.second
         }
         return count
     }
@@ -269,24 +269,24 @@ class MainActivity : AppCompatActivity() {
     /**
      * 현재 좌표가 board 범위 안에 있는 좌표인지 체크하는 함수.
      *
-     * @param curX 현재 x 좌표
-     * @param curY 현재 y 좌표
+     * @param curRow 현재 row 좌표
+     * @param curCol 현재 col 좌표
      * @return 현재 좌표가 범위 안에 있으면 true 아니면 false
      */
-    private fun isInBoard(curX: Int, curY: Int): Boolean {
-        return (curX in 0 until 15 && curY in 0 until 15)
+    private fun isInBoard(curRow: Int, curCol: Int): Boolean {
+        return (curRow in 0 until 15 && curCol in 0 until 15)
     }
 
     /**
      * 현재 좌표에 놓인 돌이 본인의 돌인지 확인 하는 함수.
      *
-     * @param curX 현재 x 좌표
-     * @param curY 현재 y 좌표
+     * @param curRow 현재 row 좌표
+     * @param curCol 현재 col 좌표
      * @param stoneType 현재 차례 돌 유형
      * @return 현재 좌표의 돌이 본인의 돌이면 true 아니면 false
      */
-    private fun isMyStone(curX: Int, curY: Int, stoneType: Int): Boolean {
-        return boardList[curX][curY] == stoneType
+    private fun isMyStone(curRow: Int, curCol: Int, stoneType: Int): Boolean {
+        return boardList[curRow][curCol] == stoneType
     }
 
 

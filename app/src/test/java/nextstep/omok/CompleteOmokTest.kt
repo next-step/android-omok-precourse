@@ -89,25 +89,25 @@ class CompleteOmokTest {
     }
 
 
-    private fun countStone(deltaXY: Pair<Int, Int>, turn: Int): Int {
+    private fun countStone(deltaRC: Pair<Int, Int>, turn: Int): Int {
         var count = 0
-        var curX = pointToPlace.first + deltaXY.first
-        var curY = pointToPlace.second + deltaXY.second
+        var curRow = pointToPlace.first + deltaRC.first
+        var curCol = pointToPlace.second + deltaRC.second
 
-        while (isInBoard(curX, curY) && isMyStone(curX, curY, turn)) {
+        while (isInBoard(curRow, curCol) && isMyStone(curRow, curCol, turn)) {
             count++
-            curX += deltaXY.first
-            curY += deltaXY.second
+            curRow += deltaRC.first
+            curCol += deltaRC.second
         }
         return count
     }
 
 
-    private fun isInBoard(curX: Int, curY: Int): Boolean {
-        return (curX in 0 until 15 && curY in 0 until 15)
+    private fun isInBoard(curRow: Int, curCol: Int): Boolean {
+        return (curRow in 0 until 15 && curCol in 0 until 15)
     }
 
-    private fun isMyStone(curX: Int, curY: Int, stoneType: Int): Boolean {
-        return boardList[curX][curY] == stoneType
+    private fun isMyStone(curRow: Int, curCol: Int, stoneType: Int): Boolean {
+        return boardList[curRow][curCol] == stoneType
     }
 }
