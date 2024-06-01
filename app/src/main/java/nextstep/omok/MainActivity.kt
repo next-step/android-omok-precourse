@@ -14,12 +14,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val board = findViewById<TableLayout>(R.id.board)
-        board
-            .children
+    }
+    fun initializeBoard(board: TableLayout) {
+        board.children
             .filterIsInstance<TableRow>()
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+            .forEachIndexed { index, view ->
+                view.setOnClickListener { onCellClicked(view, index) }
+            }
     }
 
     fun switchPlayer() {
