@@ -54,26 +54,24 @@ fun createStone(clickView: ImageView, k: Int, whosTurn: TextView) {
     if (board[k / 15][k % 15] == 0) {
         if (turn == 1) {
             clickView.setImageResource(R.drawable.white_stone)
-            turn = 2
             board[k / 15][k % 15] = 1
             whosTurn.text = "2"
-            checkAmIWinner(amIWinner(k,turn))
+            checkAmIWinner(amIWinner(k,1))
+            turn = 2
 
 
         } else {
             clickView.setImageResource(R.drawable.black_stone)
-            turn = 1
             board[k / 15][k % 15] = 2
             whosTurn.text = "1"
-            checkAmIWinner(amIWinner(k,turn))
+            checkAmIWinner(amIWinner(k,2))
+            turn = 1
         }
     }else{}
 }
 
 fun checkAmIWinner(sequenceStonList : MutableList<Int>){
     if (4 in sequenceStonList){
-        Log.d("qwer", "checkAmIWinner: WINN!!!!")
-        Log.d("qwer", "Lists: " + sequenceStonList)
     }else{}
 }
 
@@ -97,63 +95,62 @@ fun sequenceCountUp(turn:Int,x:Int,y:Int): Int {
     }
 }
 
-fun sequenceUpCheck(k: Int, turn: Int): Int {
+fun sequenceLeftCheck(k: Int, turn: Int): Int {
     var x: Int = k / 15
     var y: Int = k % 15
     var count = 0
     for (i in 1..4) {
-        y -= 1 // 기존의 y 변수를 이용하여 값을 감소시킴
-        if (y == 0) {
+        if (y <= 0) {
             break
         } else {
+            y -= 1
             count += sequenceCountUp(turn, x, y)
-            Log.d("Up123", "sequenceUpCheck: " + y)
         }
     }
     return count
 }
-fun sequenceDownCheck(k: Int,turn:Int): Int {
-    var x: Int = k / 15
-    var y: Int = k % 15
-    var count = 0
-    for (i in 1..4){
-        y +=1
-        if (y == 14) {
-            break
-        }
-        else{
-            count += sequenceCountUp(turn,x,y)
-        }
-    }
-    return count
-}
-
-fun sequenceLeftCheck(k: Int,turn:Int): Int {
-    var x: Int = k / 15
-    var y: Int = k % 15
-    var count = 0
-    for (i in 1..4){
-        x-=1
-        if (x == 0) {
-            break
-        }
-        else{
-            count += sequenceCountUp(turn,x,y)
-        }
-    }
-    return count
-}
-
 fun sequenceRightCheck(k: Int,turn:Int): Int {
     var x: Int = k / 15
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
-        x+=1
-        if (x == 14) {
+        if (y >= 14) {
             break
         }
         else{
+            y += 1
+            count += sequenceCountUp(turn,x,y)
+        }
+    }
+    return count
+}
+
+fun sequenceUpCheck(k: Int,turn:Int): Int {
+    var x: Int = k / 15
+    var y: Int = k % 15
+    var count = 0
+    for (i in 1..4){
+        if (x <= 0) {
+            break
+        }
+        else{
+            x-=1
+            count += sequenceCountUp(turn,x,y)
+        }
+    }
+    return count
+}
+
+fun sequenceDownCheck(k: Int,turn:Int): Int {
+    var x: Int = k / 15
+    var y: Int = k % 15
+    var count = 0
+    for (i in 1..4){
+        if (x >= 14) {
+            break
+        }
+        else{
+            x+=1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -165,45 +162,47 @@ fun sequenceLeftUpCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
-        x -=1
-        y -=1
-        if (x == 0 || y==0) {
+        if (x <= 0 || y<=0) {
             break
         }
         else{
+            x -=1
+            y -=1
             count += sequenceCountUp(turn,x,y)
+
         }
     }
     return count
 }
 
-fun sequenceLeftDownCheck(k: Int,turn:Int): Int {
-    var x: Int = k / 15
-    var y: Int = k % 15
-    var count = 0
-    for (i in 1..4){
-        x-=1
-        y+=1
-        if (x == 0 || y==14) {
-            break
-        }
-        else{
-            count += sequenceCountUp(turn,x,y)
-        }
-    }
-    return count
-}
 fun sequenceRightUpCheck(k: Int,turn:Int): Int {
     var x: Int = k / 15
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
-        x+=1
-        y-=1
-        if (x == 14 || y==0) {
+
+        if (x <= 0 || y >= 14) {
             break
         }
         else{
+            x-=1
+            y+=1
+            count += sequenceCountUp(turn,x,y)
+        }
+    }
+    return count
+}
+fun sequenceLeftDownCheck(k: Int,turn:Int): Int {
+    var x: Int = k / 15
+    var y: Int = k % 15
+    var count = 0
+    for (i in 1..4){
+        if (x >= 14 || y<=0) {
+            break
+        }
+        else{
+            x+=1
+            y-=1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -214,12 +213,12 @@ fun sequenceRightDownCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
-        x+=1
-        y+=1
-        if (x == 14 || y==14) {
+        if (x >= 14 || y<=14) {
             break
         }
         else{
+            x+=1
+            y+=1
             count += sequenceCountUp(turn,x,y)
         }
     }
