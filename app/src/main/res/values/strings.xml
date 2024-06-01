@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Omok</string>
-    <string name="winner_text">승리자는 %1$s 돌입니다.</string>
+    <string name="winner_text">승리자는 %1$s 입니다.</string>
 </resources>
