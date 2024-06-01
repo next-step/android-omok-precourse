@@ -47,5 +47,12 @@ fun imageViewClick(idLists : List<ImageView>){
 
      }
 
+fun afterClick(k : Int, idLists : List<ImageView>) {
+    if (k < 255) {
+        val imageView = idLists[k]
+        imageView.setOnClickListener {
 
+        }
+    }
+}
 
