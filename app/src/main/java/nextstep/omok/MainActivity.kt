@@ -85,6 +85,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showWinnerInfo(player: Player) {
-
+        winnerInfo.visibility = LinearLayout.VISIBLE
+        winnerInfoTextView.text = when (player) {
+            Player.BLACK -> "흑돌 승리!"
+            Player.WHITE -> "백돌 승리!"
+            else -> "무승부"
+        }
     }
 }
