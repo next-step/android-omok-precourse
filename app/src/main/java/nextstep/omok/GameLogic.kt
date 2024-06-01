@@ -22,6 +22,11 @@ class GameLogic {
         return GameResult.Success(placedPlayer)
     }
 
+    fun reset() {
+        board = Array(15) { Array(15) { Player.NONE } }
+        currentPlayer = Player.BLACK
+    }
+
     fun switchPlayer() {
         currentPlayer = if (currentPlayer == Player.BLACK) Player.WHITE else Player.BLACK
     }
