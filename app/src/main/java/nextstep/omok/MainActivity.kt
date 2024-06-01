@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -13,6 +14,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var blackTurnInfo: LinearLayout
     private lateinit var whiteTurnInfo: LinearLayout
     private lateinit var board: TableLayout
+    private lateinit var winnerInfo: LinearLayout
+    private lateinit var winnerInfoTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         board = findViewById<TableLayout>(R.id.board)
         addClickListerToBoard(board)
+
+        winnerInfo = findViewById(R.id.winner_info_container)
+        winnerInfoTextView = findViewById(R.id.winner_info_textview)
     }
 
     fun updateTurnInfo(curPlayer: Player) {
@@ -76,5 +82,9 @@ class MainActivity : AppCompatActivity() {
             Player.WHITE -> targetCell.setImageResource(R.drawable.white_stone)
             else -> targetCell.setImageResource(0)
         }
+    }
+
+    fun showWinnerInfo(player: Player) {
+
     }
 }

@@ -16,11 +16,19 @@ class OmokController(
 			board.putStone(r, c, curPlayer)
 			view.updateBoardCell(r, c, curPlayer)
 
-			// TODO("Implement winning logic")
-
-			// 플레이어 변경
-			curPlayer = if (curPlayer == Player.BLACK) Player.WHITE else Player.BLACK
-			view.updateTurnInfo(curPlayer)
+			if (board.checkCurStoneIsWinner(r, c)) {
+				// 승리자 발생
+				view.showWinnerInfo(curPlayer)
+			}
+			else if (board.isDraw()) {
+				// 무승부
+				view.showWinnerInfo(Player.NONE)
+			}
+			else {
+				// 플레이어 변경
+				curPlayer = if (curPlayer == Player.BLACK) Player.WHITE else Player.BLACK
+				view.updateTurnInfo(curPlayer)
+			}
 		}
 	}
 }
