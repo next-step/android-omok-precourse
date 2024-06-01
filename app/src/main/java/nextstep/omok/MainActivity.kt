@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val board = findViewById<TableLayout>(R.id.board)
+        initializeBoard(board)
+        Toast.makeText(this, "가위바위보를 해서 이긴 사람이 백돌로 먼저 시작합니다.", Toast.LENGTH_LONG).show()
     }
     fun initializeBoard(board: TableLayout) {
         board.children
