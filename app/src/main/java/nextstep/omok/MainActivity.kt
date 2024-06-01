@@ -75,14 +75,17 @@ class MainActivity : AppCompatActivity() {
             view.setImageResource(if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone)// 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
             fullBoard-- // 남은 칸 개수 감소
-            view.post {
-                if (fullBoard == 0) fullBoardCheck() // 보드가 모두 찼을 경우
-                else if (checkWin(row, col)) { // 승리 조건 확인
-                    AfterWin() // 승리 이후 행동
-                } else {
-                    currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
-                    currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
-                }
+            viewPost(view, row, col)
+        }
+    }
+    // 좌표에 돌이 놓인 후
+    private fun viewPost(view: ImageView, row: Int, col: Int) {
+        view.post {
+            if (fullBoard == 0) fullBoardCheck() // 보드가 모두 찼을 경우
+            else if (checkWin(row, col)) AfterWin() // 승리 조건 확인 후 승리 이후 행동
+            else {
+                currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
+                currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
             }
         }
     }
