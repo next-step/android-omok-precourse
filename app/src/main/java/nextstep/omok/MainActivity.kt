@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
             view.post {
                 if (checkWin(row, col)) { // 승리 조건 확인
-                    Toast.makeText(this, "$currentPlayer wins!", Toast.LENGTH_LONG).show() // 승리 메시지
+                    Toast.makeText(this, "$currentPlayer 승리!", Toast.LENGTH_LONG).show() // 승리 메시지
                     Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
                 } else {
                     currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
