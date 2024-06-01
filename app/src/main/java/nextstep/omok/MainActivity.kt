@@ -2,6 +2,7 @@ package nextstep.omok
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        findViewById<Button>(R.id.newgame_button).setOnClickListener { clickNewGameButton() }
         val table = findViewById<TableLayout>(R.id.board)
         bindBoardGridCellsWithTable(table)
 
@@ -51,9 +54,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun clickTable(x: Int, y: Int) {
         val result = viewModel.clickBoard(x, y) ?: return
+
         applyStonePlacementToGrid(result)
         if (checkOmok(x, y)) {
             notifyWinner(x, y)
+            viewModel.gameActive = false
+        }
+    }
+
+    private fun clearTable() {
+        for (row in boardGridCells) {
+            for (cell in row) {
+                cell.setImageDrawable(null)
+            }
         }
     }
 
@@ -83,11 +96,18 @@ class MainActivity : AppCompatActivity() {
         when (placement.after) {
             Board.STONE_BLACK -> boardGridCells[placement.y][placement.x]
                 .setImageResource(R.drawable.black_stone)
+
             Board.STONE_WHITE -> boardGridCells[placement.y][placement.x]
                 .setImageResource(R.drawable.white_stone)
+
             Board.STONE_EMPTY -> boardGridCells[placement.y][placement.x]
                 .setImageDrawable(null)
-            else -> Log.e("MainActivity Error", "invalid type of stone on placement")
         }
+    }
+
+    private fun clickNewGameButton() {
+        viewModel.reset()
+        clearTable()
+        restoreBoard()
     }
 }

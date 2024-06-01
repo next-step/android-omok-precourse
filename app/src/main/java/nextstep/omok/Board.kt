@@ -7,7 +7,7 @@ data class StonePlacement(val x: Int, val y: Int, val before: Int, val after: In
 
 class Board(private val rows: Int, private val cols: Int) {
     private val stones: MutableList<MutableList<Int>> = mutableListOf()
-    private val stonePlacementStackTrace: Stack<StonePlacement> = Stack<StonePlacement>()
+    private val stonePlacementStack: Stack<StonePlacement> = Stack<StonePlacement>()
 
     fun checkIfPointIsEmpty(x: Int, y: Int): Boolean {
         if (y < 0 || y >= rows || x < 0 || x >= cols) {
@@ -32,7 +32,7 @@ class Board(private val rows: Int, private val cols: Int) {
             return null
 
         val result = StonePlacement(x, y, stones[y][x], stoneType)
-        stonePlacementStackTrace.push(StonePlacement(x, y, stones[y][x], stoneType))
+        stonePlacementStack.push(StonePlacement(x, y, stones[y][x], stoneType))
         stones[y][x] = stoneType
         return result
     }
@@ -46,7 +46,7 @@ class Board(private val rows: Int, private val cols: Int) {
 
     fun getStone(x: Int, y: Int): Int = stones[y][x]
 
-    fun getStonePlacementStack(): List<StonePlacement> = stonePlacementStackTrace.toList()
+    fun getStonePlacementStack(): List<StonePlacement> = stonePlacementStack.toList()
 
     init {
         initiateStones(rows, cols)

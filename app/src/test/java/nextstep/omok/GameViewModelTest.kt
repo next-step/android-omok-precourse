@@ -93,4 +93,42 @@ class GameViewModelTest {
         assertThat(gameViewModel.checkOmok(4, 0)).isTrue()
         assertThat(gameViewModel.checkOmok(5, 0)).isTrue()
     }
+
+    @Test
+    @DisplayName("All stones in board should be removed after reset() called")
+    fun testGameViewModel_ResetClearsBoard() {
+        gameViewModel.clickBoard(10, 10)
+        gameViewModel.clickBoard(8, 6)
+        gameViewModel.clickBoard(3, 4)
+
+        gameViewModel.reset()
+
+        assertThat(gameViewModel.getStone(10, 10)).isEqualTo(Board.STONE_EMPTY)
+        assertThat(gameViewModel.getStone(8, 6)).isEqualTo(Board.STONE_EMPTY)
+        assertThat(gameViewModel.getStone(3, 4)).isEqualTo(Board.STONE_EMPTY)
+    }
+
+    @Test
+    @DisplayName("Inactive")
+    fun testGameViewModel_InactiveBoard() {
+        gameViewModel.gameActive = false
+
+        gameViewModel.clickBoard(1, 1)
+        gameViewModel.clickBoard(2, 2)
+        gameViewModel.clickBoard(3, 3)
+
+        gameViewModel.gameActive = true
+
+        gameViewModel.clickBoard(6, 6)
+        gameViewModel.clickBoard(5, 5)
+        gameViewModel.clickBoard(4, 4)
+
+        assertThat(gameViewModel.getStone(1, 1)).isEqualTo(Board.STONE_EMPTY)
+        assertThat(gameViewModel.getStone(2, 2)).isEqualTo(Board.STONE_EMPTY)
+        assertThat(gameViewModel.getStone(3, 3)).isEqualTo(Board.STONE_EMPTY)
+
+        assertThat(gameViewModel.getStone(6, 6)).isNotEqualTo(Board.STONE_EMPTY)
+        assertThat(gameViewModel.getStone(5, 5)).isNotEqualTo(Board.STONE_EMPTY)
+        assertThat(gameViewModel.getStone(4, 4)).isNotEqualTo(Board.STONE_EMPTY)
+    }
 }

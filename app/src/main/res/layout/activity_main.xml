@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TableLayout
         android:id="@+id/board"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"        
+        android:layout_weight="9"
+        android:layout_height="0dp"
         android:stretchColumns="*">
 
         <TableRow android:layout_weight="1">
@@ -1405,4 +1407,16 @@
         </TableRow>
 
     </TableLayout>
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/newgame_button"
+            android:text="새 게임 시작"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </LinearLayout>
