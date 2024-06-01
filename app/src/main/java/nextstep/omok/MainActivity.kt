@@ -50,7 +50,10 @@ class MainActivity : AppCompatActivity() {
         currentPlayer = if (currentPlayer == "w") "b" else "w"
     }
     fun checkWin(row: Int, col: Int): Boolean{
-
+        return checkDirection(row, col, 1, 0) ||  // 수평
+                checkDirection(row, col, 0, 1) ||  // 수직
+                checkDirection(row, col, 1, 1) ||  // 대각선 \
+                checkDirection(row, col, 1, -1)    // 대각선 /
     }
     fun checkDirection(row: Int, col: Int, deltaRow: Int, deltaCol: Int): Boolean {
         var count = 1
@@ -60,10 +63,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun countStones(row: Int, col: Int, deltaRow: Int, deltaCol: Int): Int {
-
+        var count = 0
+        var r = row + deltaRow
+        var c = col + deltaCol
+        while (r in 0 until boardSize && c in 0 until boardSize && boardState[r][c] == currentPlayer) {
+            count++
+            r += deltaRow
+            c += deltaCol
+        }
+        return count
     }
     fun showWinner(){
-        val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
         val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
         val intent = Intent(this, WinnerActivity::class.java).apply{
             putExtra("winnerMessage", winnerMessage)
