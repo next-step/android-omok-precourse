@@ -1197,6 +1197,7 @@
 
     </TableLayout>
     <TextView
+        android:id="@+id/user"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:text="1"

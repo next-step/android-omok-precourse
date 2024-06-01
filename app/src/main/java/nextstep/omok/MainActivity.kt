@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        TextView.findViewById<TextView>(R.id.user)
         val idLists = createImageViewList(this)
         imageViewClick(idLists)
 
@@ -50,7 +51,6 @@ fun afterClick(k : Int, idLists : List<ImageView>) {
     if (k < 255) {
         val clickView = idLists[k]
         clickView.setOnClickListener {
-            Log.d("qwer", "ImageView clicked: $k")
          createStone(clickView,k)
 
         }
@@ -63,15 +63,24 @@ fun createStone(clickView : ImageView,k : Int) {
             clickView.setImageResource(R.drawable.white_stone)
             turn = 2
             board[k / 15][k % 15] = 1
+            checkAmIWinner(amIWinner(k,turn))
 
         } else {
             clickView.setImageResource(R.drawable.black_stone)
             turn = 1
             board[k / 15][k % 15] = 2
+            checkAmIWinner(amIWinner(k,turn))
         }
     }else{}
 }
-fun amIWinner(k: Int, turn:Int) {
+
+fun checkAmIWinner(sequenceStonList : MutableList<Int>){
+    if (4 in sequenceStonList){
+        Log.d("qwer", "checkAmIWinner: WINN!!!!")
+    }else{}
+}
+
+fun amIWinner(k: Int, turn:Int) : MutableList<Int>{
     val sequenceStone = MutableList(8) { 0 }
     sequenceStone[0] = sequenceUpCheck(k,turn)
     sequenceStone[1] = sequenceDownCheck(k,turn)
@@ -81,6 +90,7 @@ fun amIWinner(k: Int, turn:Int) {
     sequenceStone[5] = sequenceLeftDownCheck(k,turn)
     sequenceStone[6] = sequenceRightDownCheck(k,turn)
     sequenceStone[7] = sequenceRightUpCheck(k,turn)
+    return sequenceStone
 }
 fun sequenceCountUp(turn:Int,x:Int,y:Int): Int {
     if (turn == board[x][y]) {
