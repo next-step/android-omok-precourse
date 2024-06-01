@@ -127,7 +127,18 @@ class MainActivity : AppCompatActivity() {
         val winner = if (isBlackTurn) "White" else "Black"
         // 돌을 놓고 턴이 바뀐 뒤 게임이 끝나기 때문에 백돌 차례면 흑돌 승이 됨
         Toast.makeText(this, "$winner player win!", Toast.LENGTH_LONG).show()
-        
+        Handler(Looper.getMainLooper()).postDelayed({
+            resetView()
+        }, 3000) // 3초 후 초기화
+    }
+    private fun resetView() {
+        isBlackTurn = true
+        for (i in 0 until boardSize) {
+            for (j in 0 until boardSize) {
+                board[i][j].setImageDrawable(null)
+                board[i][j].tag = null
+            }
+        }
     }
 
 }
