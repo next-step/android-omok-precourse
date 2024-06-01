@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
     )
     //현재 플레이어를 나타낼 텍스트뷰
     private lateinit var currentPlayerTextView:TextView
+    //초기화 버튼
+    private lateinit var resetButton: TextView
+
     // 앱 실행 시
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         board = Array(boardSize) { arrayOfNulls(boardSize) }
         val tableLayout = tableLayout()
         currentPlayerTextView = findViewById<TextView>(R.id.currentPlayerText)
+        resetButton = findViewById<TextView>(R.id.reset_button)
+        resetButton.setOnClickListener { resetBoard() }
     }
     // 보드 생성
     private fun tableLayout(): TableLayout {
@@ -114,5 +119,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         currentPlayer = "흑돌" // 플레이어 초기화
+        currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
     }
 }
