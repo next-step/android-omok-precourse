@@ -30,7 +30,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var currentPlayerTextView:TextView
     //초기화 버튼
     private lateinit var resetButton: TextView
-
+    // 흑돌 승리 카운트
+    private var blackWinCount = 0
+    // 백돌 승리 카운트
+    private var whiteWinCount = 0
+    // 흑돌 승리 텍스트뷰
+    private lateinit var blackWinTextView: TextView
+    // 백돌 승리 텍스트뷰
+    private lateinit var whiteWinTextView: TextView
     // 앱 실행 시
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +47,8 @@ class MainActivity : AppCompatActivity() {
         currentPlayerTextView = findViewById<TextView>(R.id.currentPlayerText)
         resetButton = findViewById<TextView>(R.id.reset_button)
         resetButton.setOnClickListener { resetBoard() }
+        blackWinTextView = findViewById<TextView>(R.id.blackWinCount)
+        whiteWinTextView = findViewById<TextView>(R.id.whiteWinCount)
     }
     // 보드 생성
     private fun tableLayout(): TableLayout {
@@ -65,13 +74,26 @@ class MainActivity : AppCompatActivity() {
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
             view.post {
                 if (checkWin(row, col)) { // 승리 조건 확인
-                    Toast.makeText(this, "$currentPlayer 승리!", Toast.LENGTH_LONG).show() // 승리 메시지
-                    Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
+                    AfterWin() // 승리 이후 행동
                 } else {
                     currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
                     currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
                 }
             }
+        }
+    }
+    // 승리 이후 행동.
+    // 승리 메시지를 토스트 한 다음 2초 후 보드 초기화
+    // 승리 카운트 증가
+    private fun AfterWin() {
+        Toast.makeText(this, "$currentPlayer 승리!", Toast.LENGTH_LONG).show() // 승리 메시지
+        Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
+        if (currentPlayer == "흑돌") {
+            blackWinCount++
+            blackWinTextView.text = blackWinCount.toString()
+        } else {
+            whiteWinCount++
+            whiteWinTextView.text = whiteWinCount.toString()
         }
     }
     // 승리 조건 확인
