@@ -9,17 +9,22 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
+import org.w3c.dom.Text
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
+    lateinit var TextView : TextView
+    var turn = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val idLists = createImageViewList(this)
         val boardSize = 15
         val emptyBoard = MutableList(boardSize) { MutableList(boardSize) { 0 } }
+
 
 
     }
@@ -35,3 +40,12 @@ fun createImageViewList(context: Context): List<ImageView> {
     }
     return ImageViewList
 }
+fun imageViewClick(idLists : List<ImageView>){
+     for (k in idLists.indices){
+         afterClick(k, idLists)
+     }
+
+     }
+
+
+
