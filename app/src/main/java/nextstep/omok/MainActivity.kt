@@ -57,6 +57,12 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    private fun checkFiveLine(row: Int, col: Int): Boolean { // 전체적으로 체크하는 함수
+        val color = board[row][col].tag as Boolean
+        return checkHorizontal(row, color) || checkVertical(col, color) ||
+                checkDiagonal(row, col, color) || checkReverseDiagonal(row, col, color) // 하나만 true여도 true
+    }
+
     private fun checkVertical(col: Int, color: Boolean): Boolean { // 세로 체크
         var cnt = 0
         for (row in 0..boardSize) {
@@ -109,6 +115,5 @@ class MainActivity : AppCompatActivity() {
             j--
         }
         return false
-        }
     }
 }
