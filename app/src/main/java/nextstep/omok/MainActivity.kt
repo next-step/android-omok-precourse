@@ -14,16 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import org.w3c.dom.Text
 import kotlin.math.log
-
+var turn = 1
+val board = MutableList(15) { MutableList(15) { 0 } }
 class MainActivity : AppCompatActivity() {
     lateinit var TextView : TextView
-    var turn = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val idLists = createImageViewList(this)
-        val boardSize = 15
-        val emptyBoard = MutableList(boardSize) { MutableList(boardSize) { 0 } }
+        imageViewClick(idLists)
 
 
 
@@ -45,14 +44,30 @@ fun imageViewClick(idLists : List<ImageView>){
          afterClick(k, idLists)
      }
 
-     }
+}
 
 fun afterClick(k : Int, idLists : List<ImageView>) {
     if (k < 255) {
-        val imageView = idLists[k]
-        imageView.setOnClickListener {
+        val clickView = idLists[k]
+        clickView.setOnClickListener {
+            Log.d("qwer", "ImageView clicked: $k")
+         createStone(clickView,k)
 
         }
     }
 }
 
+fun createStone(clickView : ImageView,k : Int) {
+    if (board[k / 15][k % 15] == 0) {
+        if (turn == 1) {
+            clickView.setImageResource(R.drawable.white_stone)
+            turn = 2
+            board[k / 15][k % 15] = 1
+
+        } else {
+            clickView.setImageResource(R.drawable.black_stone)
+            turn = 1
+            board[k / 15][k % 15] = 2
+        }
+    }else{}
+}
