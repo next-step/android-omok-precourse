@@ -3,9 +3,11 @@ package nextstep.omok
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import android.widget.Toast
@@ -24,12 +26,15 @@ class MainActivity : AppCompatActivity() {
         listOf(1 to 1, -1 to -1), // 대각선 \
         listOf(1 to -1, -1 to 1)  // 대각선 /
     )
-
+    //현재 플레이어를 나타낼 텍스트뷰
+    private lateinit var currentPlayerTextView:TextView
+    // 앱 실행 시
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         board = Array(boardSize) { arrayOfNulls(boardSize) }
         val tableLayout = tableLayout()
+        currentPlayerTextView = findViewById<TextView>(R.id.currentPlayerText)
     }
     // 보드 생성
     private fun tableLayout(): TableLayout {
@@ -51,8 +56,7 @@ class MainActivity : AppCompatActivity() {
     private fun onStonePlaced(view: ImageView) {
         if (view.tag != "흑돌" && view.tag != "백돌") {  // 아직 돌이 놓이지 않은 경우에만
             val (row, col) = (view.tag as String).split(",").map { it.toInt() }  // 태그에서 좌표 추출
-            // 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
-            view.setImageResource(if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone)
+            view.setImageResource(if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone)// 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
             view.post {
                 if (checkWin(row, col)) { // 승리 조건 확인
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
                 } else {
                     currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
+                    currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
                 }
             }
         }
