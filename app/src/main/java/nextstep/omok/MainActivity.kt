@@ -3,27 +3,20 @@ package nextstep.omok
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import android.widget.TableLayout
-import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
-import org.w3c.dom.Text
-import kotlin.math.log
+
 var turn = 1
 val board = MutableList(15) { MutableList(15) { 0 } }
 class MainActivity : AppCompatActivity() {
-    lateinit var TextView : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        TextView.findViewById<TextView>(R.id.user)
+        var whosTurn : TextView = findViewById(R.id.user)
         val idLists = createImageViewList(this)
-        imageViewClick(idLists)
+        imageViewClick(idLists,whosTurn)
 
 
 
@@ -35,40 +28,43 @@ fun createImageViewList(context: Context): List<ImageView> {
 
     for (i in 1..255) {
         val resourceId = context.resources.getIdentifier("button$i", "id", context.packageName)
-        val button = (context as? Activity)?.findViewById<ImageView>(resourceId)
-        button?.let { ImageViewList.add(it) }
+        val image = (context as? Activity)?.findViewById<ImageView>(resourceId)
+        image?.let { ImageViewList.add(it) }
     }
     return ImageViewList
 }
-fun imageViewClick(idLists : List<ImageView>){
+fun imageViewClick(idLists: List<ImageView>, whosTurn: TextView){
      for (k in idLists.indices){
-         afterClick(k, idLists)
+         afterClick(k, idLists,whosTurn)
      }
 
 }
 
-fun afterClick(k : Int, idLists : List<ImageView>) {
+fun afterClick(k: Int, idLists: List<ImageView>, whosTurn: TextView) {
     if (k < 255) {
         val clickView = idLists[k]
         clickView.setOnClickListener {
-         createStone(clickView,k)
+         createStone(clickView,k,whosTurn)
 
         }
     }
 }
 
-fun createStone(clickView : ImageView,k : Int) {
+fun createStone(clickView: ImageView, k: Int, whosTurn: TextView) {
     if (board[k / 15][k % 15] == 0) {
         if (turn == 1) {
             clickView.setImageResource(R.drawable.white_stone)
             turn = 2
             board[k / 15][k % 15] = 1
+            whosTurn.text = "2"
             checkAmIWinner(amIWinner(k,turn))
+
 
         } else {
             clickView.setImageResource(R.drawable.black_stone)
             turn = 1
             board[k / 15][k % 15] = 2
+            whosTurn.text = "1"
             checkAmIWinner(amIWinner(k,turn))
         }
     }else{}
@@ -77,6 +73,7 @@ fun createStone(clickView : ImageView,k : Int) {
 fun checkAmIWinner(sequenceStonList : MutableList<Int>){
     if (4 in sequenceStonList){
         Log.d("qwer", "checkAmIWinner: WINN!!!!")
+        Log.d("qwer", "Lists: " + sequenceStonList)
     }else{}
 }
 
