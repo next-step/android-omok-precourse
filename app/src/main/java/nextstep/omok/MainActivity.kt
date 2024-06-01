@@ -38,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var blackWinTextView: TextView
     // 백돌 승리 텍스트뷰
     private lateinit var whiteWinTextView: TextView
+    // 돌을 놓을 수 있는 최대값
+    private var fullBoard = 225
     // 앱 실행 시
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +74,10 @@ class MainActivity : AppCompatActivity() {
             val (row, col) = (view.tag as String).split(",").map { it.toInt() }  // 태그에서 좌표 추출
             view.setImageResource(if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone)// 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
+            fullBoard-- // 남은 칸 개수 감소
             view.post {
-                if (checkWin(row, col)) { // 승리 조건 확인
+                if (fullBoard == 0) fullBoardCheck() // 보드가 모두 찼을 경우
+                else if (checkWin(row, col)) { // 승리 조건 확인
                     AfterWin() // 승리 이후 행동
                 } else {
                     currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
@@ -93,6 +97,17 @@ class MainActivity : AppCompatActivity() {
             blackWinTextView.text = blackWinCount.toString()
         } else {
             whiteWinCount++
+            whiteWinTextView.text = whiteWinCount.toString()
+        }
+    }
+    // 보드가 모두 찼을 경우
+    // 무승부 메시지를 토스트 한 다음 2초 후 보드 초기화
+    private fun fullBoardCheck() {
+        Toast.makeText(this, "무승부 입니다.", Toast.LENGTH_LONG).show()
+        Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
+        if (currentPlayer == "흑돌") {
+            blackWinTextView.text = blackWinCount.toString()
+        } else {
             whiteWinTextView.text = whiteWinCount.toString()
         }
     }
@@ -142,5 +157,6 @@ class MainActivity : AppCompatActivity() {
         }
         currentPlayer = "흑돌" // 플레이어 초기화
         currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
+        fullBoard = 225
     }
 }
