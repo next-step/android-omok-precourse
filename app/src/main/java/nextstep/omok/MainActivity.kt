@@ -1,6 +1,7 @@
 package nextstep.omok
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TableLayout
@@ -90,6 +91,20 @@ class MainActivity : AppCompatActivity() {
             Player.BLACK -> "흑돌 승리!"
             Player.WHITE -> "백돌 승리!"
             else -> "무승부"
+        }
+
+        findViewById<Button>(R.id.restart_button).setOnClickListener {
+            initializeBoardUI(board)
+            controller = OmokController(this)
+            winnerInfo.visibility = LinearLayout.GONE
+        }
+    }
+
+    fun initializeBoardUI(omokBoard: TableLayout) {
+        omokBoard.children.filterIsInstance<TableRow>().forEach { omokRow ->
+            omokRow.children.filterIsInstance<ImageView>().forEach { omokCell ->
+                omokCell.setImageResource(0)
+            }
         }
     }
 }
