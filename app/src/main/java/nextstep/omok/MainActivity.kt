@@ -49,10 +49,20 @@ class MainActivity : AppCompatActivity() {
     fun switchPlayer() {
         currentPlayer = if (currentPlayer == "w") "b" else "w"
     }
-    fun checkWin(): {
+    fun checkWin(row: Int, col: Int): Boolean{
 
     }
-    fun showWinner(): {
+    fun checkDirection(row: Int, col: Int, deltaRow: Int, deltaCol: Int): Boolean {
+        var count = 1
+        count += countStones(row, col, deltaRow, deltaCol)
+        count += countStones(row, col, -deltaRow, -deltaCol)
+        return count >= 5
+    }
+
+    fun countStones(row: Int, col: Int, deltaRow: Int, deltaCol: Int): Int {
+
+    }
+    fun showWinner(){
         val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
         val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
         val intent = Intent(this, WinnerActivity::class.java).apply{
