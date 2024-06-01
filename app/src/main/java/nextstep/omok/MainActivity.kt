@@ -28,17 +28,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val tableLayout = findViewById<TableLayout>(R.id.board)
         board = Array(boardSize) { arrayOfNulls(boardSize) }
+        val tableLayout = tableLayout()
+    }
+    // 보드 생성
+    private fun tableLayout(): TableLayout {
+        val tableLayout = findViewById<TableLayout>(R.id.board)
         var rowIndex = 0 // 세로
         tableLayout.children.filterIsInstance<TableRow>().forEach { row ->
-                var colIndex = 0 // 가로
-                row.children.filterIsInstance<ImageView>().forEach { view ->
-                        view.setOnClickListener { onStonePlaced(view) } // 클릭 시 돌 놓기
-                        view.tag = "$rowIndex,$colIndex"  // 태그에 세로, 가로 설정
-                        board[rowIndex][colIndex] = view
-                        colIndex++ }
-                rowIndex++ }
+            var colIndex = 0 // 가로
+            row.children.filterIsInstance<ImageView>().forEach { view ->
+                view.setOnClickListener { onStonePlaced(view) } // 클릭 시 돌 놓기
+                view.tag = "$rowIndex,$colIndex"  // 태그에 세로, 가로 설정
+                board[rowIndex][colIndex] = view
+                colIndex++
+            }
+            rowIndex++
+        }
+        return tableLayout
     }
     // 돌 놓는 함수
     private fun onStonePlaced(view: ImageView) {
