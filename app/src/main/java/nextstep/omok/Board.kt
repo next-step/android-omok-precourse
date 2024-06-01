@@ -17,3 +17,9 @@ class Board(private val tableLayout: TableLayout, private val cellClickListener:
             }
         }
     }
+
+    fun updateCell(row: Int, col: Int, player: Player) {
+        val cell = boardCells[row][col]
+        cell?.setImageResource(if (player == Player.BLACK) R.drawable.black_stone else R.drawable.white_stone)
+    }
+}
