@@ -1204,4 +1204,13 @@
         </TableRow>
 
     </TableLayout>
+
+    <TextView
+        android:id="@+id/reset_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/reset_button"
+        android:text="보드 초기화"
+        android:textSize="20sp"
+        android:gravity="center"/>
 </LinearLayout>
