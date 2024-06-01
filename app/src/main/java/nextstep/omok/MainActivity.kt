@@ -3,7 +3,6 @@ package nextstep.omok
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -56,7 +55,7 @@ fun createStone(clickView: ImageView, k: Int, whosTurn: TextView) {
             clickView.setImageResource(R.drawable.white_stone)
             board[k / 15][k % 15] = 1
             whosTurn.text = "2"
-            checkAmIWinner(amIWinner(k,1))
+            checkAmIWinner(amIWinner(k,1),whosTurn,1)
             turn = 2
 
 
@@ -64,14 +63,15 @@ fun createStone(clickView: ImageView, k: Int, whosTurn: TextView) {
             clickView.setImageResource(R.drawable.black_stone)
             board[k / 15][k % 15] = 2
             whosTurn.text = "1"
-            checkAmIWinner(amIWinner(k,2))
+            checkAmIWinner(amIWinner(k,2), whosTurn,2)
             turn = 1
         }
     }else{}
 }
 
-fun checkAmIWinner(sequenceStonList : MutableList<Int>){
+fun checkAmIWinner(sequenceStonList: MutableList<Int>, whosTurn: TextView, userNum: Int){
     if (4 in sequenceStonList){
+        whosTurn.text = "$userNum 승리!!"
     }else{}
 }
 
