@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import androidx.core.view.size
@@ -43,7 +44,9 @@ class OmokSystem (
     // 이미지뷰를 터치했을 때 수행할 한턴의 동작
     private fun performTurn(row: Int, col: Int) {
         putStone(row, col)
-        calculateCombo(row, col)
+        val combo = calculateCombo(row, col)
+        if (isGameEnd(combo))
+            alertEnd(row, col)
     }
 
     // 돌을 착수하는 함수
@@ -173,6 +176,45 @@ class OmokSystem (
         }
 
         return combo
+    }
+
+    // 현재 combo가 게임이 끝나는 기준을 넘었는지 확인
+    private fun isGameEnd(combo: Int): Boolean {
+        return combo >= scoreCombo
+    }
+
+    // 게임 종료 알림 함수
+    private fun alertEnd(row: Int, col: Int): Unit {
+        val targetStone = getBoardImageView(row, col)
+        AlertDialog.Builder(context).apply {
+            setCancelable(false)
+            setTitle("게임이 종료되었습니다! 😎")
+            if (targetStone.drawable == cache.stoneCache[cache.STONE_BLACK])
+                setMessage("🎉${BLACK}⚫️이 승리했습니다!🎉\n재시작 하시겠습니까?")
+            else
+                setMessage("🎉${WHITE}⚪️️이 승리했습니다!🎉\n재시작 하시겠습니까?")
+
+            setPositiveButton("네") { dialog, _ ->
+                resetBoard()
+                dialog.dismiss()
+            }
+
+            setNegativeButton("아니요") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.create().show()
+    }
+
+    /* 보드 초기화 함수 */
+    private fun resetBoard(): Unit {
+        board.children.forEach { tableRow ->
+            tableRow as TableRow
+            tableRow.children.forEach { imgView ->
+                imgView as ImageView
+                imgView.setImageDrawable(null)
+            }
+        }
+        nowStone = BLACK
     }
 
     // 돌을 착수 할 때마다 Drawable을 얻어오는 동작을 줄이기 위해 캐시로 갖고있는 클래스
