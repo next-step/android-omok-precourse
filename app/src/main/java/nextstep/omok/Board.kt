@@ -1,7 +1,7 @@
 package nextstep.omok
 
-import android.util.Log
 import java.util.Stack
+import kotlin.math.max
 
 data class StonePlacement(val x: Int, val y: Int, val before: Int, val after: Int)
 
@@ -9,28 +9,26 @@ class Board(private val rows: Int, private val cols: Int) {
     private val stones: MutableList<MutableList<Int>> = mutableListOf()
     private val stonePlacementStackTrace: Stack<StonePlacement> = Stack<StonePlacement>()
 
-    fun checkStonePlaceable(x: Int, y: Int):Boolean {
-        if(y < 0 || y >= rows || x < 0 || x >= cols) {
+    fun checkIfPointIsEmpty(x: Int, y: Int): Boolean {
+        if (y < 0 || y >= rows || x < 0 || x >= cols) {
             return false
         }
 
         return stones[y][x] == STONE_EMPTY
     }
 
-    private fun checkStonePlacementFeasibility (x: Int, y: Int, stoneType: Int): Boolean {
-        if(y < 0 || y >= rows || x < 0 || x >= cols) {
-            Log.e("Board Error","the index of the stone is out of range.")
+    private fun checkIfStonePlacementIsFeasible(x: Int, y: Int, stoneType: Int): Boolean {
+        if (y < 0 || y >= rows || x < 0 || x >= cols) {
             return false
         }
-        if(stoneType != STONE_EMPTY && stoneType != STONE_BLACK && stoneType != STONE_WHITE) {
-            Log.e("Board Error","invalid type of stone.")
+        if (stoneType != STONE_EMPTY && stoneType != STONE_BLACK && stoneType != STONE_WHITE) {
             return false
         }
         return true
     }
 
-    private fun setStone(x: Int, y: Int, stoneType: Int):StonePlacement? {
-        if(!checkStonePlacementFeasibility(x, y, stoneType))
+    private fun setStone(x: Int, y: Int, stoneType: Int): StonePlacement? {
+        if (!checkIfStonePlacementIsFeasible(x, y, stoneType))
             return null
 
         val result = StonePlacement(x, y, stones[y][x], stoneType)
@@ -39,16 +37,16 @@ class Board(private val rows: Int, private val cols: Int) {
         return result
     }
 
-    fun tryPlaceStone(x: Int, y:Int, stoneType: Int):StonePlacement? {
-        if(!checkStonePlaceable(x, y))
+    fun tryPlaceStone(x: Int, y: Int, stoneType: Int): StonePlacement? {
+        if (!checkIfPointIsEmpty(x, y))
             return null
 
         return setStone(x, y, stoneType)
     }
 
-    fun getStone(x:Int, y:Int): Int = stones[y][x]
+    fun getStone(x: Int, y: Int): Int = stones[y][x]
 
-    fun getStonePlacementList():List<StonePlacement> = stonePlacementStackTrace.toList()
+    fun getStonePlacementStack(): List<StonePlacement> = stonePlacementStackTrace.toList()
 
     init {
         initiateStones(rows, cols)
@@ -56,19 +54,50 @@ class Board(private val rows: Int, private val cols: Int) {
 
     private fun initiateStones(rows: Int, cols: Int) {
         stones.clear()
-        for(i in 0 until rows) {
+        for (i in 0 until rows) {
             addEmptyStoneRow(cols)
         }
     }
 
     private fun addEmptyStoneRow(cols: Int) {
         stones.add(mutableListOf())
-        for(i in 0 until cols) {
+        for (i in 0 until cols) {
             stones.last().add(STONE_EMPTY)
         }
     }
 
-    companion object{
+    private fun getLengthOfSerialOccurrence(x: Int, y: Int, dx: Int, dy: Int, stoneType: Int): Int {
+        if (dx == 0 && dy == 0)
+            return 0
+
+        var currentX = x + dx
+        var currentY = y + dy
+        var length = 0
+        while (checkIfStonePlacementIsFeasible(currentX, currentY, stoneType)) {
+            if (stones[currentY][currentX] != stoneType)
+                break
+            currentX += dx
+            currentY += dy
+            length++
+        }
+        return length
+    }
+
+    fun getLongestLineLength(x: Int, y: Int): Int {
+        var maxLength = 1
+        for (dx in 0..1) {
+            for (dy in 0..1) {
+                maxLength = max(
+                    getLengthOfSerialOccurrence(x, y, dx, dy, stones[y][x])
+                            + getLengthOfSerialOccurrence(x, y, -dx, -dy, stones[y][x]) + 1,
+                    maxLength
+                )
+            }
+        }
+        return maxLength
+    }
+
+    companion object {
         const val STONE_EMPTY = 0
         const val STONE_BLACK = 1
         const val STONE_WHITE = 2

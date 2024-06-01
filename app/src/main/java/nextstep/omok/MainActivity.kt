@@ -5,12 +5,13 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
-    private val boardGridCells:MutableList<MutableList<ImageView>> = mutableListOf()
+    private val boardGridCells: MutableList<MutableList<ImageView>> = mutableListOf()
     private val viewModel: GameViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,19 +38,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun clickTable(x: Int, y:Int) {
-        val result = viewModel.clickBoard(x, y) ?: return
-        applyStonePlacementToGrid(result)
+    private fun checkOmok(x: Int, y: Int): Boolean = viewModel.checkOmok(x, y)
+
+    private fun notifyWinner(x: Int, y: Int) {
+        val stoneColor = viewModel.getStone(x, y)
+        if (stoneColor == Board.STONE_BLACK) {
+            Toast.makeText(this, "흑목 승!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "백목 승!", Toast.LENGTH_LONG).show()
+        }
     }
 
-    private fun restoreBoard(){
+    private fun clickTable(x: Int, y: Int) {
+        val result = viewModel.clickBoard(x, y) ?: return
+        applyStonePlacementToGrid(result)
+        if (checkOmok(x, y)) {
+            notifyWinner(x, y)
+        }
+    }
+
+    private fun restoreBoard() {
         val placementList = viewModel.getStonePlacementList()
-        for(placement in placementList) {
+        for (placement in placementList) {
             applyStonePlacementToGrid(placement)
         }
     }
 
-    private fun checkPlacementFeasibility(x: Int, y:Int): Boolean {
+    private fun checkPlacementFeasibility(x: Int, y: Int): Boolean {
         if (y < 0 || y >= boardGridCells.count()) {
             return false
         }
@@ -66,9 +81,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         when (placement.after) {
-            Board.STONE_BLACK -> boardGridCells[placement.y][placement.x].setImageResource(R.drawable.black_stone)
-            Board.STONE_WHITE -> boardGridCells[placement.y][placement.x].setImageResource(R.drawable.white_stone)
-            Board.STONE_EMPTY -> boardGridCells[placement.y][placement.x].setImageDrawable(null)
+            Board.STONE_BLACK -> boardGridCells[placement.y][placement.x]
+                .setImageResource(R.drawable.black_stone)
+            Board.STONE_WHITE -> boardGridCells[placement.y][placement.x]
+                .setImageResource(R.drawable.white_stone)
+            Board.STONE_EMPTY -> boardGridCells[placement.y][placement.x]
+                .setImageDrawable(null)
             else -> Log.e("MainActivity Error", "invalid type of stone on placement")
         }
     }
