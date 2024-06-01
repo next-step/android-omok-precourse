@@ -22,4 +22,13 @@ class Board(private val tableLayout: TableLayout, private val cellClickListener:
         val cell = boardCells[row][col]
         cell?.setImageResource(if (player == Player.BLACK) R.drawable.black_stone else R.drawable.white_stone)
     }
+
+    fun reset() {
+        for (i in 0 until 15) {
+            for (j in 0 until 15) {
+                val cell = boardCells[i][j]
+                cell?.setImageResource(0)
+            }
+        }
+    }
 }
