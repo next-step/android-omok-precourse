@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
+    private var isBlackTurn = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -21,5 +22,18 @@ class MainActivity : AppCompatActivity() {
             .filterIsInstance<TableRow>()
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
+            .forEach { view -> view.setOnClickListener{ putStoneInTurn(view) } }
+    }
+
+    private fun putStoneInTurn(imageView: ImageView) {
+        if (imageView.tag == null) {
+            if (isBlackTurn) {
+                imageView.setImageResource(R.drawable.black_stone)
+            } else {
+                imageView.setImageResource(R.drawable.white_stone)
+            }
+            imageView.tag = isBlackTurn
+            isBlackTurn = !isBlackTurn
+        }
     }
 }
