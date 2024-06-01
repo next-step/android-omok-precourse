@@ -97,17 +97,17 @@ fun sequenceCountUp(turn:Int,x:Int,y:Int): Int {
     }
 }
 
-fun sequenceUpCheck(k: Int,turn:Int): Int {
+fun sequenceUpCheck(k: Int, turn: Int): Int {
     var x: Int = k / 15
     var y: Int = k % 15
     var count = 0
-    for (i in 1..4){
+    for (i in 1..4) {
+        y -= 1 // 기존의 y 변수를 이용하여 값을 감소시킴
         if (y == 0) {
             break
-        }
-        else{
-            var y = y-1
-            count += sequenceCountUp(turn,x,y)
+        } else {
+            count += sequenceCountUp(turn, x, y)
+            Log.d("Up123", "sequenceUpCheck: " + y)
         }
     }
     return count
@@ -117,11 +117,11 @@ fun sequenceDownCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        y +=1
         if (y == 14) {
             break
         }
         else{
-            var y = y+1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -133,11 +133,11 @@ fun sequenceLeftCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        x-=1
         if (x == 0) {
             break
         }
         else{
-            var x = x-1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -149,11 +149,11 @@ fun sequenceRightCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        x+=1
         if (x == 14) {
             break
         }
         else{
-            var x = x+1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -165,12 +165,12 @@ fun sequenceLeftUpCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        x -=1
+        y -=1
         if (x == 0 || y==0) {
             break
         }
         else{
-            var x = x-1
-            var y = y-1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -182,12 +182,12 @@ fun sequenceLeftDownCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        x-=1
+        y+=1
         if (x == 0 || y==14) {
             break
         }
         else{
-            var x = x-1
-            var y = y+1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -198,12 +198,12 @@ fun sequenceRightUpCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        x+=1
+        y-=1
         if (x == 14 || y==0) {
             break
         }
         else{
-            var x = x+1
-            var y = y-1
             count += sequenceCountUp(turn,x,y)
         }
     }
@@ -214,12 +214,12 @@ fun sequenceRightDownCheck(k: Int,turn:Int): Int {
     var y: Int = k % 15
     var count = 0
     for (i in 1..4){
+        x+=1
+        y+=1
         if (x == 14 || y==14) {
             break
         }
         else{
-            var x = x+1
-            var y = y+1
             count += sequenceCountUp(turn,x,y)
         }
     }
