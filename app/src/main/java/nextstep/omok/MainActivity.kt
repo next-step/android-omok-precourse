@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     // 15x15 보드 사이즈
     private val boardSize = 15
     // 현재 플레이어(black or white)
-    private var currentPlayer = "black"
+    private var currentPlayer = "흑돌"
     // 좌표 방향 리스트
     private val directions = listOf(
         listOf(1 to 0, -1 to 0),  // 세로
@@ -49,17 +49,17 @@ class MainActivity : AppCompatActivity() {
     }
     // 돌 놓는 함수
     private fun onStonePlaced(view: ImageView) {
-        if (view.tag != "black" && view.tag != "white") {  // 아직 돌이 놓이지 않은 경우에만
+        if (view.tag != "흑돌" && view.tag != "백돌") {  // 아직 돌이 놓이지 않은 경우에만
             val (row, col) = (view.tag as String).split(",").map { it.toInt() }  // 태그에서 좌표 추출
             // 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
-            view.setImageResource(if (currentPlayer == "black") R.drawable.black_stone else R.drawable.white_stone)
+            view.setImageResource(if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone)
             view.tag = currentPlayer  // 현재 플레이어를 태그로 설정
             view.post {
                 if (checkWin(row, col)) { // 승리 조건 확인
                     Toast.makeText(this, "$currentPlayer wins!", Toast.LENGTH_LONG).show() // 승리 메시지
                     Handler(Looper.getMainLooper()).postDelayed({ resetBoard() }, 2000) // 2초 지연 후 보드 초기화
                 } else {
-                    currentPlayer = if (currentPlayer == "black") "white" else "black" // 플레이어 변경
+                    currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
                 }
             }
         }
@@ -108,6 +108,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        currentPlayer = "black" // 플레이어 초기화
+        currentPlayer = "흑돌" // 플레이어 초기화
     }
 }
