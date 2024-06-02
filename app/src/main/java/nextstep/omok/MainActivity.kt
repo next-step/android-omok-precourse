@@ -2,7 +2,6 @@ package nextstep.omok
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         arrayOf(1, 1),
         arrayOf(1, -1)
     )
-    private var isGameOver: Boolean = false
+    private var isDraw: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,46 +39,72 @@ class MainActivity : AppCompatActivity() {
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
             .forEachIndexed {index, view -> view.setOnClickListener {
-                placeStoneOnView(index, view)
+                if (!hasStone(view)) {
+                    placeStone(index, view)
+                }
             } }
     }
 
-    private fun placeStoneOnView(index: Int, view: ImageView) {
+    private fun placeStone(index: Int, view: ImageView) {
+        val stoneColor = setStoneColor()
         val (row, column) = calculatePosition(index)
 
-        if (!hasStone(view)) {
-            val stoneColor = setStoneColor()
+        placeStoneOnView(stoneColor, view, row, column)
+        checkWinAndShowDialog(row, column, stoneColor)
+        checkDrawAndShowDialog()
+    }
 
-            setStoneImageView(stoneColor, view)
-            updateBoardState(row, column, stoneColor)
+    private fun placeStoneOnView(
+        stoneColor: Int,
+        view: ImageView,
+        row: Int,
+        column: Int
+    ) {
+        setStoneImageView(stoneColor, view)
+        updateBoardState(row, column, stoneColor)
+        addTurn()
+    }
 
-            if (checkWin(row, column, stoneColor)) {
-                var winner: String = ""
-                if (stoneColor == BLACK_STONE) winner = "검정 돌"
-                else winner = "흰 돌"
-
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("게임 종료")
-                    .setMessage(winner + "이 이겼습니다.")
-                    .setPositiveButton("확인",
-                        DialogInterface.OnClickListener { dialog, id ->
-
-                        })
-                builder.show()
-            }
-            addTurn()
-            checkGameOver()
-
-            if(isGameOver) {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("게임 종료")
-                    .setMessage("무승부 입니다.")
-                    .setPositiveButton("확인",
-                        DialogInterface.OnClickListener { dialog, id ->
-
-                        })
-            }
+    private fun checkWinAndShowDialog(row: Int, column: Int, stoneColor: Int) {
+        if (checkWin(row, column, stoneColor)) {
+            var winner: String = setWinner(stoneColor)
+            showWinnerDialog(winner)
         }
+    }
+
+    private fun checkDrawAndShowDialog() {
+        checkDraw()
+        if (isDraw) {
+            showDrawDialog()
+        }
+    }
+
+    private fun showDrawDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("게임 종료")
+            .setMessage("무승부 입니다.")
+            .setPositiveButton("확인",
+                DialogInterface.OnClickListener { dialog, id ->
+
+                })
+    }
+
+    private fun showWinnerDialog(winner: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("게임 종료")
+            .setMessage(winner + "이 이겼습니다.")
+            .setPositiveButton("확인",
+                DialogInterface.OnClickListener { dialog, id ->
+
+                })
+        builder.show()
+    }
+
+    private fun setWinner(stoneColor: Int): String {
+        var winner: String = ""
+        if (stoneColor == BLACK_STONE) winner = "검정 돌"
+        else winner = "흰 돌"
+        return winner
     }
 
     private fun updateBoardState(row: Int, column: Int, stoneColor: Int) {
@@ -89,14 +114,13 @@ class MainActivity : AppCompatActivity() {
     private fun calculatePosition(index: Int): Pair<Int, Int> {
         val row = index / boardSize
         val column = index % boardSize
-        Log.d("testt", "(" + row + ", " + column + ")")
+//        Log.d("testt", "(" + row + ", " + column + ")")
         return Pair(row, column)
     }
 
     private fun initBoard(board: TableLayout) {
         boardState = Array(boardSize) { IntArray(boardSize) { BLANK } }
-
-        isGameOver = false
+        isDraw = false
         turn = 0
 
         board
@@ -133,7 +157,7 @@ class MainActivity : AppCompatActivity() {
             count += countStonesInDirection(row, column, dx, dy, stoneColor)
             count += countStonesInDirection(row, column, -dx, -dy, stoneColor)
 
-            Log.d("testt","방향 ("+dx+","+dy+")"+" 연속되는 돌 개수:"+count)
+//            Log.d("testt","방향 ("+dx+","+dy+")"+" 연속되는 돌 개수:"+count)
 
             if (count >= 5) return true
         }
@@ -153,7 +177,7 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
-    private fun checkGameOver() {
+    private fun checkDraw() {
         for (row in boardState) {
             for (cell in row) {
                 if (cell == BLANK) {
@@ -161,8 +185,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        isGameOver = true
-        Log.d("testt", "Game Over")
+        isDraw = true
+//        Log.d("testt", "Game Over")
     }
 
 }
