@@ -19,6 +19,11 @@ class MainActivity : AppCompatActivity() {
         this.turn = if (turn == User.BLACK) User.WHITE else User.BLACK
     }
 
+    // 해당 인덱스가 빈 공간인지 확인한다.
+    private fun isEmptySpace(idx: Int): Boolean {
+        return boards[idx / BOARD_SIZE][idx % BOARD_SIZE] == BoardState.EMPTY
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,9 +37,9 @@ class MainActivity : AppCompatActivity() {
             .filterIsInstance<ImageView>()
             .forEachIndexed { idx, view ->
                 view.setOnClickListener {
-
-                    changeTurn()
-
+                    if (isEmptySpace(idx)) {
+                        changeTurn()
+                    }
                 }
             }
     }
