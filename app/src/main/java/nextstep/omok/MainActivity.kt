@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
-    private var isBlackTurn = true
-    private lateinit var board: Array<Array<ImageView>>
+    var isBlackTurn = true
+    lateinit var board: Array<Array<ImageView>>
     private val boardSize = 15
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setView()
     }
-
-    private fun setView() {
+    fun setView() {
         board = Array(boardSize) {Array(boardSize) { ImageView(this) } } // board라는 2차원 배열 생성
         val tableLayout = findViewById<TableLayout>(R.id.board)
 
@@ -34,8 +33,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun putStoneInTurn(row: Int, col: Int) {
+    fun putStoneInTurn(row: Int, col: Int) {
         if (board[row][col].tag == null) { // 셀이 비어 있고
             if (isBlackTurn) { // 흑돌 차례면
                 board[row][col].setImageResource(R.drawable.black_stone) // 흑돌을 놓는다
@@ -51,13 +49,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkFiveLine(row: Int, col: Int): Boolean { // 전체적으로 체크하는 함수
+    fun checkFiveLine(row: Int, col: Int): Boolean { // 전체적으로 체크하는 함수
         val color = board[row][col].tag as Boolean
         return checkHorizontal(row, color) || checkVertical(col, color) ||
                 checkDiagonal(row, col, color) || checkReverseDiagonal(row, col, color) // 하나만 true여도 true
     }
 
-    private fun checkHorizontal(row: Int, color: Boolean): Boolean { // 가로 체크
+    fun checkHorizontal(row: Int, color: Boolean): Boolean { // 가로 체크
         var cnt = 0
         for (col in 0 until boardSize) { // 해당 셀의 행 검사
             if (board[row][col].tag == color) { // 색깔이 같으면
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun checkVertical(col: Int, color: Boolean): Boolean { // 세로 체크
+    fun checkVertical(col: Int, color: Boolean): Boolean { // 세로 체크
         var cnt = 0
         for (row in 0 until boardSize) {
             if (board[row][col].tag == color) {
@@ -83,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun checkDiagonal (row: Int, col: Int, color: Boolean): Boolean {
+    fun checkDiagonal (row: Int, col: Int, color: Boolean): Boolean {
         var cnt = 0
         var i = row
         var j = col
@@ -103,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
-    private fun checkReverseDiagonal (row: Int, col: Int, color: Boolean): Boolean {
+    fun checkReverseDiagonal (row: Int, col: Int, color: Boolean): Boolean {
         var cnt = 0
         var i = row
         var j = col
