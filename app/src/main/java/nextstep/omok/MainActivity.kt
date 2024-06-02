@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
                 omok.currentPlayer.putStone(view)
                 omok.recordBoard(indexRow, indexCol)
+                omok.checkOmok(indexRow, indexCol) // 항상 recordBoard다음에 와야됨
                 omok.changeTurn()
             } }
     }
@@ -52,9 +53,22 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
         board[row][col] = currentPlayer.color
     }
 
-    fun gameOver(view: TextView, currentPlayer: Player, tableLayout: TableLayout) {
-        view.text = "게임 종료 " + currentPlayer.color + " 승리"
-        tableLayout.isClickable = false
+    fun checkOmok(row : Int, col : Int) : Boolean {
+        if(checkLeftToRight(row, currentPlayer.color)){
+            Log.d("testt", "game over")
+            return true
+        }
+        return false
+    }
+
+    fun checkLeftToRight(row : Int, stone : String) : Boolean {
+        var cnt : Int = 0
+        for(i in 0..14) {
+            if(board[row][i] == stone) cnt++
+            else cnt = 0
+            if(cnt == 5) return true
+        }
+        return false
     }
 }
 
