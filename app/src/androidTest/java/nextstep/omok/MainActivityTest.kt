@@ -1,6 +1,5 @@
 package nextstep.omok
 
-import android.util.Log
 import androidx.test.core.app.ActivityScenario
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
@@ -9,31 +8,24 @@ class MainActivityTest {
 	private lateinit var activity: MainActivity
 
 	@Test
-	fun test() {
-		assertThat(true).isTrue
-	}
-
-
-	@Test
+	@org.junit.jupiter.api.DisplayName("흑돌이 놓아지는지 확인")
 	fun testStonePlacement() {
 		ActivityScenario.launch(MainActivity::class.java).onActivity {
 			activity = it
 			val imageView = activity.board[0][0]
-			imageView?.tag = "0,0"
 
 			activity.runOnUiThread {
 				activity.onStonePlaced(imageView!!)
-				Log.d("testStonePlacement", "Tag after placement: ${imageView?.tag}")
-				Log.d("testStonePlacement", "Drawable after placement: ${imageView?.drawable}")
 
-				assertThat(imageView?.drawable).isNotNull
-				assertThat(imageView?.tag).isEqualTo("흑돌")
+				assertThat(imageView?.drawable).isNotNull 	// 돌이 놓여졌는지 확인
+				assertThat(imageView?.tag).isEqualTo("흑돌") // 흑돌이 놓여졌는지 확인
 			}
 		}
 
 	}
 
 	@Test
+	@org.junit.jupiter.api.DisplayName("승리 조건을 충족시키기 위해 돌을 놓음")
 	fun testWinCondition() {
 		ActivityScenario.launch(MainActivity::class.java).onActivity {
 			activity = it
@@ -43,13 +35,11 @@ class MainActivityTest {
 				imageView?.tag = "$i,0"
 				activity.runOnUiThread {
 					activity.onStonePlaced(imageView!!)
-					Log.d("testWinCondition", "Tag after placement: ${imageView?.tag}")
 				}
 				if (i < 4) {
 					val opponentImageView = activity.board[i + 1][1]
 					activity.runOnUiThread {
 						activity.onStonePlaced(opponentImageView!!)
-						Log.d("testWinCondition", "opponentImageView: ${opponentImageView?.tag}")
 					}
 				}
 			}
@@ -63,6 +53,7 @@ class MainActivityTest {
 	}
 
 	@Test
+	@org.junit.jupiter.api.DisplayName("보드 초기화")
 	fun testBoardReset() {
 		ActivityScenario.launch(MainActivity::class.java).onActivity {
 			activity = it
