@@ -16,6 +16,9 @@ const val BOARD_SIZE: Int = 15
 class MainActivity : AppCompatActivity() {
     private var turn: User = User.BLACK
     private var boards = Array(BOARD_SIZE) { Array<BoardState>(BOARD_SIZE) { BoardState.EMPTY } }
+    private var isGameOver: Boolean = false
+    private lateinit var resultText: TextView
+    private lateinit var replayText: TextView
     private fun changeTurn() {
         this.turn = if (turn == User.BLACK) User.WHITE else User.BLACK
     }
@@ -87,6 +90,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun checkWin(idx: Int) {
+        if (!isWin(idx)) return
+
+        isGameOver = true
+        resultText.text = "Game Over!\n" + turn.toString() + " Win!!"
+        replayText.text = "Click to Replay"
+        replayText.setBackgroundColor(Color.GRAY)
+        replayText.setOnClickListener {
+            intent = Intent(this@MainActivity, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
 
     private fun initListensers(board: TableLayout) {
         board
@@ -96,8 +112,9 @@ class MainActivity : AppCompatActivity() {
             .filterIsInstance<ImageView>()
             .forEachIndexed { idx, view ->
                 view.setOnClickListener {
-                    if (isEmptySpace(idx)) {
+                    if (isEmptySpace(idx) && !isGameOver) {
                         placeStone(idx, view)
+                        checkWin(idx)
                         changeTurn()
                     }
                 }
@@ -110,6 +127,8 @@ class MainActivity : AppCompatActivity() {
 
         val board = findViewById<TableLayout>(R.id.board)
 
+        resultText = findViewById<TextView>(R.id.resultText)
+        replayText = findViewById<TextView>(R.id.replay)
         initListensers(board)
     }
 }
