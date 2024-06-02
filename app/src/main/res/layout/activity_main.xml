@@ -2946,12 +2946,13 @@
             android:layout_row="14"
             android:layout_column="7"
             android:layout_gravity="fill" />
+
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="22dp"
+            android:layout_height="21dp"
             android:layout_row="14"
-            android:layoutgg_column="8"
-            android:layout_gravity="fill"/>
+            android:layout_gravity="fill"
+            android:layout_column="8" />
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
