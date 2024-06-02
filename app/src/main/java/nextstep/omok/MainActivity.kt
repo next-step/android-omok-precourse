@@ -1,10 +1,12 @@
 package nextstep.omok
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -23,14 +25,15 @@ class MainActivity : AppCompatActivity() {
         arrayOf(1, 1),
         arrayOf(1, -1)
     )
+    private var isGameOver: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initBoard()
-
         val board = findViewById<TableLayout>(R.id.board)
+        initBoard(board)
+
         board
             .children
             .filterIsInstance<TableRow>()
@@ -39,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             .forEachIndexed {index, view -> view.setOnClickListener {
                 placeStone(index, view)
             } }
-
     }
 
     private fun placeStone(index: Int, view: ImageView) {
@@ -54,8 +56,15 @@ class MainActivity : AppCompatActivity() {
             if (checkWin(row, column, stoneColor)) {
                 Log.d("testt", "" + stoneColor + " 승리")
             }
-            checkGameOver()
             addTurn()
+            checkGameOver()
+
+            if(isGameOver) {
+                val builder = AlertDialog.Builder(this)
+                var winner: String = ""
+                if (stoneColor == BLACK_STONE) winner = "검정 돌"
+                else winner = "흰 돌"
+            }
         }
     }
 
@@ -70,8 +79,18 @@ class MainActivity : AppCompatActivity() {
         return Pair(row, column)
     }
 
-    private fun initBoard() {
+    private fun initBoard(board: TableLayout) {
         boardState = Array(boardSize) { IntArray(boardSize) { BLANK } }
+
+        isGameOver = false
+        turn = 0
+
+        board
+            .children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { it.setImageDrawable(null) }
     }
 
     private fun setStoneImageView(stoneColor: Int, view: ImageView) {
@@ -121,7 +140,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkGameOver() {
-
+        for (row in boardState) {
+            for (cell in row) {
+                if (cell == BLANK) {
+                    return
+                }
+            }
+        }
+        isGameOver = true
+        Log.d("testt", "Game Over")
     }
 
 }
