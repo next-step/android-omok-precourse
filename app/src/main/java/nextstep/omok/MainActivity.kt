@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        putStoneLayout = findViewById(R.id.putstonelayout)
+        setImgviewListener(putStoneLayout)
     }
 
     private fun setImgviewListener(gridLayout: GridLayout) {
