@@ -2,6 +2,9 @@
 
 - 카카오 테크 캠퍼스 미니과제(오목) 수행을 위한 저장소입니다.
 
+## Demo(웹에서 실행)
+https://appetize.io/app/wp5mse5xnipmmtc646puelolvu?device=pixel7&osVersion=13.0
+
 ## 구현 화면
 1. 게임 시작 / 다시 시작 화면　　　　　2. 게임 중 화면(흑돌 차례)
 
