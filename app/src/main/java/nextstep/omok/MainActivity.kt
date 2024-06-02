@@ -63,6 +63,17 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
             Log.d("testt", "game over")
             return true
         }
+        if(row > col) {
+            if(checkTopLeftToBottomRightBigRow(row - col, currentPlayer.color)){
+                Log.d("testt", "game over")
+                return true
+            }
+        } else {
+            if(checkTopLeftToBottomRightBigCol(col - row, currentPlayer.color)){
+                Log.d("testt", "game over")
+                return true
+            }
+        }
         return false
     }
 
@@ -80,6 +91,28 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
         var cnt : Int = 0
         for(i in 0..14) {
             if(board[i][col] == stone) cnt++
+            else cnt = 0
+            if(cnt == 5) return true
+        }
+        return false
+    }
+
+    fun checkTopLeftToBottomRightBigRow(rowMinusCol : Int, stone : String) : Boolean {
+        var cnt : Int = 0
+        for(i in 0..14) {
+            if(rowMinusCol + i > 14) break
+            if(board[rowMinusCol + i][0 + i] == stone) cnt++
+            else cnt = 0
+            if(cnt == 5) return true
+        }
+        return false
+    }
+
+    fun checkTopLeftToBottomRightBigCol(colMinusRow : Int, stone : String) : Boolean {
+        var cnt : Int = 0
+        for(i in 0..14) {
+            if(colMinusRow + i > 14) break
+            if(board[0 + i][colMinusRow + i] == stone) cnt++
             else cnt = 0
             if(cnt == 5) return true
         }
