@@ -14,7 +14,7 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     // 오목 보드
-    private lateinit var board: Array<Array<ImageView?>>
+    lateinit var board: Array<Array<ImageView?>>
     // 15x15 보드 사이즈
     private val boardSize = 15
     // 현재 플레이어(black or white)
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         return tableLayout
     }
     // 돌 놓는 함수
-    private fun onStonePlaced(view: ImageView) {
+    fun onStonePlaced(view: ImageView) {
         if (view.tag != "흑돌" && view.tag != "백돌") {  // 아직 돌이 놓이지 않은 경우에만
             val (row, col) = (view.tag as String).split(",").map { it.toInt() }  // 태그에서 좌표 추출
             view.setImageResource(if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone)// 현재 플레이어가 흑돌이면 흑돌, 백돌이면 백돌 놓음
@@ -81,8 +81,8 @@ class MainActivity : AppCompatActivity() {
     // 좌표에 돌이 놓인 후
     private fun viewPost(view: ImageView, row: Int, col: Int) {
         view.post {
-            if (fullBoard == 0) fullBoardCheck() // 보드가 모두 찼을 경우
-            else if (checkWin(row, col)) AfterWin() // 승리 조건 확인 후 승리 이후 행동
+            if (checkWin(row, col)) AfterWin() // 승리 조건 확인 후 승리 이후 행동
+            else if (fullBoard == 0) fullBoardCheck() // 보드가 모두 찼을 경우
             else {
                 currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌" // 플레이어 변경
                 currentPlayerTextView.text = currentPlayer // 플레이어 변경 표시
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     // 승리 조건 확인
-    private fun checkWin(row: Int, col: Int): Boolean {
+    fun checkWin(row: Int, col: Int): Boolean {
         for (direction in directions) { // 가로, 세로, 대각선 방향으로 연속되어 있는지 확인.
             var count = 1 // 돌의 연속 개수
             for ((dx, dy) in direction) {
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         return imageView?.tag == currentPlayer
     }
     // 보드 초기화
-    private fun resetBoard() {
+    fun resetBoard() {
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
                 board[i][j]?.apply {
