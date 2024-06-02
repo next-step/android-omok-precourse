@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun placeStone(view: ImageView) {
-        if (view.drawable != null) return
+        if(hasStone(view)) return
 
         val stone = if (turn % 2 == 0) R.drawable.black_stone else R.drawable.white_stone
         view.setImageResource(stone)
@@ -35,11 +35,17 @@ class MainActivity : AppCompatActivity() {
         addTurn()
     }
 
+    private fun hasStone(view: ImageView): Boolean {
+        if (view.drawable != null) return true
+        else return false
+    }
+
     private fun addTurn() {
         turn++
     }
 
     private fun checkWin() {
+
     }
 
     private fun checkGameOver() {
