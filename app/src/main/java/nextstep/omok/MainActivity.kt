@@ -37,9 +37,7 @@ class MainActivity : AppCompatActivity() {
     fun setBoard(board: TableLayout) {
         board.children.filterIsInstance<TableRow>().forEachIndexed { rowIndex, row ->
             row.children.filterIsInstance<ImageView>().forEachIndexed { colIndex, view ->
-                view.setOnClickListener {
-                    onCellClick(view, rowIndex, colIndex)  //칸(셀) 클릭 시 동작
-                }
+                view.setOnClickListener { onCellClick(view, rowIndex, colIndex) }  //칸(셀) 클릭 시 동작
             }
         }
     }
@@ -96,9 +94,7 @@ class MainActivity : AppCompatActivity() {
             val newCol = col + i * dCol
             if (newRow in 0..14 && newCol in 0..14 && boardState[newRow][newCol] == player) {
                 count++
-            } else {
-                break
-            }
+            } else break
             i++
         }
         return count
