@@ -1,11 +1,11 @@
 # android-omok-precourse
-<Project Name>  
+## Project Name  
 Omok Application  
-  
-<How To Start>  
+   
+## How To Start  
 백돌이 먼저 오목 판에 돌을 놓으면서 시작  
   
-<features>  
+## features
 1. switchPlayer : currentPlayer을 "w"에서 시작, 돌을 놓고 나서 winner switch  
 2. initializeBoard : 돌을 놓을 위치에 click listener 설정하여 위치를 누를 때 마다 onCellClick 함수 실행  
 3. onCellClicked : 돌이 놓였을 때 비어있는 위치라면 돌을 놓고 돌을 놓을 수 없다면 사용자에게 메시지를 남긴다  
@@ -16,8 +16,8 @@ Omok Application
     - checkDirection : 오/왼 방향 모두 개수 세기, 5이상이면 T, else F  
     - countStones: direction따라 돌 개수 세기  
   
-<run tests>  
+## run tests
 JUnit5 / AssertJ  
   
-<credit>  
+## credit
 khyeonm  
