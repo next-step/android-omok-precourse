@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
             Log.d("testt","방향 ("+dx+","+dy+")"+" 연속되는 돌 개수:"+count)
 
-            if (count == 5) return true
+            if (count >= 5) return true
         }
         return false
     }
@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkGameOver() {
+
     }
 
 }
