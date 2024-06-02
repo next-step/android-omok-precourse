@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         val blackPlayer = Player("black")
         val whitePlayer = Player("white")
+        val omok = Game(blackPlayer, whitePlayer)
 
         val board = findViewById<TableLayout>(R.id.board)
         board
@@ -23,8 +24,20 @@ class MainActivity : AppCompatActivity() {
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
             .forEach { view -> view.setOnClickListener {
-                blackPlayer.putStone(view)
+                omok.currentPlayer.putStone(view)
+                omok.changeTurn()
             } }
+    }
+}
+
+class Game(val blackPlayer : Player, val whitePlayer : Player) {
+    var currentPlayer : Player = blackPlayer // 시작은 흑돌먼저
+    fun changeTurn() {
+        if(currentPlayer == blackPlayer) {
+            currentPlayer = whitePlayer
+        } else {
+            currentPlayer = blackPlayer
+        }
     }
 }
 
