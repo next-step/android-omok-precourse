@@ -15,13 +15,13 @@ import androidx.core.view.size
 class OmokSystem (
     val context: Context,
     val board: TableLayout) {
-    private val BLACK = "흑"
-    private val WHITE = "백"
-    private val scoreCombo = 5
+    val BLACK = "흑"
+    val WHITE = "백"
+    val scoreCombo = 5
     private val rowSize: Int
     private val colSize: Int
 
-    private var nowStone = BLACK
+    var nowStone = BLACK
     private val cache = Cache()
     init {
         rowSize = board.childCount
@@ -51,7 +51,7 @@ class OmokSystem (
 
     // 돌을 착수하는 함수
     // performTurn 내부에서 호출
-    private fun putStone(row: Int, col: Int) {
+    fun putStone(row: Int, col: Int) {
         val currView = getBoardImageView(row, col)
         if (isPositionEmpty(currView)) {
             if (nowStone == WHITE) {
@@ -65,13 +65,13 @@ class OmokSystem (
     }
 
     // 보드의 row, col 위치에 존재하는 imageView 반환
-    private fun getBoardImageView(row: Int, col: Int): ImageView {
+    fun getBoardImageView(row: Int, col: Int): ImageView {
         return (board.getChildAt(row) as TableRow).getChildAt(col) as ImageView
     }
 
     // 돌을 놓으려는 위치가 비어있는지 확인하는 함수
     // putStone 내부에서 호출
-    private fun isPositionEmpty(imgView: ImageView): Boolean {
+    fun isPositionEmpty(imgView: ImageView): Boolean {
         if (imgView.drawable == null)
             return true
         else {
@@ -82,7 +82,7 @@ class OmokSystem (
 
     // 콤보를 계산하는 함수
     // 4가지 방향에 대해 가장 큰 콤보를 반환
-    private fun calculateCombo(row: Int, col: Int): Int {
+    fun calculateCombo(row: Int, col: Int): Int {
         return maxOf(
             checkVerticalCombo(row, col),
             checkHorizontalCombo(row, col),
@@ -179,7 +179,7 @@ class OmokSystem (
     }
 
     // 현재 combo가 게임이 끝나는 기준을 넘었는지 확인
-    private fun isGameEnd(combo: Int): Boolean {
+    fun isGameEnd(combo: Int): Boolean {
         return combo >= scoreCombo
     }
 
@@ -206,7 +206,7 @@ class OmokSystem (
     }
 
     /* 보드 초기화 함수 */
-    private fun resetBoard(): Unit {
+    fun resetBoard(): Unit {
         board.children.forEach { tableRow ->
             tableRow as TableRow
             tableRow.children.forEach { imgView ->
