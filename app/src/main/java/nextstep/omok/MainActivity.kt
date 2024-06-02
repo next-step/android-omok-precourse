@@ -27,4 +27,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun handleStonePlacement(imgView: ImageView, id: Int) {
+        val row = id/numRows
+        val col = id%numCols
+        if (isValidPosition(row, col) == true) {
+            placeStone(row, col, imgView)
+            if (checkWinCondition(row, col)) {
+                showWinMsg(blackTurn)
+            }
+            switchTurn()
+        }
+    }
+
 }
