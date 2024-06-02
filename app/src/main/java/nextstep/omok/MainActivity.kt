@@ -61,7 +61,44 @@ class MainActivity : AppCompatActivity() {
     //게임 상태
     fun handleGameState(row: Int, col: Int) {
         when {
-
+            checkWin(row, col) -> endGame(if (isBlackTurn) "Black" else "White")  //승리 조건 확인
+            else -> isBlackTurn = !isBlackTurn  //플레이어 순서 변경
         }
+    }
+
+    //게임 종료
+    fun endGame(result: String) {
+        gameEnded = true
+        Toast.makeText(this, "$result 승리", Toast.LENGTH_LONG).show()
+    }
+
+    //승리 조건 확인
+    fun checkWin(row: Int, col: Int): Boolean {
+        val player = boardState[row][col]
+        return (checkDirection(row, col, 1, 0, player) >= 5 || // 가로 방향
+                checkDirection(row, col, 0, 1, player) >= 5 || // 세로 방향
+                checkDirection(row, col, 1, 1, player) >= 5 || // 대각선(\) 방향
+                checkDirection(row, col, 1, -1, player) >= 5)  // 대각선(/) 방향
+    }
+
+    //특정 방향으로 연속된 돌 개수 세기
+    fun checkDirection(row: Int, col: Int, dRow: Int, dCol: Int, player: Int): Int {
+        return (1 + countStones(row, col, dRow, dCol, player) + countStones(row, col, -dRow, -dCol, player))
+    }
+
+    fun countStones(row: Int, col: Int, dRow: Int, dCol: Int, player: Int): Int {
+        var count = 0
+        var i = 1
+        while (true) {
+            val newRow = row + i * dRow
+            val newCol = col + i * dCol
+            if (newRow in 0..14 && newCol in 0..14 && boardState[newRow][newCol] == player) {
+                count++
+            } else {
+                break
+            }
+            i++
+        }
+        return count
     }
 }
