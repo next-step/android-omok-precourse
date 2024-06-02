@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val restartButton = findViewById<Button>(R.id.restartButton)  //Restart Button
 
         setBoard(board)  //보드의 각 칸에 클릭 리스너 설정
+        setRestartButton(restartButton, board)  //Restart Button 클릭 리스너 설정
         /*
         board
             .children
@@ -106,5 +107,24 @@ class MainActivity : AppCompatActivity() {
     //무승부 조건 확인
     fun isBoardFull(): Boolean {
         return boardState.all { row -> row.all { it != 0 } }
+    }
+
+    //Restart Button 클릭 리스너 설정
+    fun setRestartButton(restartButton: Button, board: TableLayout) {
+        restartButton.setOnClickListener {
+            resetBoard(board)
+        }
+    }
+
+    //보드 초기화
+    fun resetBoard(board: TableLayout) {
+        boardState.forEach { row -> row.fill(0) } //보드 상태 초기화
+        board.children.filterIsInstance<TableRow>().forEach { row ->
+            row.children.filterIsInstance<ImageView>().forEach { view ->
+                view.setImageDrawable(null) // 모든 칸(셀) 비움
+            }
+        }
+        isBlackTurn = true // 플레이어1(흑돌)부터 시작
+        gameEnded = false // 게임 종료 상태 초기화
     }
 }
