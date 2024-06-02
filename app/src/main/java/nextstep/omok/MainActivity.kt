@@ -74,6 +74,17 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
                 return true
             }
         }
+        if(row + col < 15) {
+            if(checkTopRightToBottomLeftUnder15(row + col, currentPlayer.color)){
+                Log.d("testt", "game over")
+                return true
+            }
+        } else {
+            if(checkTopRightToBottomLeftOver15(row + col, currentPlayer.color)){
+                Log.d("testt", "game over")
+                return true
+            }
+        }
         return false
     }
 
@@ -113,6 +124,28 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
         for(i in 0..14) {
             if(colMinusRow + i > 14) break
             if(board[0 + i][colMinusRow + i] == stone) cnt++
+            else cnt = 0
+            if(cnt == 5) return true
+        }
+        return false
+    }
+
+    fun checkTopRightToBottomLeftUnder15(colPlusRow : Int, stone : String) : Boolean {
+        var cnt : Int = 0
+        for(i in 0..14) {
+            if(colPlusRow - i < 0) break
+            if(board[colPlusRow - i][0 + i] == stone) cnt++
+            else cnt = 0
+            if(cnt == 5) return true
+        }
+        return false
+    }
+
+    fun checkTopRightToBottomLeftOver15(colPlusRow : Int, stone : String) : Boolean {
+        var cnt : Int = 0
+        for(i in 0..14) {
+            if(colPlusRow - 14 + i > 14) break
+            if(board[14 - i][colPlusRow - 14 + i] == stone) cnt++
             else cnt = 0
             if(cnt == 5) return true
         }
