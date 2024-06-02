@@ -17,8 +17,8 @@ class MainActivity : AppCompatActivity() {
         val blackPlayer = Player("black")
         val whitePlayer = Player("white")
         val omok = Game(blackPlayer, whitePlayer)
-        var gameOver : Boolean = false
 
+        val text = findViewById<TextView>(R.id.text)
         val board = findViewById<TableLayout>(R.id.board)
         board
             .children
@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity() {
 
                 omok.currentPlayer.putStone(view)
                 omok.recordBoard(indexRow, indexCol)
-                gameOver = omok.checkOmok(indexRow, indexCol) // 항상 recordBoard 다음에 와야됨
+                // 항상 recordBoard 다음에 와야됨
+                if(omok.checkOmok(indexRow, indexCol, omok.currentPlayer.color)) {
+                    omok.gameOver(text, omok.currentPlayer, board)
+                }
                 omok.changeTurn()
             } }
     }
@@ -54,37 +57,11 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
         board[row][col] = currentPlayer.color
     }
 
-    fun checkOmok(row : Int, col : Int) : Boolean {
-        if(checkLeftToRight(row, currentPlayer.color)){
-            Log.d("testt", "game over")
-            return true
-        }
-        if(checkTopToBottom(col, currentPlayer.color)){
-            Log.d("testt", "game over")
-            return true
-        }
-        if(row > col) {
-            if(checkTopLeftToBottomRightBigRow(row - col, currentPlayer.color)){
-                Log.d("testt", "game over")
-                return true
-            }
-        } else {
-            if(checkTopLeftToBottomRightBigCol(col - row, currentPlayer.color)){
-                Log.d("testt", "game over")
-                return true
-            }
-        }
-        if(row + col < 15) {
-            if(checkTopRightToBottomLeftUnder15(row + col, currentPlayer.color)){
-                Log.d("testt", "game over")
-                return true
-            }
-        } else {
-            if(checkTopRightToBottomLeftOver15(row + col, currentPlayer.color)){
-                Log.d("testt", "game over")
-                return true
-            }
-        }
+    fun checkOmok(row : Int, col : Int, stone: String) : Boolean {
+        if(checkLeftToRight(row, stone)) return true
+        if(checkTopToBottom(col, stone)) return true
+        if(checkTopLeftToBottomRight(row, col, stone)) return true
+        if(checkTopRightToBottom(row, col, stone)) return true
         return false
     }
 
@@ -104,6 +81,32 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
             if(board[i][col] == stone) cnt++
             else cnt = 0
             if(cnt == 5) return true
+        }
+        return false
+    }
+
+    fun checkTopLeftToBottomRight(row : Int, col : Int, stone : String) : Boolean {
+        if(row > col) {
+            if(checkTopLeftToBottomRightBigRow(row - col, stone)){
+                return true
+            }
+        } else {
+            if(checkTopLeftToBottomRightBigCol(col - row, stone)){
+                return true
+            }
+        }
+        return false
+    }
+
+    fun checkTopRightToBottom(row : Int, col : Int, stone : String) : Boolean  {
+        if(row + col < 15) {
+            if(checkTopRightToBottomLeftUnder15(row + col, stone)){
+                return true
+            }
+        } else {
+            if(checkTopRightToBottomLeftOver15(row + col, stone)){
+                return true
+            }
         }
         return false
     }
@@ -150,6 +153,16 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
             if(cnt == 5) return true
         }
         return false
+    }
+
+    fun gameOver(view: TextView, currentPlayer: Player, tableLayout: TableLayout) {
+        view.text = "게임 종료 " + currentPlayer.color + " 승리"
+        tableLayout
+            .children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { view -> view.isClickable = false }
     }
 }
 
