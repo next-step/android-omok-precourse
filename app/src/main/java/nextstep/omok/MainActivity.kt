@@ -152,10 +152,8 @@ class MainActivity : AppCompatActivity() {
     fun resetBoard() {
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
-                board[i][j]?.apply {
-                    setImageDrawable(null) // 보드 안에 있는 돌들을 다 지움
-                    tag = "$i,$j" // 태그에 세로, 가로 설정
-                }
+                board[i][j]?.setImageDrawable(null) // 보드 안에 있는 돌들을 다 지움
+                board[i][j]?.tag = "$i,$j" // 태그에 세로, 가로 설정
             }
         }
         currentPlayer = "흑돌" // 플레이어 초기화
