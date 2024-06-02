@@ -22,4 +22,13 @@ class Board(private val size: Int) {
     fun checkStoneColor(x: Int, y: Int): Int {
         return board[x][y]
     }
+
+    // 오목판 초기화
+    fun resetGame() {
+        for (i in 0 until size) {
+            for (j in 0 until size) {
+                board[i][j] = 0
+            }
+        }
+    }
 }
