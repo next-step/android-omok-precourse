@@ -1187,7 +1187,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="게임중"
+        android:text="게임중, 돌을 두세요"
         android:textSize="30dp"
         android:gravity="center"
         android:textColor="@color/black"/>
