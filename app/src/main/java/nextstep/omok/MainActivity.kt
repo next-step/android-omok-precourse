@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     fun handleGameState(row: Int, col: Int) {
         when {
             checkWin(row, col) -> endGame(if (isBlackTurn) "Black" else "White")  //승리 조건 확인
+            isBoardFull() -> endGame("Draw")  //무승부 조건 확인
             else -> isBlackTurn = !isBlackTurn  //플레이어 순서 변경
         }
     }
@@ -100,5 +101,10 @@ class MainActivity : AppCompatActivity() {
             i++
         }
         return count
+    }
+
+    //무승부 조건 확인
+    fun isBoardFull(): Boolean {
+        return boardState.all { row -> row.all { it != 0 } }
     }
 }
