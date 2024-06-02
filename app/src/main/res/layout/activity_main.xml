@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TableLayout
         android:id="@+id/board"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:stretchColumns="*">
 
         <TableRow android:layout_weight="1">
@@ -1180,4 +1181,35 @@
         </TableRow>
 
     </TableLayout>
+
+    <LinearLayout
+        android:id="@+id/game_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="36sp"
+            android:textColor="@android:color/black"
+            android:text="게임 종료" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="@android:color/black"
+            android:text="승리: "
+            android:layout_marginLeft="32dp" />
+        <ImageView
+            android:id="@+id/stone_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_stone"
+            android:layout_marginLeft="8dp" />
+    </LinearLayout>
+
 </LinearLayout>
