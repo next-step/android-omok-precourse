@@ -10,15 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
-    private val BLACK_STONE: Int = 0
-    private val WHITE_STONE: Int = 1
-    private val BLANK: Int = -1
-    private val INITIAL_STONE_COUNT: Int = 1
+    val BLACK_STONE: Int = 0
+    val WHITE_STONE: Int = 1
+    val NO_STONE: Int = -1
+    val INITIAL_STONE_COUNT: Int = 1
 
-    private var turn: Int = 0
-    private val boardSize: Int = 15
-    private var boardState = Array(boardSize){ IntArray(boardSize) {BLANK} }
-    private val directions: Array<Array<Int>> = arrayOf(
+    var turn: Int = 0
+    val boardSize: Int = 15
+    var boardState = Array(boardSize){ IntArray(boardSize) {NO_STONE} }
+    val directions: Array<Array<Int>> = arrayOf(
         arrayOf(0, 1),
         arrayOf(1, 0),
         arrayOf(1, 1),
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBoard(board: TableLayout) {
-        boardState = Array(boardSize) { IntArray(boardSize) { BLANK } }
+        boardState = Array(boardSize) { IntArray(boardSize) { NO_STONE } }
         isDraw = false
         turn = 0
 
@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkDraw() {
         for (row in boardState) {
             for (cell in row) {
-                if (cell == BLANK) {
+                if (cell == NO_STONE) {
                     return
                 }
             }
