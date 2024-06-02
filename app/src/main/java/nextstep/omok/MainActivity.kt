@@ -50,4 +50,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun placeStone(row: Int, col: Int, imgView: ImageView) {
+        board[row][col] = if (blackTurn) "black" else "white"
+        imgView.setImageResource(if (blackTurn) R.drawable.black_stone else R.drawable.white_stone)
+    }
 }
