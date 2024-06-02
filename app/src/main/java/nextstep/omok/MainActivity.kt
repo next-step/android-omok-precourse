@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
     //게임 상태
     fun handleGameState(row: Int, col: Int) {
         when {
-            checkWin(row, col) -> endGame(if (isBlackTurn) "Black" else "White")  //승리 조건 확인
-            isBoardFull() -> endGame("Draw")  //무승부 조건 확인
+            checkWin(row, col) -> endGame(if (isBlackTurn) "플레이어1(흑돌)" else "플레이어2(백돌)")  //승리 조건 확인
+            isBoardFull() -> endGame("무승부")  //무승부 조건 확인
             else -> isBlackTurn = !isBlackTurn  //플레이어 순서 변경
         }
     }
