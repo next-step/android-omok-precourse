@@ -76,10 +76,8 @@ class MainActivity : AppCompatActivity() {
         return count
     }
     fun showWinner(){
-        val winnerMessage = if (currentPlayer == "w") "백돌 win!" else "흑돌 win!"
-        val intent = Intent(this, WinnerActivity::class.java).apply{
-            putExtra("winnerMessage", winnerMessage)
-        }
-        startActivity(intent)
+        val winnerMessage = if (currentPlayer == "w") "백돌이 5목 이상을 완성하여 승리했습니다!" else "흑돌이 5목 이상을 완성하여 승리했습니다!"
+        Toast.makeText(this, winnerMessage, Toast.LENGTH_LONG).show()
+        switchPlayer()
     }
 }
