@@ -23,6 +23,20 @@ class MainActivity : AppCompatActivity() {
     private fun isEmptySpace(idx: Int): Boolean {
         return boards[idx / BOARD_SIZE][idx % BOARD_SIZE] == BoardState.EMPTY
     }
+    
+    private fun placeStoneView(view: ImageView) {
+        val stone = if (turn == User.BLACK) R.drawable.black_stone else R.drawable.white_stone
+        view.setImageResource(stone)
+    }
+
+    private fun placeStone(idx: Int, view: ImageView) {
+        val col = idx / BOARD_SIZE
+        val row = idx % BOARD_SIZE
+
+        boards[col][row] = if (turn == User.BLACK) BoardState.BLACK else BoardState.WHITE
+        placeStoneView(view)
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             .forEachIndexed { idx, view ->
                 view.setOnClickListener {
                     if (isEmptySpace(idx)) {
+                        placeStone(idx, view)
                         changeTurn()
                     }
                 }
