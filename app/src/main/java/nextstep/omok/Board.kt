@@ -13,4 +13,13 @@ class Board(private val size: Int) {
         return false
     }
 
+    // 판의 크기를 반환
+    fun boardSize(): Int {
+        return size
+    }
+
+    // 특정 위치의 돌 색깔을 확인
+    fun checkStoneColor(x: Int, y: Int): Int {
+        return board[x][y]
+    }
 }
