@@ -40,11 +40,11 @@ class MainActivity : AppCompatActivity() {
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
             .forEachIndexed {index, view -> view.setOnClickListener {
-                placeStone(index, view)
+                placeStoneOnView(index, view)
             } }
     }
 
-    private fun placeStone(index: Int, view: ImageView) {
+    private fun placeStoneOnView(index: Int, view: ImageView) {
         val (row, column) = calculatePosition(index)
 
         if (!hasStone(view)) {
@@ -54,16 +54,30 @@ class MainActivity : AppCompatActivity() {
             updateBoardState(row, column, stoneColor)
 
             if (checkWin(row, column, stoneColor)) {
-                Log.d("testt", "" + stoneColor + " 승리")
+                var winner: String = ""
+                if (stoneColor == BLACK_STONE) winner = "검정 돌"
+                else winner = "흰 돌"
+
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("게임 종료")
+                    .setMessage(winner + "이 이겼습니다.")
+                    .setPositiveButton("확인",
+                        DialogInterface.OnClickListener { dialog, id ->
+
+                        })
+                builder.show()
             }
             addTurn()
             checkGameOver()
 
             if(isGameOver) {
                 val builder = AlertDialog.Builder(this)
-                var winner: String = ""
-                if (stoneColor == BLACK_STONE) winner = "검정 돌"
-                else winner = "흰 돌"
+                builder.setTitle("게임 종료")
+                    .setMessage("무승부 입니다.")
+                    .setPositiveButton("확인",
+                        DialogInterface.OnClickListener { dialog, id ->
+
+                        })
             }
         }
     }
