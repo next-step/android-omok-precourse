@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val col = id%numCols
         if (isValidPosition(row, col) == true) {
             placeStone(row, col, imgView)
-            if (checkWinCondition(row, col)) {
+            if (checkWin(row, col)) {
                 showWinMsg(blackTurn)
             }
             switchTurn()
@@ -54,4 +54,37 @@ class MainActivity : AppCompatActivity() {
         board[row][col] = if (blackTurn) "black" else "white"
         imgView.setImageResource(if (blackTurn) R.drawable.black_stone else R.drawable.white_stone)
     }
+
+    fun switchTurn() {
+        blackTurn = !blackTurn
+    }
+
+    fun checkWin(row: Int, col: Int): Boolean {
+        val color = board[row][col] ?: return false
+        val directions = listOf(
+            listOf(0 to 1, 0 to -1), // 수평
+            listOf(1 to 0, -1 to 0), // 수직
+            listOf(1 to 1, -1 to -1), // 대각선1
+            listOf(1 to -1, -1 to 1) // 대각선2
+        )
+        return directions.any { direction ->
+            val count = 1 + countStonesInDirection(row, col, direction[0], color) +
+                    countStonesInDirection(row, col, direction[1], color)
+            count >= 5
+        }
+    }
+
+    fun countStonesInDirection(row: Int, col: Int, direction: Pair<Int, Int>, color: String): Int {
+        var count = 0
+        var newRow = row + direction.first
+        var newCol = col + direction.second
+        while (newRow in 0 until numRows && newCol in 0 until numCols && board[newRow][newCol] == color) {
+            count++
+            newRow += direction.first
+            newCol += direction.second
+        }
+        return count
+    }
+
+    
 }
