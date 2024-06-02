@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         val blackPlayer = Player("black")
         val whitePlayer = Player("white")
         val omok = Game(blackPlayer, whitePlayer)
+        var gameOver : Boolean = false
 
         val board = findViewById<TableLayout>(R.id.board)
         board
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
                 omok.currentPlayer.putStone(view)
                 omok.recordBoard(indexRow, indexCol)
-                omok.checkOmok(indexRow, indexCol) // 항상 recordBoard다음에 와야됨
+                gameOver = omok.checkOmok(indexRow, indexCol) // 항상 recordBoard 다음에 와야됨
                 omok.changeTurn()
             } }
     }
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
 class Game(val blackPlayer : Player, val whitePlayer : Player) {
     val board = Array(15,{ Array(15,{"blank"})})
-    var currentPlayer : Player = blackPlayer // 시작은 흑돌먼저
+    var currentPlayer : Player = blackPlayer // 시작은 흑돌 먼저
     fun changeTurn() {
         if(currentPlayer == blackPlayer) {
             currentPlayer = whitePlayer
@@ -58,6 +59,10 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
             Log.d("testt", "game over")
             return true
         }
+        if(checkTopToBottom(col, currentPlayer.color)){
+            Log.d("testt", "game over")
+            return true
+        }
         return false
     }
 
@@ -65,6 +70,16 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
         var cnt : Int = 0
         for(i in 0..14) {
             if(board[row][i] == stone) cnt++
+            else cnt = 0
+            if(cnt == 5) return true
+        }
+        return false
+    }
+
+    fun checkTopToBottom(col : Int, stone : String) : Boolean {
+        var cnt : Int = 0
+        for(i in 0..14) {
+            if(board[i][col] == stone) cnt++
             else cnt = 0
             if(cnt == 5) return true
         }
