@@ -114,8 +114,11 @@ class MainActivity : AppCompatActivity() {
     private fun calculatePosition(index: Int): Pair<Int, Int> {
         val row = index / boardSize
         val column = index % boardSize
-//        Log.d("testt", "(" + row + ", " + column + ")")
-        return Pair(row, column)
+
+        if(row in 0..(boardSize-1) && column in 0..(boardSize-1))
+            return Pair(row, column)
+        else
+            throw IndexOutOfBoundsException("돌의 위치가 오목판의 크기를 넘어섰습니다.")
     }
 
     private fun initBoard(board: TableLayout) {
@@ -167,7 +170,7 @@ class MainActivity : AppCompatActivity() {
         var count = 0
         var x = row + dx
         var y = col + dy
-        while (x in 0..14 && y in 0..14 
+        while (x in 0..(boardSize-1) && y in 0..(boardSize-1)
             && boardState[x][y] == stoneColor) {
             count++
             
