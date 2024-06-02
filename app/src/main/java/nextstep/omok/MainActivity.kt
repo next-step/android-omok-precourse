@@ -1,6 +1,7 @@
 package nextstep.omok
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TableLayout
@@ -37,6 +38,15 @@ class MainActivity : AppCompatActivity() {
                 showWinMsg(blackTurn)
             }
             switchTurn()
+        }
+    }
+
+    fun isValidPosition(row: Int, col: Int): Boolean? {
+        return if (row in 0 until numRows && col in 0 until numCols) {
+            board[row][col] == null
+        } else {
+            Log.e("Exception", "out of range : row $row, col $col")
+            null
         }
     }
 
