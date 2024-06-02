@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val col = index % boardSize
         if (boardState[row][col].isEmpty()) {
             boardState[row][col] = currentPlayer
-            view.setImageResource(if (currentPlayer == "w") (R.drawable.white_stone) else (R.drawable.black_stone))
+            view.setImageResource(currentStone())
             if (checkWin(row, col)) {
                 showWinner()
             } else {
@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "이곳에는 놓을 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+    fun currentStone(): Int {
+        return if (currentPlayer == "w") (R.drawable.white_stone) else (R.drawable.black_stone)
     }
 
     fun switchPlayer() {
