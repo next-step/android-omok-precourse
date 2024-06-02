@@ -26,4 +26,12 @@ class GameTest {
         }
         assertTrue(game.checkWin(0, 4))
     }
+
+    @Test
+    fun testCountStonesInDirection() {
+        for (i in 0..4) {
+            game.board[i][0] = "black"
+        }
+        assertEquals(4, game.countStonesInDirection(0, 0, 1 to 0, "black"))
+    }
 }
