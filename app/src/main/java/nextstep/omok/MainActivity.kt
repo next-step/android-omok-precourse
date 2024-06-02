@@ -6,6 +6,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -86,5 +87,22 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
-    
+    private fun showWinMsg(blackTurn: Boolean) {
+        val winner = whoIsWinner(blackTurn)
+        AlertDialog.Builder(this)
+            .setTitle("Game Over")
+            .setMessage("$winner wins!")
+            .setPositiveButton("EXIT") { _, _ ->
+                finish() // 현재 액티비티 종료
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun whoIsWinner(isBlackTurn: Boolean): String{
+        if(isBlackTurn)
+            return "Black"
+        else
+            return "White"
+    }
 }
