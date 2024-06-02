@@ -18,4 +18,12 @@ class GameTest {
         assertTrue(game.isValidPosition(0, 0)!!)   // 유효한 경우
         assertTrue(game.isValidPosition(14, 14)!!) // 유효한 경우
     }
+
+    @Test
+    fun testCheckWin() {
+        for (i in 0..4) {
+            game.board[0][i] = "black"
+        }
+        assertTrue(game.checkWin(0, 4))
+    }
 }
