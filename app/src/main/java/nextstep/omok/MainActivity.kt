@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -24,13 +25,19 @@ class MainActivity : AppCompatActivity() {
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
             .forEach { view -> view.setOnClickListener {
+                val row = view.getParent() as TableRow
+                val indexRow: Int = board.indexOfChild(row)
+                val indexCol: Int = row.indexOfChild(view)
+
                 omok.currentPlayer.putStone(view)
+                omok.recordBoard(indexRow, indexCol)
                 omok.changeTurn()
             } }
     }
 }
 
 class Game(val blackPlayer : Player, val whitePlayer : Player) {
+    val board = Array(15,{ Array(15,{"blank"})})
     var currentPlayer : Player = blackPlayer // 시작은 흑돌먼저
     fun changeTurn() {
         if(currentPlayer == blackPlayer) {
@@ -38,6 +45,16 @@ class Game(val blackPlayer : Player, val whitePlayer : Player) {
         } else {
             currentPlayer = blackPlayer
         }
+    }
+
+    fun recordBoard(row : Int, col : Int) {
+        Log.d("testt", "index : "+ row + "," + col)
+        board[row][col] = currentPlayer.color
+    }
+
+    fun gameOver(view: TextView, currentPlayer: Player, tableLayout: TableLayout) {
+        view.text = "게임 종료 " + currentPlayer.color + " 승리"
+        tableLayout.isClickable = false
     }
 }
 
