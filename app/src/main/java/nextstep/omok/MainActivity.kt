@@ -66,7 +66,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleWin() {
         gameActive = false
-        showDialog("$currentPlayer wins!")
+        showDialog("$currentPlayer 승리")
     }
+
+
 
 }
