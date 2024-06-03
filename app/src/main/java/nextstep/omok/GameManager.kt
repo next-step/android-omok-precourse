@@ -17,4 +17,18 @@ class GameManager(private val view : MainActivity) {
         isGameEnd = false
         view.restartBoardView()
     }
+    fun playOneTurn(view : ImageView, row : Int, col : Int){
+        if (board.placeStone(row, col, player) && !isGameEnd) {
+            this.view.drawStone(view, player)
+            player *= -1
+        }
+    }
+
+    fun playOneTurnWithExceptionHandler(view : ImageView, row : Int, col : Int){
+        runCatching {
+            playOneTurn(view, row, col)
+        }.onFailure {
+            Log.d("exceptionCatch", "exceptionOnGameManager")
+        }
+    }
 }

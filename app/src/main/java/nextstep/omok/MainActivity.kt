@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             .forEach { view ->
                 view.setOnClickListener {
                     val position = getClickPosition(view)
+                    val player = presenter.playOneTurnWithExceptionHandler(view, position[0], position[1])
                 }
             }
     }
