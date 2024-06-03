@@ -13,11 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val board = findViewById<TableLayout>(R.id.board)
-        board
-            .children
-            .filterIsInstance<TableRow>()
-            .flatMap { it.children }
-            .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+        val omokSystem = OmokSystem(this, board)
+        omokSystem.registerClickListener()
     }
 }
