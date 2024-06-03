@@ -92,13 +92,30 @@ class MainActivity : AppCompatActivity() {
                 .setTitle("게임 종료")
                 .setMessage(message)
                 .setPositiveButton("다시 시작") { dialog, _ ->
-                    //restartGame()
+                    restartGame()
                     dialog.dismiss()
                 }
                 .show()
             return true
         }
         return false
+    }
+    internal fun restartGame() {
+        for (i in 0 until 15) {
+            for (j in 0 until 15) {
+                stoneList[i][j] = 0
+            }
+        }
+        val board = findViewById<TableLayout>(R.id.board)
+        for (i in 0 until 15) {
+            val row = board.getChildAt(i) as TableRow
+            for (j in 0 until 15) {
+                val cell = row.getChildAt(j) as ImageView
+                cell.setImageResource(0)
+                cell.setTag(null)
+            }
+        }
+        isBlackTurn = true
     }
 
 }
