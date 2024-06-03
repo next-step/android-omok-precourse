@@ -13,17 +13,29 @@
         android:orientation="horizontal"
         android:gravity="center"
         >
+
         <ImageView
-            android:id="@+id/blackPlayer"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/black_stone"
+            android:id="@+id/black_player_flag"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/black_stone" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="플레이어"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textColor="@color/white"
             android:layout_weight="1"
             />
+
         <ImageView
-            android:id="@+id/whitePlayer"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/white_player_flag"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/white_stone"
             android:layout_weight="1"
             />
