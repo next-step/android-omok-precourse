@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                         view.setTag(R.drawable.white_stone)
                         stoneList[x][y] = 2
                     }
-//                    checkForWin(x, y)
+                    checkForWin(x, y)
                     isBlackTurn = !isBlackTurn
                 }
             }
@@ -82,6 +82,23 @@ class MainActivity : AppCompatActivity() {
             maxStones = maxOf(maxStones, directionCount)
         }
         return maxStones
+    }
+    internal fun checkForWin(x: Int, y: Int): Boolean {
+        val totalStones = maxStonesInAllDirections(x, y)
+        if (totalStones >= 5) {
+            val winner = if (isBlackTurn) "검은 돌" else "흰 돌"
+            val message = "$winner 플레이어가 승리했습니다!"
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle("게임 종료")
+                .setMessage(message)
+                .setPositiveButton("다시 시작") { dialog, _ ->
+                    //restartGame()
+                    dialog.dismiss()
+                }
+                .show()
+            return true
+        }
+        return false
     }
 
 }
