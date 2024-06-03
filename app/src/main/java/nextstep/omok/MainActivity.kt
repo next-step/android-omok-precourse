@@ -28,4 +28,17 @@ class MainActivity : AppCompatActivity() {
         setupBoard()
     }
 
+    private fun setupBoard() {
+        val board = findViewById<TableLayout>(R.id.board)
+        board.children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { imageView ->
+                imageView.setOnClickListener { view ->
+                    if (gameActive) placeStone(view as ImageView)
+                }
+            }
+    }
+
 }
