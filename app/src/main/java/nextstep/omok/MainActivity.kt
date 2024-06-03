@@ -7,6 +7,11 @@ import android.widget.TableRow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
+sealed class Result {
+    object Success : Result()
+    data class Failure(val reason: String) : Result()
+}
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
