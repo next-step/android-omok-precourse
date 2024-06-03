@@ -74,5 +74,12 @@ class MainActivity : AppCompatActivity() {
         showMessage("$currentPlayer 차례입니다.")
     }
 
+    private fun checkDirection(view: ImageView, rowDelta: Int, colDelta: Int): Boolean {
+        val board = findViewById<TableLayout>(R.id.board)
+        val row = (view.parent as? TableRow)?.let { board.indexOfChild(it) } ?: return false
+        val col = (view.parent as? TableRow)?.indexOfChild(view) ?: return false
+
+        return countStones(board, row, col, rowDelta, colDelta) >= 5
+    }
 
 }
