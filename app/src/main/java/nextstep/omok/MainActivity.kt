@@ -69,6 +69,10 @@ class MainActivity : AppCompatActivity() {
         showDialog("$currentPlayer 승리")
     }
 
+    private fun switchPlayer() {
+        currentPlayer = if (currentPlayer == "흑돌") "백돌" else "흑돌"
+        showMessage("$currentPlayer 차례입니다.")
+    }
 
 
 }
