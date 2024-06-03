@@ -45,4 +45,13 @@ class MainActivity : AppCompatActivity() {
             else -> Log.d("testt", "error")
         }
     }
+    fun restartBoardView(){
+        board.children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { view ->
+                view.setImageResource(0)
+            }
+    }
 }
