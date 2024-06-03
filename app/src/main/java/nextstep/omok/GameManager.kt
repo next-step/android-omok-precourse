@@ -120,4 +120,9 @@ class GameManager {
         board.forEach { row -> row.fill(0) }
         isBlackTurn = true
     }
+
+    fun isBoardFull(): Boolean {
+        return 0 !in board.flatten() // 0이 없음 -> 빈 자리가 없음
+    }
+
 }
