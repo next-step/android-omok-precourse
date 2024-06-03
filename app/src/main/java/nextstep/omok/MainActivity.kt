@@ -118,4 +118,16 @@ class MainActivity : AppCompatActivity() {
         showMessage("흑돌 차례입니다.")
     }
 
+    private fun clearBoard() {
+        val board = findViewById<TableLayout>(R.id.board)
+        board.children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach {
+                it.setImageDrawable(null)
+                it.tag = null
+            }
+    }
+
 }
