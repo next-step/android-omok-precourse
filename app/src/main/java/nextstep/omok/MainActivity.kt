@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
+    private var freePlay: Boolean = false
     private val boardGridCells: MutableList<MutableList<ImageView>> = mutableListOf()
     private val viewModel: GameViewModel by viewModels()
 
@@ -46,9 +47,9 @@ class MainActivity : AppCompatActivity() {
     private fun notifyWinner(x: Int, y: Int) {
         val stoneColor = viewModel.getStone(x, y)
         if (stoneColor == Board.STONE_BLACK) {
-            Toast.makeText(this, "흑목 승!", Toast.LENGTH_LONG).show()
+            showDialog("흑돌 승!")
         } else {
-            Toast.makeText(this, "백목 승!", Toast.LENGTH_LONG).show()
+            showDialog("백돌 승!")
         }
     }
 
@@ -56,9 +57,9 @@ class MainActivity : AppCompatActivity() {
         val result = viewModel.clickBoard(x, y) ?: return
 
         applyStonePlacementToGrid(result)
-        if (checkOmok(x, y)) {
-            notifyWinner(x, y)
+        if (!freePlay && checkOmok(x, y)) {
             viewModel.gameActive = false
+            notifyWinner(x, y)
         }
     }
 
@@ -105,9 +106,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun clickNewGameButton() {
+    private fun startNewGame(){
+        freePlay = false
         viewModel.reset()
         clearTable()
         restoreBoard()
+    }
+
+    private fun clickNewGameButton() {
+        startNewGame()
+    }
+
+    private fun showDialog(text: String) {
+        val dialog = GameResultDialog(object : GameResultDialogInterface {
+            override fun onNewGameButtonClick() {
+                startNewGame()
+            }
+
+            override fun onContinueButtonClick() {
+                viewModel.gameActive = true
+                freePlay = true
+            }
+        }, text)
+        dialog.isCancelable = false
+        dialog.show(this.supportFragmentManager, "GameResultDialog")
     }
 }
