@@ -69,5 +69,19 @@ class MainActivity : AppCompatActivity() {
         }
         return count
     }
+    internal fun maxStonesInAllDirections(x: Int, y: Int): Int {
+        var maxStones = 0
+        val directions = arrayOf(
+            Pair(0, 1),
+            Pair(1, 0),
+            Pair(1, -1),
+            Pair(1, 1)
+        )
+        for ((dx, dy) in directions) {
+            val directionCount = countStonesInDirection(dx, dy, x, y)
+            maxStones = maxOf(maxStones, directionCount)
+        }
+        return maxStones
+    }
 
 }
