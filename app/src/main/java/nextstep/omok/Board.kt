@@ -89,6 +89,8 @@ class Board(private val rows: Int, private val cols: Int) {
     }
 
     fun getLongestLineLength(x: Int, y: Int): Int {
+        if(checkIfPointIsEmpty(x, y))
+            return 0
         var maxLength = 1
 
         maxLength = max(getLengthOfLine(x, y, 1, 0), maxLength)

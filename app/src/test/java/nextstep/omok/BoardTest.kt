@@ -67,6 +67,19 @@ class BoardTest {
         assertThat(list).containsNull()
     }
 
+    @ParameterizedTest(name = "board should return correct length of longest line")
+    @MethodSource("generateBoardGetLengthTestInputs")
+    fun testBoardGetLongestLineLength(inputs: List<Pair<Int, Int>>, checkPoints: List<Pair<Int, Int>>, expectedResults: List<Int>){
+        val board = Board(15, 15)
+        for (input in inputs) {
+            board.tryPlaceStone(input.first, input.second, Board.STONE_WHITE)
+        }
+        for (point in checkPoints.withIndex()){
+            assertThat(board.getLongestLineLength(point.value.first, point.value.second))
+                .isEqualTo(expectedResults[point.index])
+        }
+    }
+
     private fun generateBoardClickTestValidInputs(): Stream<Arguments> {
         return Stream.of(
             Arguments.of(
@@ -101,6 +114,29 @@ class BoardTest {
             Arguments.of(
                 15, 15,
                 listOf(Pair(1, 1), Pair(2, 2), Pair(15, 15))
+            )
+        )
+    }
+
+    private fun generateBoardGetLengthTestInputs(): Stream<Arguments> {
+        return Stream.of(
+            Arguments.of(
+                listOf(Pair(1, 0), Pair(2, 0), Pair(3, 0), Pair(4, 0)),
+                listOf(Pair(2, 0)),
+                listOf(4)
+            ),
+            Arguments.of(
+                listOf(Pair(2, 2), Pair(3, 3), Pair(4, 4), Pair(5, 5), Pair(6, 6)),
+                listOf(Pair(5, 6), Pair(3, 3)),
+                listOf(0, 5)
+            ),
+            Arguments.of(
+                listOf(
+                    Pair(10, 14), Pair(11, 13), Pair(12, 12), Pair(13, 11), Pair(14, 10),
+                    Pair(11, 12), Pair(11, 11)
+                ),
+                listOf(Pair(11, 13), Pair(11, 12)),
+                listOf(5, 3)
             )
         )
     }
