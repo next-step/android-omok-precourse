@@ -8,6 +8,7 @@ import android.widget.Toast
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
