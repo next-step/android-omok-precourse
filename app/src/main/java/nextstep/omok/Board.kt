@@ -26,5 +26,11 @@ class Board {
         else null
     }
 
+    fun placeStone(row: Int, col: Int, player: Int): Boolean {
+        return if (isEmpty(row, col) == true) {
+            board[row][col] = player
+            true
+        } else false
+    }
 
 }
