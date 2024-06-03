@@ -1,27 +1,16 @@
 package nextstep.omok
 
 import org.assertj.core.api.Assertions.*
-import android.content.Context
-import android.graphics.drawable.Drawable
-import android.media.Image
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
-import androidx.core.content.res.ResourcesCompat
 import androidx.test.core.app.ActivityScenario
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import org.junit.Rule
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 class OmokSystemAndroidTest {
 
 
     @Test
-    @DisplayName("board에서 지정한 row, col의 이미지뷰를 가져오는 함수 검사")
     fun getBoardImageViewTest() {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         activityScenario.onActivity {
@@ -30,10 +19,10 @@ class OmokSystemAndroidTest {
             val imageView: ImageView = (board.getChildAt(1) as TableRow).getChildAt(1) as ImageView
             assertThat(omokSystem.getBoardImageView(1,1)).isEqualTo(imageView)
         }
+        activityScenario.close()
     }
 
     @Test
-    @DisplayName("착수 기능 검사")
     fun putStoneTest() {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         activityScenario.onActivity {
@@ -50,10 +39,10 @@ class OmokSystemAndroidTest {
             omokSystem.putStone(1, 1)
             assertThat(omokSystem.getBoardImageView(1, 1)).isEqualTo(oldStone)
         }
+        activityScenario.close()
     }
 
     @Test
-    @DisplayName("combo계산 기능 검사")
     fun calculateCombo() {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
@@ -92,12 +81,11 @@ class OmokSystemAndroidTest {
             assertThat(omokSystem.calculateCombo(4,4)).isEqualTo(5)
             assertThat(omokSystem.calculateCombo(5,5)).isEqualTo(5)
             assertThat(omokSystem.calculateCombo(6,6)).isEqualTo(5)
-
         }
+        activityScenario.close()
     }
 
     @Test
-    @DisplayName("기준 점수를 넘었을 때 종료 플래그 반환")
     fun isGameEndTest() {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
@@ -109,10 +97,11 @@ class OmokSystemAndroidTest {
             assertThat(omokSystem.isGameEnd(omokSystem.scoreCombo)).isEqualTo(true)
             assertThat(omokSystem.isGameEnd(omokSystem.scoreCombo + 1)).isEqualTo(true)
         }
+        activityScenario.close()
+
     }
 
     @Test
-    @DisplayName("보드 초기화 기능 검사")
     fun resetBoardTest() {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
@@ -136,13 +125,14 @@ class OmokSystemAndroidTest {
             }
             assertThat(omokSystem.nowStone).isEqualTo(omokSystem.BLACK)
         }
+        activityScenario.close()
     }
 
-    private fun setStoneBlack(omokSystem: OmokSystem) {
+    fun setStoneBlack(omokSystem: OmokSystem) {
         omokSystem.nowStone = omokSystem.BLACK
     }
 
-    private fun setStoneWhite(omokSystem: OmokSystem) {
+    fun setStoneWhite(omokSystem: OmokSystem) {
         omokSystem.nowStone = omokSystem.WHITE
     }
 }
