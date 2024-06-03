@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
                 setupCell(view, rowIndex, colIndex)
             }
     }
-
     private fun setupCell(view: ImageView, rowIndex: Int, colIndex: Int) {
         view.setOnClickListener {
             handleCellClick(rowIndex, colIndex)
@@ -51,6 +50,8 @@ class MainActivity : AppCompatActivity() {
                 ) as ImageView
             imageView.setImageResource(stone)
             checkWin(gameManager.checkWin(stone, rowIndex, colIndex), stone)
+            checkBoardisFull(gameManager.isBoardFull())
+
         } else { // 돌이 이미 있는 경우
             showToast()
         }
@@ -60,9 +61,9 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "잘못된 위치!", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showReGameAlert(stone: Int) {
+    private fun showReGameAlert(msg: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle(""+gameManager.getStoneName(stone)+" 우승!")
+        builder.setTitle(msg)
         builder.setMessage("게임 재시작?")
         builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
             gameManager.resetGame()
@@ -77,10 +78,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkWin(isWon: Boolean, stone: Int) {
         if (isWon) {
-            showReGameAlert(stone)
+            val msg = ""+gameManager.getStoneName(stone)+" 우승!"
+            showReGameAlert(msg)
         }
     }
 
+    private fun checkBoardisFull(isFull: Boolean) {
+        if(isFull) {
+            val msg = "공간 부족! 무승부입니다"
+            showReGameAlert(msg)
+        }
+    }
     private fun resetBoard() {
         val size = gameManager.getSize()
         val boardLayout = findViewById<TableLayout>(R.id.board)
@@ -92,4 +100,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    }
+}
