@@ -23,4 +23,9 @@ class MainActivity : AppCompatActivity() {
         initializeGame()
     }
 
+    private fun initializeGame() {
+        showMessage("흑돌 차례입니다.")
+        setupBoard()
+    }
+
 }
