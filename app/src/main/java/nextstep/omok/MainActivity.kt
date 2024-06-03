@@ -1,6 +1,7 @@
 package nextstep.omok
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -35,5 +36,13 @@ class MainActivity : AppCompatActivity() {
         val rowIndex = row.indexOfChild(view)
         val columnIndex = board.indexOfChild(row)
         return listOf(rowIndex, columnIndex)
+    }
+
+    fun drawStone(view: ImageView, player: Int){
+        when(player) {
+            1 -> view.setImageResource(R.drawable.black_stone)
+            -1 -> view.setImageResource(R.drawable.white_stone)
+            else -> Log.d("testt", "error")
+        }
     }
 }
