@@ -59,6 +59,11 @@ class MainActivity : AppCompatActivity() {
         view.tag = currentPlayer
     }
 
+    private fun checkWin(view: ImageView): Boolean {
+        val directions = listOf(Pair(1, 0), Pair(0, 1), Pair(1, 1), Pair(1, -1))
+        return directions.any { checkDirection(view, it.first, it.second) }
+    }
+
 
 
 }
