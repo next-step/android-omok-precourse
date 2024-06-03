@@ -10,6 +10,7 @@ import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
     lateinit var board :TableLayout
+    var presenter : GameManager = GameManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
