@@ -111,4 +111,11 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun restartGame() {
+        clearBoard()
+        gameActive = true
+        currentPlayer = "흑돌"
+        showMessage("흑돌 차례입니다.")
+    }
+
 }
