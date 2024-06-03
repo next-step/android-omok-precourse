@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -100,6 +101,14 @@ class MainActivity : AppCompatActivity() {
             newCol += colDelta
         }
         return count
+    }
+
+    private fun showDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("Game Over")
+            .setMessage(message)
+            .setPositiveButton("재시작") { _, _ -> restartGame() }
+            .show()
     }
 
 }
