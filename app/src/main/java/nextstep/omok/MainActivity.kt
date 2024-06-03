@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
@@ -106,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun startNewGame(){
+    private fun startNewGame() {
         freePlay = false
         viewModel.reset()
         clearTable()

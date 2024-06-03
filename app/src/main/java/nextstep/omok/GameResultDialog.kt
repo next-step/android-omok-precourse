@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 class GameResultDialog(
     private val gameResultDialogInterface: GameResultDialogInterface,
     private val text: String
-): DialogFragment() {
+) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,7 +28,7 @@ class GameResultDialog(
         return view
     }
 
-    private fun initiateListeners(view:View){
+    private fun initiateListeners(view: View) {
         val newGameButton = view.findViewById<Button>(R.id.newgame_button)
         val continueButton = view.findViewById<Button>(R.id.continue_button)
 
@@ -42,13 +42,13 @@ class GameResultDialog(
         }
     }
 
-    private fun setTitle(view:View){
+    private fun setTitle(view: View) {
         view.findViewById<TextView>(R.id.titleText).text = text
     }
 
 }
 
-interface GameResultDialogInterface{
+interface GameResultDialogInterface {
     fun onNewGameButtonClick()
     fun onContinueButtonClick()
 }

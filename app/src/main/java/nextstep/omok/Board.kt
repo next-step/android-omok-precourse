@@ -83,13 +83,13 @@ class Board(private val rows: Int, private val cols: Int) {
         return length
     }
 
-    private fun getLengthOfLine(x: Int, y:Int, dx: Int, dy:Int): Int {
+    private fun getLengthOfLine(x: Int, y: Int, dx: Int, dy: Int): Int {
         return getLengthOfSerialOccurrence(x, y, dx, dy, stones[y][x]) +
                 getLengthOfSerialOccurrence(x, y, -dx, -dy, stones[y][x]) + 1
     }
 
     fun getLongestLineLength(x: Int, y: Int): Int {
-        if(checkIfPointIsEmpty(x, y))
+        if (checkIfPointIsEmpty(x, y))
             return 0
         var maxLength = 1
 
@@ -97,7 +97,7 @@ class Board(private val rows: Int, private val cols: Int) {
         maxLength = max(getLengthOfLine(x, y, 0, 1), maxLength)
         maxLength = max(getLengthOfLine(x, y, 1, 1), maxLength)
         maxLength = max(getLengthOfLine(x, y, -1, 1), maxLength)
-        
+
         return maxLength
     }
 
