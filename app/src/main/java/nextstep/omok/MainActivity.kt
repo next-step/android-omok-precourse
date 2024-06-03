@@ -82,4 +82,11 @@ class MainActivity : AppCompatActivity() {
         return countStones(board, row, col, rowDelta, colDelta) >= 5
     }
 
+    private fun countStones(board: TableLayout, row: Int, col: Int, rowDelta: Int, colDelta: Int): Int {
+        var count = 1
+        count += countDirection(board, row, col, rowDelta, colDelta, currentPlayer)
+        count += countDirection(board, row, col, -rowDelta, -colDelta, currentPlayer)
+        return count
+    }
+
 }
