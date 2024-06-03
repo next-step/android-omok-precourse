@@ -50,5 +50,24 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+    internal fun countStonesInDirection(dx: Int, dy: Int, x: Int, y: Int): Int {
+        var count = 0
+        var nx = x
+        var ny = y
+        val targetValue = if (isBlackTurn) 1 else 2
+        while (nx in 0 until 15 && ny in 0 until 15 && stoneList[nx][ny] == targetValue) {
+            count++
+            nx += dx
+            ny += dy
+        }
+        nx = x - dx
+        ny = y - dy
+        while (nx in 0 until 15 && ny in 0 until 15 && stoneList[nx][ny] == targetValue) {
+            count++
+            nx -= dx
+            ny -= dy
+        }
+        return count
+    }
 
 }
