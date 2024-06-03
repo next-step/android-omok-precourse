@@ -31,4 +31,12 @@ class GameManager(private val view : MainActivity) {
             Log.d("exceptionCatch", "exceptionOnGameManager")
         }
     }
+    fun checkWinner(row : Int, col : Int){
+        if (board.isLineOverFive(row, col) == true) {
+            isGameEnd = true
+            val winner = board.checkStone(row, col)
+            if (winner != null) Log.d("winner", "${winner}")
+            else Log.d("nullError", "checkWinner null 발생")
+        }
+    }
 }
