@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.TableLayout
-import android.widget.TableRow
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
     lateinit var putStoneLayout: GridLayout
@@ -16,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private val numCols = 15
     private var blackTurn = true
     val board = Array(numRows) { arrayOfNulls<String>(numCols) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,8 +31,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleStonePlacement(imgView: ImageView, id: Int) {
-        val row = id/numRows
-        val col = id%numCols
+        val row = id / numRows
+        val col = id % numCols
         if (isValidPosition(row, col) == true) {
             placeStone(row, col, imgView)
             if (checkWin(row, col)) {
@@ -65,14 +63,13 @@ class MainActivity : AppCompatActivity() {
     fun checkWin(row: Int, col: Int): Boolean {
         val color = board[row][col] ?: return false
         val directions = listOf(
-            listOf(0 to 1, 0 to -1), // 수평
-            listOf(1 to 0, -1 to 0), // 수직
-            listOf(1 to 1, -1 to -1), // 대각선1
-            listOf(1 to -1, -1 to 1) // 대각선2
+            listOf(0 to 1, 0 to -1),
+            listOf(1 to 0, -1 to 0),
+            listOf(1 to 1, -1 to -1),
+            listOf(1 to -1, -1 to 1),
         )
         return directions.any { direction ->
-            val count = 1 + countStonesInDirection(row, col, direction[0], color) +
-                    countStonesInDirection(row, col, direction[1], color)
+            val count = 1 + countStonesInDirection(row, col, direction[0], color) + countStonesInDirection(row, col, direction[1], color)
             count >= 5
         }
     }
@@ -95,16 +92,13 @@ class MainActivity : AppCompatActivity() {
             .setTitle("Game Over")
             .setMessage("$winner wins!")
             .setPositiveButton("EXIT") { _, _ ->
-                finish() // 현재 액티비티 종료
+                finish()
             }
             .setCancelable(false)
             .show()
     }
 
-    private fun whoIsWinner(isBlackTurn: Boolean): String{
-        if(isBlackTurn)
-            return "Black"
-        else
-            return "White"
+    private fun whoIsWinner(isBlackTurn: Boolean): String {
+        return if (isBlackTurn) "Black" else "White"
     }
 }

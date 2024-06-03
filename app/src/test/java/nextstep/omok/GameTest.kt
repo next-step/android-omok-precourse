@@ -1,22 +1,25 @@
 package nextstep.omok
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class GameTest {
     private lateinit var game: Game
+
     @Before
-    fun setUp(){
-        game = Game(15, 15, true)
+    fun setUp() {
+        game = Game(15, 15)
     }
 
     @Test
     fun testIsValidPosition() {
-        assertNull(game.isValidPosition(-1, 0))  // 범위를 벗어난 경우
-        assertNull(game.isValidPosition(0, 15))  // 범위를 벗어난 경우
-        assertTrue(game.isValidPosition(0, 0)!!)   // 유효한 경우
-        assertTrue(game.isValidPosition(14, 14)!!) // 유효한 경우
+        assertNull(game.isValidPosition(-1, 0))
+        assertNull(game.isValidPosition(0, 15))
+        assertTrue(game.isValidPosition(1, 1)!!)
+        assertTrue(game.isValidPosition(14, 14)!!)
     }
 
     @Test
@@ -32,6 +35,6 @@ class GameTest {
         for (i in 0..4) {
             game.board[i][0] = "black"
         }
-        assertEquals(4, game.countStonesInDirection(0, 0, 1 to 0, "black"))
+        assertEquals(/* expected = */ 4, /* actual = */ game.countStoneInDirection(0, 0, 1 to 0, "black"))
     }
 }
