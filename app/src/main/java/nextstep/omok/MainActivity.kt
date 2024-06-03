@@ -46,4 +46,11 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun placeStone(view: ImageView) {
+        if (view.drawable != null) return
+        setImageForCurrentPlayer(view)
+        if (checkWin(view)) handleWin()
+        else switchPlayer()
+    }
+
 }
