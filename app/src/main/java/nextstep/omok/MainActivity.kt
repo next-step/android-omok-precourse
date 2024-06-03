@@ -13,16 +13,14 @@ sealed class Result {
 }
 
 class MainActivity : AppCompatActivity() {
+
+    private var currentPlayer = "흑돌"
+    private var gameActive = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val board = findViewById<TableLayout>(R.id.board)
-        board
-            .children
-            .filterIsInstance<TableRow>()
-            .flatMap { it.children }
-            .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+        initializeGame()
     }
+
 }
