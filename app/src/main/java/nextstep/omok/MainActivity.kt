@@ -54,9 +54,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setImageForCurrentPlayer(view: ImageView) {
-        val resource = if (currentPlayer == "Black Stone") R.drawable.black_stone else R.drawable.white_stone
+        val resource = if (currentPlayer == "흑돌") R.drawable.black_stone else R.drawable.white_stone
         view.setImageResource(resource)
         view.tag = currentPlayer
     }
+
+
 
 }
