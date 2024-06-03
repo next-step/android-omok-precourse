@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         return directions.any { checkDirection(view, it.first, it.second) }
     }
 
-
+    private fun handleWin() {
+        gameActive = false
+        showDialog("$currentPlayer wins!")
+    }
 
 }
