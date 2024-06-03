@@ -89,4 +89,17 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
+    private fun countDirection(board: TableLayout, row: Int, col: Int, rowDelta: Int, colDelta: Int, player: String): Int {
+        var count = 0
+        var newRow = row + rowDelta
+        var newCol = col + colDelta
+        while (newRow in 0 until board.childCount && newCol in 0 until (board.getChildAt(newRow) as TableRow).childCount) {
+            val cell = (board.getChildAt(newRow) as TableRow).getChildAt(newCol) as? ImageView ?: return count
+            if (cell.tag == player) count++ else break
+            newRow += rowDelta
+            newCol += colDelta
+        }
+        return count
+    }
+
 }
