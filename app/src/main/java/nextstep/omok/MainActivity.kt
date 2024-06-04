@@ -1,11 +1,12 @@
 package nextstep.omok
 
-import android.graphics.Path.Direction
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -25,18 +26,28 @@ class MainActivity : AppCompatActivity() {
     lateinit var board: TableLayout
     lateinit var blackPlayerFlag: ImageView
     lateinit var whitePlayerFlag: ImageView
+    lateinit var restartButton: TextView
+    lateinit var winnerIs: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        board = findViewById(R.id.board)
-        blackPlayerFlag = findViewById(R.id.black_player_flag)
-        whitePlayerFlag = findViewById(R.id.white_player_flag)
-
+        // 초기화
+        initializeViews()
         initializeBoard(board)
         updatePlayerFlag()
     }
+
+    private fun initializeViews() {
+        board = findViewById<TableLayout>(R.id.board)
+        blackPlayerFlag = findViewById<ImageView>(R.id.black_player_flag)
+        whitePlayerFlag = findViewById<ImageView>(R.id.white_player_flag)
+        restartButton = findViewById<TextView>(R.id.restart_button)
+        winnerIs = findViewById<TextView>(R.id.winner_is)
+        restartButton.visibility = View.GONE
+        winnerIs.visibility = View.GONE
+    }
+
 
     private fun initializeBoard(board: TableLayout) {
         board.children.filterIsInstance<TableRow>().forEachIndexed { rowIndex, tableRow ->
@@ -48,13 +59,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCellClick(cell: Cell) {
-
         val position = cell.position
         if (position != null) {
             if (cell.isEmpty()) {
                 cell.placeStone(currentPlayer.stone)
                 Log.d("gamee", "${currentPlayer.name} turn :  ${position.first} ${position.second}")
                 if (checkWinCondition(position.first, position.second)) {
+                    displayEnding()
                     Log.d("gamee", "${currentPlayer.name} wins!")
                 } else {
                     switchPlayer()
@@ -63,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun updatePlayerFlag() {
         when (currentPlayer) {
@@ -124,5 +134,11 @@ class MainActivity : AppCompatActivity() {
         val result = cell?.currentStone == currentPlayer.stone
         Log.d("gamee", "isSamePlayerStone : Checking stone at ($row, $col): $result")
         return result
+    }
+
+    private fun displayEnding() {
+        winnerIs.text = "${currentPlayer.stone}이 승리했습니다."
+        restartButton.visibility = View.VISIBLE
+        winnerIs.visibility = View.VISIBLE
     }
 }
