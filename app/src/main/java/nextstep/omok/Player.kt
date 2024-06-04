@@ -1,3 +1,3 @@
 package nextstep.omok
 
-class Player(val name: String, val stoneResId: Int, val highlightResId: Int)
+class Player(val name: String, val stone: Stone, val playerResId: Int)
