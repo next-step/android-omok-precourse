@@ -9,17 +9,18 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
-
 // GameView.kt
 interface GameView {
     fun initializeBoard()
+
     fun updatePlayerFlag(player: Player)
+
     fun displayEnding(message: String)
+
     fun onCellClick(cell: Cell)
 }
 
 class MainActivity : AppCompatActivity(), GameView {
-
     private lateinit var gameEngine: GameEngine
     private lateinit var board: TableLayout
     private lateinit var blackPlayerFlag: ImageView
@@ -73,10 +74,9 @@ class MainActivity : AppCompatActivity(), GameView {
         }
     }
 
-
     override fun updatePlayerFlag(player: Player) {
         when (player) {
-             gameEngine.blackPlayer -> {
+            gameEngine.blackPlayer -> {
                 blackPlayerFlag.setImageResource(player.playerResId)
                 whitePlayerFlag.setImageResource(gameEngine.whitePlayer.stone.resId)
             }

@@ -1,9 +1,10 @@
 package nextstep.omok
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-
 
 class GameEngineTest {
     private lateinit var gameEngine: GameEngine
@@ -16,12 +17,15 @@ class GameEngineTest {
         gameEngine.startGame()
     }
 
-    private val directions = listOf(
-        Direction(1, 0),  // horizontal
-        Direction(0, 1),  // vertical
-        Direction(1, 1),  // diagonal down-right
-        Direction(1, -1)  // diagonal down-left
-    )
+    // horizontal, vertical, diagonal down-right, diagonal down-left
+    private val directions =
+        listOf(
+            Direction(1, 0),
+            Direction(0, 1),
+            Direction(1, 1),
+            Direction(1, -1),
+        )
+
     private fun getCurrentPlayer(): Player {
         return gameEngine.currentPlayer
     }
@@ -33,10 +37,9 @@ class GameEngineTest {
         }
     }
 
-    private fun getBoardSize() : Int {
-        return gameEngine.BOARD_SIZE
+    private fun getBoardSize(): Int {
+        return gameEngine.boardSize
     }
-
 
     @Test
     fun `(startGame) initialize the game with black player`() {
@@ -45,7 +48,7 @@ class GameEngineTest {
 
     @Test
     fun `(isDraw) return false when turn count is less than the maximum`() {
-        val maxTurns = gameEngine.BOARD_SIZE * gameEngine.BOARD_SIZE
+        val maxTurns = gameEngine.boardSize * gameEngine.boardSize
         repeat(maxTurns - 1) {
             if (it == 0) assertFalse(gameEngine.isDraw())
             gameEngine.handleCellClick(FakeCell(0, 0)) // Simulate turns until one less than the maximum
@@ -55,7 +58,7 @@ class GameEngineTest {
 
     @Test
     fun `(isDraw) return true when turn count reaches the maximum`() {
-        val maxTurns = gameEngine.BOARD_SIZE * gameEngine.BOARD_SIZE
+        val maxTurns = gameEngine.boardSize * gameEngine.boardSize
         repeat(maxTurns) {
             gameEngine.handleCellClick(FakeCell(0, 0)) // Simulate turns until reaching the maximum
         }
@@ -84,7 +87,7 @@ class GameEngineTest {
         val (row, col) = 7 to 7
         gameEngine.boardStatus[row][col] = getCurrentPlayer().stone
 
-        directions.forEach{ (dx, dy) ->
+        directions.forEach { (dx, dy) ->
             assertEquals(gameEngine.countStones(row, col, dx, dy), 0)
         }
     }
@@ -94,10 +97,10 @@ class GameEngineTest {
         val (row, col) = 7 to 7
         val currentPlayer = getCurrentPlayer()
         gameEngine.boardStatus[row][col] = currentPlayer.stone
-        directions.forEach{ (dx, dy) ->
+        directions.forEach { (dx, dy) ->
             gameEngine.boardStatus[row + dx][col + dy] = currentPlayer.stone
         }
-        directions.forEach{ (dx, dy) ->
+        directions.forEach { (dx, dy) ->
             assertEquals(gameEngine.countStones(row, col, dx, dy), 1)
         }
     }
@@ -108,10 +111,10 @@ class GameEngineTest {
         val currentPlayer = getCurrentPlayer()
         val otherPlayer = getOtherPlayer()
         gameEngine.boardStatus[row][col] = currentPlayer.stone
-        directions.forEach{ (dx, dy) ->
+        directions.forEach { (dx, dy) ->
             gameEngine.boardStatus[row + dx][col + dy] = otherPlayer.stone
         }
-        directions.forEach{ (dx, dy) ->
+        directions.forEach { (dx, dy) ->
             assertEquals(gameEngine.countStones(row, col, dx, dy), 0)
         }
     }
@@ -150,8 +153,8 @@ class GameEngineTest {
 
         gameEngine.boardStatus[row][col] = currentPlayer.stone
 
-        directions.forEach{ (dx, dy) ->
-            for (i in 0..gameEngine.OMOK_COUNT/2) {
+        directions.forEach { (dx, dy) ->
+            for (i in 0..gameEngine.omokCount / 2) {
                 gameEngine.boardStatus[row + dx * i][col + dy * i] = currentPlayer.stone
                 gameEngine.boardStatus[row + dx * -i][col + dy * -i] = currentPlayer.stone
             }
@@ -167,9 +170,10 @@ class GameEngineTest {
 
         gameEngine.boardStatus[row][col] = currentPlayer.stone
 
-        directions.forEach{ (dx, dy) ->
-            for (i in 0..gameEngine.OMOK_COUNT/2) {
-                gameEngine.boardStatus[row + dx * i][col + dy * i] = currentPlayer.stone }
+        directions.forEach { (dx, dy) ->
+            for (i in 0..gameEngine.omokCount / 2) {
+                gameEngine.boardStatus[row + dx * i][col + dy * i] = currentPlayer.stone
+            }
         }
         assertFalse(gameEngine.isWin(FakeCell(row, col)))
     }
@@ -180,8 +184,8 @@ class GameEngineTest {
         changePlayer()
         val currentPlayer = getCurrentPlayer()
         // 최악의 경우: 모든 방향으로 최대치의 순회
-        repeat(gameEngine.BOARD_SIZE) { r ->
-            repeat(gameEngine.BOARD_SIZE) { c ->
+        repeat(gameEngine.boardSize) { r ->
+            repeat(gameEngine.boardSize) { c ->
                 gameEngine.boardStatus[r][c] = currentPlayer.stone
             }
         }
@@ -215,15 +219,15 @@ class GameEngineTest {
         val col = getBoardSize() + 6
         assertFalse(gameEngine.isWithinBounds(row, col))
     }
-
 }
 
-
-class FakeCell(private val row : Int,private val col : Int) : Cell {
+class FakeCell(private val row: Int, private val col: Int) : Cell {
     override var position: Pair<Int, Int>? = null
+
     init {
         position = row to col
     }
+
     override fun isEmpty(): Boolean {
         // FakeCell은 항상 비어있는 것으로 간주
         return true
@@ -250,4 +254,3 @@ class FakeGameView : GameView {
         TODO("Not yet implemented")
     }
 }
-

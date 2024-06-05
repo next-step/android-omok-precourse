@@ -3,10 +3,10 @@ package nextstep.omok
 import android.content.Context
 import android.util.AttributeSet
 
-class ImageViewCell (
+class ImageViewCell(
     context: Context,
-    attrs: AttributeSet? = null
-) : androidx.appcompat.widget.AppCompatImageView(context, attrs), Cell{
+    attrs: AttributeSet? = null,
+) : androidx.appcompat.widget.AppCompatImageView(context, attrs), Cell {
     override var position: Pair<Int, Int>? = null
     var currentStone: Stone? = null // black or white or null
 

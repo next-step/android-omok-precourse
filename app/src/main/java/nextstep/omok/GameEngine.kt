@@ -1,24 +1,25 @@
 package nextstep.omok
+
 // Model
 class GameEngine(private val view: GameView) {
     enum class GameState {
         ONGOING,
         WIN,
-        DRAW
+        DRAW,
     }
 
     var gameState: GameState = GameState.ONGOING
         private set
 
-    val BOARD_SIZE = 15
-    val OMOK_COUNT = 5
+    val boardSize = 15
+    val omokCount = 5
 
     lateinit var blackPlayer: Player
     lateinit var whitePlayer: Player
     lateinit var currentPlayer: Player
     private var moveCount: Int = 0
 
-    var boardStatus = Array(BOARD_SIZE) { Array<Stone?>(BOARD_SIZE) { null } }
+    var boardStatus = Array(boardSize) { Array<Stone?>(boardSize) { null } }
 
     fun startGame() {
         try {
@@ -30,11 +31,10 @@ class GameEngine(private val view: GameView) {
         }
     }
 
-
     fun resetGame() {
         moveCount = 0
         gameState = GameState.ONGOING
-        boardStatus = Array(BOARD_SIZE) { Array<Stone?>(BOARD_SIZE) { null } }
+        boardStatus = Array(boardSize) { Array<Stone?>(boardSize) { null } }
         startGame()
     }
 
@@ -50,7 +50,6 @@ class GameEngine(private val view: GameView) {
         currentPlayer = blackPlayer
     }
 
-
     fun handleCellClick(cell: Cell) {
         moveCount++
         cell.position?.let { (row, col) ->
@@ -58,7 +57,6 @@ class GameEngine(private val view: GameView) {
             handleTurnResult(cell)
         }
     }
-
 
     private fun handleTurnResult(cell: Cell) {
         when {
@@ -78,30 +76,33 @@ class GameEngine(private val view: GameView) {
         }
     }
 
-
     fun isDraw(): Boolean {
-        return moveCount == BOARD_SIZE * BOARD_SIZE
+        return moveCount == boardSize * boardSize
     }
 
+    // horizontal, vertical, diagonal down-right, diagonal down-left
+    private val directions =
+        listOf(
+            Direction(1, 0),
+            Direction(0, 1),
+            Direction(1, 1),
+            Direction(1, -1),
+        )
 
-    private val directions = listOf(
-        Direction(1, 0),  // horizontal
-        Direction(0, 1),  // vertical
-        Direction(1, 1),  // diagonal down-right
-        Direction(1, -1)  // diagonal down-left
-    )
-
-
-     fun isWin(cell: Cell): Boolean {
-        val (row, col) = cell.position?: return false
+    fun isWin(cell: Cell): Boolean {
+        val (row, col) = cell.position ?: return false
         return directions.any { (dx, dy) ->
             val count = 1 + countStones(row, col, dx, dy) + countStones(row, col, -dx, -dy)
-            count >= OMOK_COUNT
+            count >= omokCount
         }
     }
 
-
-     fun countStones(row: Int, col: Int, dx: Int, dy: Int): Int {
+    fun countStones(
+        row: Int,
+        col: Int,
+        dx: Int,
+        dy: Int,
+    ): Int {
         var nextRow = row + dx
         var nextCol = col + dy
 
@@ -111,21 +112,25 @@ class GameEngine(private val view: GameView) {
         return 0
     }
 
-
-    fun isWithinBounds(row: Int, col: Int): Boolean {
-        return row in 0 until BOARD_SIZE && col in 0 until BOARD_SIZE
+    fun isWithinBounds(
+        row: Int,
+        col: Int,
+    ): Boolean {
+        return row in 0 until boardSize && col in 0 until boardSize
     }
 
-
-    fun isCurrentPlayerStone(row: Int, col: Int): Boolean {
+    fun isCurrentPlayerStone(
+        row: Int,
+        col: Int,
+    ): Boolean {
         return boardStatus[row][col] == currentPlayer.stone
     }
 
-
     private fun switchPlayer() {
-        currentPlayer = when (currentPlayer) {
-            blackPlayer -> whitePlayer
-            else -> blackPlayer
-        }
+        currentPlayer =
+            when (currentPlayer) {
+                blackPlayer -> whitePlayer
+                else -> blackPlayer
+            }
     }
 }
