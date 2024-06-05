@@ -35,6 +35,12 @@ class MainActivity : AppCompatActivity(), GameView {
         initializeViews()
         gameEngine = GameEngine(this)
         gameEngine.startGame()
+
+        restartButton.setOnClickListener {
+            gameEngine.restartGame()
+            restartButton.visibility = View.GONE
+            winnerIs.visibility = View.GONE
+        }
     }
 
     private fun initializeViews() {
@@ -52,11 +58,14 @@ class MainActivity : AppCompatActivity(), GameView {
             tableRow.children.filterIsInstance<ImageViewCell>().forEachIndexed { colIndex, cell ->
                 cell.position = Pair(rowIndex, colIndex)
                 cell.setOnClickListener { onCellClick(cell) }
+                cell.setImageResource(android.R.color.transparent)
             }
         }
     }
 
     override fun onCellClick(cell: Cell) {
+        if (gameEngine.gameIsOver()) return
+
         val imageViewCell = cell as? ImageViewCell
         val position = imageViewCell?.position
         if (position != null && imageViewCell.isEmpty()) {

@@ -1,6 +1,15 @@
 package nextstep.omok
 // Model
 class GameEngine(private val view: GameView) {
+    enum class GameState {
+        ONGOING,
+        WIN,
+        DRAW
+    }
+
+    var gameState: GameState = GameState.ONGOING
+        private set
+
     val BOARD_SIZE = 15
     val OMOK_COUNT = 5
 
@@ -15,7 +24,16 @@ class GameEngine(private val view: GameView) {
         initializePlayers()
         view.initializeBoard()
         view.updatePlayerFlag(currentPlayer)
+    }
+
+    fun restartGame() {
+        gameState = GameState.ONGOING
         boardStatus = Array(BOARD_SIZE) { Array<Stone?>(BOARD_SIZE) { null } }
+        startGame()
+    }
+
+    fun gameIsOver(): Boolean {
+        return gameState != GameState.ONGOING
     }
 
     private fun initializePlayers() {
@@ -37,17 +55,23 @@ class GameEngine(private val view: GameView) {
 
 
     private fun checkGameEnd(cell: Cell) {
-        val isWin = isWinningMove(cell)
-        val isDraw = isDraw()
-
-        if (isWin || isDraw) {
-            val message = if (isWin) "${currentPlayer.stone}이 승리했습니다." else "무승부입니다."
-            view.displayEnding(message)
-        } else {
-            switchPlayer()
-            view.updatePlayerFlag(currentPlayer)
+        when {
+            isWin(cell) -> {
+                gameState = GameState.WIN
+                val message = "${currentPlayer.stone}이 승리했습니다."
+                view.displayEnding(message)
+            }
+            isDraw() -> {
+                gameState = GameState.DRAW
+                view.displayEnding("무승부입니다.")
+            }
+            else -> {
+                switchPlayer()
+                view.updatePlayerFlag(currentPlayer)
+            }
         }
     }
+
 
 
     fun isDraw(): Boolean {
@@ -62,7 +86,7 @@ class GameEngine(private val view: GameView) {
         Direction(1, -1)  // diagonal down-left
     )
 
-     fun isWinningMove(cell: Cell): Boolean {
+     fun isWin(cell: Cell): Boolean {
         val (row, col) = cell.position?: return false
         return directions.any { (dx, dy) ->
             val count = 1 + countStones(row, col, dx, dy) + countStones(row, col, -dx, -dy)
