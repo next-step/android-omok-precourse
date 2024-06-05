@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), GameView {
 
     override fun initializeBoard() {
         board.children.filterIsInstance<TableRow>().forEachIndexed { rowIndex, tableRow ->
-            tableRow.children.filterIsInstance<Cell>().forEachIndexed { colIndex, cell ->
+            tableRow.children.filterIsInstance<ImageViewCell>().forEachIndexed { colIndex, cell ->
                 cell.position = Pair(rowIndex, colIndex)
                 cell.setOnClickListener { onCellClick(cell) }
             }
@@ -57,10 +57,11 @@ class MainActivity : AppCompatActivity(), GameView {
     }
 
     override fun onCellClick(cell: Cell) {
-        val position = cell.position
-        if (position != null && cell.isEmpty()) {
-            cell.placeStone(gameEngine.currentPlayer.stone)
-            gameEngine.onCellClick(cell)
+        val imageViewCell = cell as? ImageViewCell
+        val position = imageViewCell?.position
+        if (position != null && imageViewCell.isEmpty()) {
+            imageViewCell.placeStone(gameEngine.currentPlayer.stone)
+            gameEngine.onCellClick(imageViewCell)
         }
     }
 

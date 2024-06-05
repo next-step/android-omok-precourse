@@ -2,15 +2,19 @@ package nextstep.omok
 
 import android.content.Context
 import android.util.AttributeSet
+interface Cell {
+    var position: Pair<Int, Int>?
+    fun isEmpty(): Boolean
+}
 
-class Cell (
+class ImageViewCell (
     context: Context,
     attrs: AttributeSet? = null
-) : androidx.appcompat.widget.AppCompatImageView(context, attrs){
-    var position: Pair<Int, Int>? = null
+) : androidx.appcompat.widget.AppCompatImageView(context, attrs), Cell{
+    override var position: Pair<Int, Int>? = null
     var currentStone: Stone? = null // black or white or null
 
-    fun isEmpty(): Boolean {
+    override fun isEmpty(): Boolean {
         val transparentDrawable = resources.getDrawable(android.R.color.transparent, null)
         return drawable == null || drawable.constantState == transparentDrawable.constantState
     }
