@@ -16,23 +16,29 @@ class GameEngine(private val view: GameView) {
     lateinit var blackPlayer: Player
     lateinit var whitePlayer: Player
     lateinit var currentPlayer: Player
-    private var turnCount: Int = 0
+    private var moveCount: Int = 0
 
     var boardStatus = Array(BOARD_SIZE) { Array<Stone?>(BOARD_SIZE) { null } }
 
     fun startGame() {
-        initializePlayers()
-        view.initializeBoard()
-        view.updatePlayerFlag(currentPlayer)
+        try {
+            initializePlayers()
+            view.initializeBoard()
+            view.updatePlayerFlag(currentPlayer)
+        } catch (e: Exception) {
+            view.displayEnding("게임을 시작하는 동안 오류가 발생했습니다: ${e.message}")
+        }
     }
 
-    fun restartGame() {
+
+    fun resetGame() {
+        moveCount = 0
         gameState = GameState.ONGOING
         boardStatus = Array(BOARD_SIZE) { Array<Stone?>(BOARD_SIZE) { null } }
         startGame()
     }
 
-    fun gameIsOver(): Boolean {
+    fun isGameOver(): Boolean {
         return gameState != GameState.ONGOING
     }
 
@@ -45,16 +51,16 @@ class GameEngine(private val view: GameView) {
     }
 
 
-    fun onCellClick(cell: Cell) {
-        turnCount++
+    fun handleCellClick(cell: Cell) {
+        moveCount++
         cell.position?.let { (row, col) ->
             boardStatus[row][col] = currentPlayer.stone
-            checkGameEnd(cell)
+            handleTurnResult(cell)
         }
     }
 
 
-    private fun checkGameEnd(cell: Cell) {
+    private fun handleTurnResult(cell: Cell) {
         when {
             isWin(cell) -> {
                 gameState = GameState.WIN
@@ -73,9 +79,8 @@ class GameEngine(private val view: GameView) {
     }
 
 
-
     fun isDraw(): Boolean {
-        return turnCount == BOARD_SIZE * BOARD_SIZE
+        return moveCount == BOARD_SIZE * BOARD_SIZE
     }
 
 
@@ -85,6 +90,7 @@ class GameEngine(private val view: GameView) {
         Direction(1, 1),  // diagonal down-right
         Direction(1, -1)  // diagonal down-left
     )
+
 
      fun isWin(cell: Cell): Boolean {
         val (row, col) = cell.position?: return false
@@ -99,19 +105,22 @@ class GameEngine(private val view: GameView) {
         var nextRow = row + dx
         var nextCol = col + dy
 
-        if (isWithinBounds(nextRow, nextCol) && isSamePlayerStone(nextRow, nextCol)) {
+        if (isWithinBounds(nextRow, nextCol) && isCurrentPlayerStone(nextRow, nextCol)) {
             return 1 + countStones(nextRow, nextCol, dx, dy)
         }
         return 0
     }
 
+
     fun isWithinBounds(row: Int, col: Int): Boolean {
         return row in 0 until BOARD_SIZE && col in 0 until BOARD_SIZE
     }
 
-    fun isSamePlayerStone(row: Int, col: Int): Boolean {
+
+    fun isCurrentPlayerStone(row: Int, col: Int): Boolean {
         return boardStatus[row][col] == currentPlayer.stone
     }
+
 
     private fun switchPlayer() {
         currentPlayer = when (currentPlayer) {
@@ -119,5 +128,4 @@ class GameEngine(private val view: GameView) {
             else -> blackPlayer
         }
     }
-
 }

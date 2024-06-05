@@ -35,12 +35,6 @@ class MainActivity : AppCompatActivity(), GameView {
         initializeViews()
         gameEngine = GameEngine(this)
         gameEngine.startGame()
-
-        restartButton.setOnClickListener {
-            gameEngine.restartGame()
-            restartButton.visibility = View.GONE
-            winnerIs.visibility = View.GONE
-        }
     }
 
     private fun initializeViews() {
@@ -49,8 +43,13 @@ class MainActivity : AppCompatActivity(), GameView {
         whitePlayerFlag = findViewById(R.id.white_player_flag)
         restartButton = findViewById(R.id.restart_button)
         winnerIs = findViewById(R.id.winner_is)
-        restartButton.visibility = View.GONE
         winnerIs.visibility = View.GONE
+        restartButton.visibility = View.GONE
+        restartButton.setOnClickListener {
+            gameEngine.resetGame()
+            restartButton.visibility = View.GONE
+            winnerIs.visibility = View.GONE
+        }
     }
 
     override fun initializeBoard() {
@@ -64,13 +63,13 @@ class MainActivity : AppCompatActivity(), GameView {
     }
 
     override fun onCellClick(cell: Cell) {
-        if (gameEngine.gameIsOver()) return
+        if (gameEngine.isGameOver()) return
 
         val imageViewCell = cell as? ImageViewCell
         val position = imageViewCell?.position
         if (position != null && imageViewCell.isEmpty()) {
             imageViewCell.placeStone(gameEngine.currentPlayer.stone)
-            gameEngine.onCellClick(imageViewCell)
+            gameEngine.handleCellClick(imageViewCell)
         }
     }
 

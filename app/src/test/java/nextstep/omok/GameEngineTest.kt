@@ -1,6 +1,5 @@
 package nextstep.omok
 
-import android.content.Context
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,18 +22,18 @@ class GameEngineTest {
         Direction(1, 1),  // diagonal down-right
         Direction(1, -1)  // diagonal down-left
     )
-    fun getCurrentPlayer(): Player {
+    private fun getCurrentPlayer(): Player {
         return gameEngine.currentPlayer
     }
 
-    fun getOtherPlayer(): Player {
+    private fun getOtherPlayer(): Player {
         return when (getCurrentPlayer()) {
             gameEngine.blackPlayer -> gameEngine.whitePlayer
             else -> gameEngine.blackPlayer
         }
     }
 
-    fun getBoardSize() : Int {
+    private fun getBoardSize() : Int {
         return gameEngine.BOARD_SIZE
     }
 
@@ -49,7 +48,7 @@ class GameEngineTest {
         val maxTurns = gameEngine.BOARD_SIZE * gameEngine.BOARD_SIZE
         repeat(maxTurns - 1) {
             if (it == 0) assertFalse(gameEngine.isDraw())
-            gameEngine.onCellClick(FakeCell(0, 0)) // Simulate turns until one less than the maximum
+            gameEngine.handleCellClick(FakeCell(0, 0)) // Simulate turns until one less than the maximum
         }
         assertFalse(gameEngine.isDraw()) // isDraw should be false if not yet reached the maximum
     }
@@ -58,26 +57,26 @@ class GameEngineTest {
     fun `(isDraw) return true when turn count reaches the maximum`() {
         val maxTurns = gameEngine.BOARD_SIZE * gameEngine.BOARD_SIZE
         repeat(maxTurns) {
-            gameEngine.onCellClick(FakeCell(0, 0)) // Simulate turns until reaching the maximum
+            gameEngine.handleCellClick(FakeCell(0, 0)) // Simulate turns until reaching the maximum
         }
         assertTrue(gameEngine.isDraw()) // isDraw should be true when reached the maximum
     }
 
     @Test
-    fun `(isSamePlayerStone) return true when the stone matches the current player's stone`() {
+    fun `(isCurrentPlayerStone) return true when the stone matches the current player's stone`() {
         val (row, col) = 7 to 7
         val currentPlayer = getCurrentPlayer()
         gameEngine.boardStatus[row][col] = currentPlayer.stone
 
-        assertTrue(gameEngine.isSamePlayerStone(row, col))
+        assertTrue(gameEngine.isCurrentPlayerStone(row, col))
     }
 
     @Test
-    fun `(isSamePlayerStone) return false when the stone does not match the current player's stone`() {
+    fun `(isCurrentPlayerStone) return false when the stone does not match the current player's stone`() {
         val (row, col) = 7 to 7
         gameEngine.boardStatus[row][col] = getOtherPlayer().stone
 
-        assertFalse(gameEngine.isSamePlayerStone(row, col))
+        assertFalse(gameEngine.isCurrentPlayerStone(row, col))
     }
 
     @Test
@@ -121,7 +120,7 @@ class GameEngineTest {
     fun `(isWinningMove) Case1_countStones = 1`() {
         val (row, col) = 7 to 7
         gameEngine.boardStatus[row][col] = getCurrentPlayer().stone
-        assertFalse(gameEngine.isWinningMove(FakeCell(row, col)))
+        assertFalse(gameEngine.isWin(FakeCell(row, col)))
     }
 
     fun printBoardStatus(boardStatus: Array<Array<Stone?>>) {
@@ -137,7 +136,7 @@ class GameEngineTest {
         }
     }
 
-    fun changePlayer() {
+    private fun changePlayer() {
         gameEngine.currentPlayer = gameEngine.whitePlayer
         // println("CurrentPlayer is " + getCurrentPlayer().name)
         // println("OtherPlayer is " + getOtherPlayer().name)
@@ -145,7 +144,7 @@ class GameEngineTest {
 
     @Test
     fun `(isWinningMove) when count is exactly OMOK_COUNT`() {
-        var (row, col) = 7 to 7
+        val (row, col) = 7 to 7
         changePlayer()
         val currentPlayer = getCurrentPlayer()
 
@@ -157,12 +156,12 @@ class GameEngineTest {
                 gameEngine.boardStatus[row + dx * -i][col + dy * -i] = currentPlayer.stone
             }
         }
-        assertTrue(gameEngine.isWinningMove(FakeCell(row, col)))
+        assertTrue(gameEngine.isWin(FakeCell(row, col)))
     }
 
     @Test
     fun `(isWinningMove) when count is less than OMOK_COUNT`() {
-        var (row, col) = 7 to 7
+        val (row, col) = 7 to 7
         changePlayer()
         val currentPlayer = getCurrentPlayer()
 
@@ -172,12 +171,12 @@ class GameEngineTest {
             for (i in 0..gameEngine.OMOK_COUNT/2) {
                 gameEngine.boardStatus[row + dx * i][col + dy * i] = currentPlayer.stone }
         }
-        assertFalse(gameEngine.isWinningMove(FakeCell(row, col)))
+        assertFalse(gameEngine.isWin(FakeCell(row, col)))
     }
 
     @Test
     fun `(isWinningMove) when count is greater than OMOK_COUNT`() {
-        var (row, col) = 7 to 7
+        val (row, col) = 7 to 7
         changePlayer()
         val currentPlayer = getCurrentPlayer()
         // 최악의 경우: 모든 방향으로 최대치의 순회
@@ -186,7 +185,7 @@ class GameEngineTest {
                 gameEngine.boardStatus[r][c] = currentPlayer.stone
             }
         }
-        assertTrue(gameEngine.isWinningMove(FakeCell(row, col)))
+        assertTrue(gameEngine.isWin(FakeCell(row, col)))
     }
 
     @Test
@@ -220,14 +219,11 @@ class GameEngineTest {
 }
 
 
-class FakeCell(val row : Int, val col : Int) : Cell {
+class FakeCell(private val row : Int,private val col : Int) : Cell {
     override var position: Pair<Int, Int>? = null
-    var stone: Stone? = null
-
     init {
         position = row to col
     }
-
     override fun isEmpty(): Boolean {
         // FakeCell은 항상 비어있는 것으로 간주
         return true
@@ -235,8 +231,8 @@ class FakeCell(val row : Int, val col : Int) : Cell {
 }
 
 class FakeGameView : GameView {
-    var isBoardInitialized = false
-    var isPlayerFlagUpdated = false
+    private var isBoardInitialized = false
+    private var isPlayerFlagUpdated = false
 
     override fun initializeBoard() {
         isBoardInitialized = true
