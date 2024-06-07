@@ -10,6 +10,7 @@ import androidx.core.view.children
 
 const val PLAYER_BLACK = 'B'
 const val PLAYER_WHITE = 'W'
+const val BOARD_SIZE = 15
 
 class MainActivity : AppCompatActivity() {
 
@@ -84,5 +85,46 @@ class MainActivity : AppCompatActivity() {
         else {
             currentPlayer = PLAYER_BLACK
         }
+    }
+
+    private fun checkWin(row: Int, col: Int): Boolean {
+        val board = findViewById<TableLayout>(R.id.board)
+        val cell = (board.getChildAt(row) as TableRow).getChildAt(col) as ImageView
+        val directions = listOf(
+            listOf(0 to 1, 0 to -1),
+            listOf(1 to 0, -1 to 0),
+            listOf(1 to 1, -1 to -1),
+            listOf(1 to -1, -1 to 1)
+        )
+        for (direction in directions) {
+            var count = 1
+            for ((dr, dc) in direction) {
+                count += countStonesInDirection(row, col, dr, dc, cell.tag as Char)
+            }
+            if (count >= 5) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun countStonesInDirection(row: Int, col: Int, dr: Int, dc: Int, player: Char): Int {
+        val board = findViewById<TableLayout>(R.id.board)
+        var count = 0
+        var r = row + dr
+        var c = col + dc
+
+        while (r in 0 until BOARD_SIZE && c in 0 until BOARD_SIZE) {
+            val cell = (board.getChildAt(r) as TableRow).getChildAt(c) as ImageView
+            if (cell.tag == player) {
+                count ++
+                r += dr
+                c += dc
+            }
+            else {
+                break
+            }
+        }
+        return count
     }
 }
