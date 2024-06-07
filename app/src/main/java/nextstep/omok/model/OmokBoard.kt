@@ -20,4 +20,8 @@ object OmokBoard {
     fun getBoard(): List<List<IntersectionState>> {
         return omokBoard
     }
+
+    fun getBoardIntersection(row: Int, col: Int): IntersectionState {
+        return omokBoard[row][col]
+    }
 }

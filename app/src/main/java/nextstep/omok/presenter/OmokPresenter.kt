@@ -2,14 +2,17 @@ package nextstep.omok.presenter
 
 import nextstep.omok.OmokContract
 import nextstep.omok.model.GameState
+import nextstep.omok.model.IntersectionState
 
 class OmokPresenter(
     private var activity: OmokContract.OmokView,
     private var model: OmokContract.OmokModel
 ) : OmokContract.OmokPresenter {
     override fun onIntersectionClick(rowIndex: Int, colIndex: Int) {
-        updateBoard(rowIndex, colIndex)
-        checkWinnerExist()
+        if (model.getBoardState(rowIndex, colIndex) == IntersectionState.Empty) {
+            updateBoard(rowIndex, colIndex)
+            checkWinnerExist()
+        }
     }
 
     private fun updateBoard(rowIndex: Int, colIndex: Int) {

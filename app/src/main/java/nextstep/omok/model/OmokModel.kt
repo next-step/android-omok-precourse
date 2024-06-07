@@ -25,6 +25,10 @@ class OmokModel : OmokContract.OmokModel {
         omokBoard.updateBoard(rowIndex, colIndex, stone)
     }
 
+    override fun getBoardState(rowIndex: Int, colIndex: Int): IntersectionState {
+        return omokBoard.getBoardIntersection(rowIndex, colIndex)
+    }
+
 
     /* turn 관련 함수 */
     override fun addTurnCount() {

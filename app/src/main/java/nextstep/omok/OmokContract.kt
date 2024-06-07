@@ -18,6 +18,7 @@ interface OmokContract {
 
         /* omokBoard 관련 함수 */
         fun updateBoard(rowIndex: Int, colIndex: Int, stone: IntersectionState)
+        fun getBoardState(rowIndex: Int, colIndex: Int): IntersectionState
 
         /* turn 관련 함수 */
         fun addTurnCount()
