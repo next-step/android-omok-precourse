@@ -26,3 +26,11 @@ fun createImageViewList(context: Context): List<ImageView> {
     }
     return ImageViewList
 }
+
+fun imageViewClick(idLists: List<ImageView>, whosTurn: TextView){
+    for (k in idLists.indices){
+        afterClick(k, idLists,whosTurn)
+    }
+
+}
+
