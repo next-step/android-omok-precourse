@@ -60,7 +60,12 @@ class MainActivity : AppCompatActivity() {
         val cell = (board.getChildAt(row) as TableRow).getChildAt(col) as ImageView
         if (cell.drawable == null) {
             placeStone(cell)
-            togglePlayer()
+            if (checkWin(row, col)) {
+                handleWin()
+            }
+            else {
+                togglePlayer()
+            }
         }
         else {
             Toast.makeText(this, "해당 위치에는 돌이 이미 존재합니다.\n다른 위치를 선택하세요.", Toast.LENGTH_SHORT).show()
@@ -76,6 +81,12 @@ class MainActivity : AppCompatActivity() {
             cell.setImageResource(R.drawable.white_stone)
             cell.tag = PLAYER_WHITE
         }
+    }
+
+    private fun handleWin() {
+        Toast.makeText(this, "${currentPlayer}가 승리하였습니다.", Toast.LENGTH_LONG).show()
+        initializePlayer()
+        initializeBoard()
     }
 
     private fun togglePlayer() {
