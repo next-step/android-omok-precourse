@@ -72,3 +72,21 @@ fun amIWinner(k: Int, turn:Int) : MutableList<Int>{
 
     return sequenceStone
 }
+
+fun sequenceLeftRightCheck(k: Int, turn: Int): Int {
+    var x: Int = k / 15
+    var y: Int = k % 15
+    var count = 0
+    for (i in 1..4) { if (y <= 0) { break } else {
+        y -= 1
+        count += sequenceCountUp(turn, x, y)
+    }}
+    x = k/ 15
+    y = k % 15
+    for (i in 1..4){ if (y >= 14){ break } else{
+        y +=1
+        count += sequenceCountUp(turn,x,y)
+        Log.d("qwerq", "sequenceLeftRightCheck: " + y) } }
+    return count }
+
+
