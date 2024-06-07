@@ -1,15 +1,15 @@
 package nextstep.omok.util
 
 import nextstep.omok.model.IntersectionState
-import nextstep.omok.model.Player
+import nextstep.omok.model.PlayerType
 
 private const val WIN_CONDITION = 5
 
 class GameStateValidator {
     private var board: List<List<IntersectionState>> = listOf()
-    fun getWinner(board: List<List<IntersectionState>>): Player? {
+    fun getWinner(board: List<List<IntersectionState>>): PlayerType? {
         this.board = board
-        var winner: Player? = null
+        var winner: PlayerType? = null
         for (row in board.indices) {
             for (col in board[row].indices) {
                 winner = checkBoard(col, row)
@@ -21,7 +21,7 @@ class GameStateValidator {
         return winner
     }
 
-    private fun checkBoard(col: Int, row: Int): Player? {
+    private fun checkBoard(col: Int, row: Int): PlayerType? {
         val currentIntersection = board[row][col]
         if (currentIntersection == IntersectionState.Empty)
             return null
@@ -32,8 +32,8 @@ class GameStateValidator {
             return null
 
         return when (currentIntersection) {
-            IntersectionState.OnBlackStone -> Player.WithBlackStone
-            IntersectionState.OnWhiteStone -> Player.WithWhiteStone
+            IntersectionState.OnBlackStone -> PlayerType.WithBlackStone
+            IntersectionState.OnWhiteStone -> PlayerType.WithWhiteStone
             IntersectionState.Empty -> null
         }
     }

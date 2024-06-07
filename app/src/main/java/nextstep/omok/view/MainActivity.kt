@@ -10,7 +10,7 @@ import androidx.core.view.children
 import nextstep.omok.OmokContract
 import nextstep.omok.R
 import nextstep.omok.model.OmokModel
-import nextstep.omok.model.Player
+import nextstep.omok.model.PlayerType
 import nextstep.omok.presenter.OmokPresenter
 
 class MainActivity : AppCompatActivity(), OmokContract.OmokView {
@@ -42,15 +42,15 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
         }
     }
 
-    override fun showTurn(currentTurn: Int, currentPlayer: Player) {
-        notice.text = getString(R.string.notice_turn, currentTurn, currentPlayer)
+    override fun showTurn(currentTurn: Int, currentPlayerType: PlayerType) {
+        notice.text = getString(R.string.notice_turn, currentTurn, currentPlayerType)
     }
 
-    override fun placeStone(rowIndex: Int, colIndex: Int, playerType: Player) {
+    override fun placeStone(rowIndex: Int, colIndex: Int, playerType: PlayerType) {
         imageViews[rowIndex][colIndex].setImageResource(playerType.resourceId)
     }
 
-    override fun endGame(winner: Player) {
+    override fun endGame(winner: PlayerType) {
         detachClickListener()
         showWinner(winner)
     }
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
         }
     }
 
-    private fun showWinner(winner: Player) {
+    private fun showWinner(winner: PlayerType) {
         notice.text = getString(R.string.notice_winner, winner)
     }
 }

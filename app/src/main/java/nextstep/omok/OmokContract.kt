@@ -2,21 +2,21 @@ package nextstep.omok
 
 import nextstep.omok.model.GameState
 import nextstep.omok.model.IntersectionState
-import nextstep.omok.model.Player
+import nextstep.omok.model.PlayerType
 
 interface OmokContract {
     interface OmokView {
-        fun showTurn(currentTurn: Int, currentPlayer: Player)
+        fun showTurn(currentTurn: Int, currentPlayerType: PlayerType)
 
-        fun placeStone(rowIndex: Int, colIndex: Int, playerType: Player)
+        fun placeStone(rowIndex: Int, colIndex: Int, playerType: PlayerType)
 
-        fun endGame(winner: Player)
+        fun endGame(winner: PlayerType)
     }
 
     interface OmokModel {
         fun togglePlayer()
         fun updateBoard(rowIndex: Int, colIndex: Int, stone: IntersectionState)
-        fun getPlayer(): Player
+        fun getPlayer(): PlayerType
         fun updateGameStatus()
         fun addTurnCount()
         fun getTurn(): Int
