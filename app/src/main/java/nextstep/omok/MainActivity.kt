@@ -138,3 +138,11 @@ fun sequenceLeftDownRightUpCheck(k: Int,turn:Int): Int {
         count += sequenceCountUp(turn, x, y) } }
     return count
 }
+
+fun sequenceCountUp(turn:Int,x:Int,y:Int): Int {
+    if (turn == board[x][y]) {
+        return 1
+    }else{
+        return 0
+    }
+}
