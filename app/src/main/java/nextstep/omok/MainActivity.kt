@@ -146,3 +146,8 @@ fun sequenceCountUp(turn:Int,x:Int,y:Int): Int {
         return 0
     }
 }
+fun checkAmIWinner(sequenceStonList: MutableList<Int>, whosTurn: TextView, userNum: Int){
+    if (sequenceStonList.any { it >= 4 }) {
+        whosTurn.text = "$userNum 승리!!"
+    }else{}
+}
