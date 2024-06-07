@@ -14,7 +14,6 @@ import nextstep.omok.model.Player
 import nextstep.omok.presenter.OmokPresenter
 
 class MainActivity : AppCompatActivity(), OmokContract.OmokView {
-
     private lateinit var presenter: OmokContract.OmokPresenter
     private lateinit var board: TableLayout
     private lateinit var notice: TextView
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
                 }
             }
         }
-
     }
 
     override fun showTurn(currentTurn: Int, currentPlayer: Player) {
