@@ -62,3 +62,13 @@ fun createStone(clickView: ImageView, k: Int, whosTurn: TextView) {
         }
     }else{}
 }
+
+fun amIWinner(k: Int, turn:Int) : MutableList<Int>{
+    val sequenceStone = MutableList(4) { 0 }
+    sequenceStone[0] = sequenceUpDownCheck(k,turn)
+    sequenceStone[1] = sequenceLeftRightCheck(k,turn)
+    sequenceStone[2] = sequenceLeftUpRightDownCheck(k,turn)
+    sequenceStone[3] = sequenceLeftDownRightUpCheck(k,turn)
+
+    return sequenceStone
+}
