@@ -8,7 +8,7 @@ class OmokModel : OmokContract.OmokModel {
     private val omokBoard = OmokBoard
     private var turn: Int = 1
     private var currentGameState: GameState = GameState.OnGoing
-    private val gameStateValidator: GameStateValidator by lazy { GameStateValidator() }
+    private val gameStateValidator: GameStateValidator by lazy { GameStateValidator }
     private var winner: PlayerType? = null
 
     /* currentPlayer 관련 함수 */

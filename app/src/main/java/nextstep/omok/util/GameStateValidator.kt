@@ -5,7 +5,7 @@ import nextstep.omok.model.PlayerType
 
 private const val WIN_CONDITION = 5
 
-class GameStateValidator {
+object GameStateValidator {
     private var board: List<List<IntersectionState>> = listOf()
     fun getWinner(board: List<List<IntersectionState>>): PlayerType? {
         this.board = board
