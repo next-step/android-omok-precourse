@@ -68,10 +68,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         else {
-            Toast.makeText(this, "해당 위치에는 돌이 이미 존재합니다.\n다른 위치를 선택하세요.", Toast.LENGTH_SHORT).show()
+            showInvalidMoveMessage()
         }
     }
 
+    private fun showInvalidMoveMessage() {
+        Toast.makeText(this, "해당 위치에는 돌이 이미 존재합니다.\n다른 위치를 선택하세요.", Toast.LENGTH_SHORT).show()
+    }
     private fun placeStone(cell: ImageView) {
         if (currentPlayer == PLAYER_BLACK) {
             cell.setImageResource(R.drawable.black_stone)
@@ -84,9 +87,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleWin() {
-        Toast.makeText(this, "${currentPlayer}가 승리하였습니다.", Toast.LENGTH_LONG).show()
+        showWinMessage()
         initializePlayer()
         initializeBoard()
+    }
+
+    private fun showWinMessage() {
+        Toast.makeText(this, "${currentPlayer}가 승리하였습니다.", Toast.LENGTH_LONG).show()
     }
 
     private fun togglePlayer() {
