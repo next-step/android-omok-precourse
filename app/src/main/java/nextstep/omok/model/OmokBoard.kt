@@ -1,6 +1,6 @@
 package nextstep.omok.model
 
-class OmokBoard {
+object OmokBoard {
     private val omokBoard: MutableList<MutableList<IntersectionState>> = mutableListOf()
 
     init {

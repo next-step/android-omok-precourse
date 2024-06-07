@@ -6,7 +6,7 @@ import nextstep.omok.util.GameStateValidator
 class OmokModel : OmokContract.OmokModel {
     private var currentPlayer: CurrentPlayer = CurrentPlayer
     private var currentGameState: GameState = GameState.OnGoing
-    private val omokBoard = OmokBoard()
+    private val omokBoard = OmokBoard
     private var turn: Int = 1
     private val gameStateValidator: GameStateValidator by lazy { GameStateValidator() }
     private var winner: PlayerType? = null
