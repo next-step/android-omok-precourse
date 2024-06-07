@@ -46,11 +46,26 @@ class MainActivity : AppCompatActivity() {
         table[row][col] = if (turn % 2 == 0) 1 else 2
         turn++
     }
-    private fun countStones() {}
+    private fun countStones(row: Int, col: Int, dx: Int, dy: Int): Int {
+        return 1 + countDirection(row, col, dx, dy) + countDirection(row, col, -dx, -dy)
+    }
 
-    private fun countDirection() {}
+    private fun countDirection(row: Int, col: Int, dx: Int, dy: Int): Int {
+        var r = row + dx
+        var c = col + dy
+        var count = 0
+        while (r in 0 until boardSize && c in 0 until boardSize && table[r][c] == table[row][col]) {
+            count++
+            r += dx
+            c += dy
+        }
+        return count
+    }
 
-    private fun checkWin() {}
+    private fun checkWin(row: Int, col: Int): Boolean {
+        val directions = listOf(listOf(0, 1), listOf(1, 0), listOf(1, 1), listOf(1, -1))
+        return directions.any { countStones(row, col, it[0], it[1]) >= 5 }
+    }
 
     private fun handleWin() {}
 
