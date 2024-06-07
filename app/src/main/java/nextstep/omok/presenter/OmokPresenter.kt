@@ -19,7 +19,7 @@ class OmokPresenter(
 
     private fun checkWinnerExist() {
         if (model.getTurn() > 8) {
-            model.updateGameStatus()
+            model.checkWinnerExist()
             checkCurrentGameState()
         } else {
             onGameOnGoing()

@@ -1,51 +1,43 @@
 package nextstep.omok.util
 
 import nextstep.omok.model.IntersectionState
-import nextstep.omok.model.PlayerType
 
 private const val WIN_CONDITION = 5
 
 object GameStateValidator {
     private var board: List<List<IntersectionState>> = listOf()
-    fun getWinner(board: List<List<IntersectionState>>): PlayerType? {
+    private val directions = arrayOf(Pair(0, 1), Pair(1, 0), Pair(1, 1), Pair(1, -1),)
+
+    fun isWinnerExist(board: List<List<IntersectionState>>): Boolean {
         this.board = board
-        var winner: PlayerType? = null
         for (row in board.indices) {
             for (col in board[row].indices) {
-                winner = checkBoard(col, row)
-                if (winner != null)
-                    return winner
+                if (checkBoard(col, row))
+                    return true
             }
         }
-
-        return winner
+        return false
     }
 
-    private fun checkBoard(col: Int, row: Int): PlayerType? {
+    private fun checkBoard(col: Int, row: Int): Boolean {
         val currentIntersection = board[row][col]
         if (currentIntersection == IntersectionState.Empty)
-            return null
-
+            return false
 
         val isConditionSatisfied = checkAllDirections(col, row, currentIntersection)
         if (!isConditionSatisfied)
-            return null
+            return false
 
         return when (currentIntersection) {
-            IntersectionState.OnBlackStone -> PlayerType.WithBlackStone
-            IntersectionState.OnWhiteStone -> PlayerType.WithWhiteStone
-            IntersectionState.Empty -> null
+            IntersectionState.OnBlackStone -> true
+            IntersectionState.OnWhiteStone -> true
+            IntersectionState.Empty -> false
         }
     }
 
     private fun checkAllDirections(
         col: Int, row: Int, currentIntersection: IntersectionState
     ): Boolean {
-        val directions = arrayOf(
-            Pair(0, 1), Pair(1, 0), Pair(1, 1), Pair(1, -1),
-            Pair(-1, 0), Pair(0, -1), Pair(-1, -1), Pair(-1, 1)
-        )
-
         for (direction in directions) {
             val (dRow, dCol) = direction
             if (checkSingleDirection(col, row, dCol, dRow, currentIntersection)) {

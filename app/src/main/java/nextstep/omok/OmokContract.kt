@@ -24,7 +24,7 @@ interface OmokContract {
         fun getTurn(): Int
 
         /* currentGameState 관련 함수 */
-        fun updateGameStatus()
+        fun checkWinnerExist()
         fun getGameState(): GameState
     }
 

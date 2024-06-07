@@ -37,11 +37,8 @@ class OmokModel : OmokContract.OmokModel {
 
 
     /* currentGameState 관련 함수 */
-    override fun updateGameStatus() {
-        val winner = gameStateValidator.getWinner(omokBoard.getBoard())
-        if (winner == null) {
-            return
-        } else {
+    override fun checkWinnerExist() {
+        if (gameStateValidator.isWinnerExist(omokBoard.getBoard())) {
             endGame()
         }
     }
