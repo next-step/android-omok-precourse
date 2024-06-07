@@ -14,12 +14,19 @@ interface OmokContract {
     }
 
     interface OmokModel {
+        /* currentPlayer 관련 함수 */
         fun togglePlayer()
-        fun updateBoard(rowIndex: Int, colIndex: Int, stone: IntersectionState)
         fun getPlayer(): PlayerType
-        fun updateGameStatus()
+
+        /* omokBoard 관련 함수 */
+        fun updateBoard(rowIndex: Int, colIndex: Int, stone: IntersectionState)
+
+        /* turn 관련 함수 */
         fun addTurnCount()
         fun getTurn(): Int
+
+        /* currentGameState 관련 함수 */
+        fun updateGameStatus()
         fun getGameState(): GameState
     }
 
