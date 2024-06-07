@@ -20,56 +20,73 @@ class CompleteOmokTest {
 
     @Test
     fun testCheckForCompleteOmok() {
-
-        // 빈 보드
-        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
-        // 오목이 완성되지 않은 경우
+        makeEmptyBoard() // 빈 보드
         assertFalse(checkForCompleteOmok(BLACK_STONE))
         assertFalse(checkForCompleteOmok(WHITE_STONE))
 
-        // 가로 방향으로 오목(흑돌)이 완성된 경우
-        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
-        for (i in 4 until 4 + 5)  {
-            boardList[7][i] = BLACK_STONE
-        }
-
+        makeWidthOmok() // 가로 방향으로 오목(흑돌)이 완성된 경우
         assertTrue(checkForCompleteOmok(BLACK_STONE))
         assertFalse(checkForCompleteOmok(WHITE_STONE))
 
-        // 세로 방향으로 오목(백돌)이 완성된 경우
-        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
-        for (i in 4 until 4 + 5)  {
-            boardList[i][7] = WHITE_STONE
-        }
+        makeHeightOmok() // 세로 방향으로 오목(백돌)이 완성된 경우
         assertFalse(checkForCompleteOmok(BLACK_STONE))
         assertTrue(checkForCompleteOmok(WHITE_STONE))
 
-        // \ 대각선 방향으로 오목(흑돌)이 완성된 경우
-        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
-        for (i in 5 until 5 + 5) {
-                boardList[i][i] = BLACK_STONE
-        }
+        makeDiagonalToTopLeftOmok() // \ 대각선 방향으로 오목(흑돌)이 완성된 경우
         assertTrue(checkForCompleteOmok(BLACK_STONE))
         assertFalse(checkForCompleteOmok(WHITE_STONE))
 
-        // / 대각선 방향으로 오목(백돌)이 완성된 경우
-        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
-        for (i in 5 until 5 + 5) {
-            boardList[i][14 - i] = WHITE_STONE
-        }
-
+        makeDiagonalToTopRightOmok() // / 대각선 방향으로 오목(백돌)이 완성된 경우
         assertFalse(checkForCompleteOmok(BLACK_STONE))
         assertTrue(checkForCompleteOmok(WHITE_STONE))
 
+        makeSixOmok() // 가로 방향으로 6목(흑돌)이 완성된 경우
+        assertTrue(checkForCompleteOmok(BLACK_STONE))
+        assertFalse(checkForCompleteOmok(WHITE_STONE))
+    }
+
+    private fun makeSixOmok() {
         // 가로 방향으로 6목(흑돌)이 완성된 경우
         boardList = MutableList(15) { MutableList(15) { NO_STONE } }
         for (i in 4 until 4 + 6)  {
             boardList[7][i] = BLACK_STONE
         }
+    }
 
-        assertTrue(checkForCompleteOmok(BLACK_STONE))
-        assertFalse(checkForCompleteOmok(WHITE_STONE))
+    private fun makeDiagonalToTopRightOmok() {
+        // / 대각선 방향으로 오목(백돌)이 완성된 경우
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
+        for (i in 5 until 5 + 5) {
+            boardList[i][14 - i] = WHITE_STONE
+        }
+    }
 
+    private fun makeDiagonalToTopLeftOmok() {
+        // \ 대각선 방향으로 오목(흑돌)이 완성된 경우
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
+        for (i in 5 until 5 + 5) {
+            boardList[i][i] = BLACK_STONE
+        }
+    }
+
+    private fun makeHeightOmok() {
+        // 세로 방향으로 오목(백돌)이 완성된 경우
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
+        for (i in 4 until 4 + 5)  {
+            boardList[i][7] = WHITE_STONE
+        }
+    }
+
+    private fun makeWidthOmok() {
+        // 가로 방향으로 오목(흑돌)이 완성된 경우
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
+        for (i in 4 until 4 + 5)  {
+            boardList[7][i] = BLACK_STONE
+        }
+    }
+
+    private fun makeEmptyBoard() {
+        boardList = MutableList(15) { MutableList(15) { NO_STONE } }
     }
 
     private fun checkForCompleteOmok(stoneType: Int): Boolean {
@@ -110,4 +127,5 @@ class CompleteOmokTest {
     private fun isMyStone(curRow: Int, curCol: Int, stoneType: Int): Boolean {
         return boardList[curRow][curCol] == stoneType
     }
+
 }
