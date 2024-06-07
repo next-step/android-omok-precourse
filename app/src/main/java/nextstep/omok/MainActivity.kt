@@ -42,8 +42,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateBoardState(row:Int, col:Int) {}
-
+    private fun updateBoardState(row: Int, col: Int) {
+        table[row][col] = if (turn % 2 == 0) 1 else 2
+        turn++
+    }
     private fun countStones() {}
 
     private fun countDirection() {}
