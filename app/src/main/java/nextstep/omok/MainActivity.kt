@@ -43,4 +43,22 @@ fun afterClick(k: Int, idLists: List<ImageView>, whosTurn: TextView) {
         }
     }
 }
+fun createStone(clickView: ImageView, k: Int, whosTurn: TextView) {
+    if (board[k / 15][k % 15] == 0) {
+        if (turn == 1) {
+            clickView.setImageResource(R.drawable.white_stone)
+            board[k / 15][k % 15] = 1
+            whosTurn.text = "2"
+            checkAmIWinner(amIWinner(k,1),whosTurn,1)
+            turn = 2
 
+
+        } else {
+            clickView.setImageResource(R.drawable.black_stone)
+            board[k / 15][k % 15] = 2
+            whosTurn.text = "1"
+            checkAmIWinner(amIWinner(k,2), whosTurn,2)
+            turn = 1
+        }
+    }else{}
+}
