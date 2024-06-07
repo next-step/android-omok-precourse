@@ -7,12 +7,16 @@ import android.widget.TableRow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
+const val PLAYER_BLACK = 'B'
+const val PLAYER_WHITE = 'W'
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initializeBoard()
+        initializePlayer()
     }
 
     private fun initializeBoard() {
@@ -27,5 +31,9 @@ class MainActivity : AppCompatActivity() {
                         view.tag = null
                     }
             }
+    }
+
+    private fun initializePlayer() {
+        var currentPlayer = PLAYER_BLACK
     }
 }
