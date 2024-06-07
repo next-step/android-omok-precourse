@@ -1185,6 +1185,9 @@
 
     <TextView
         android:id="@+id/notice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/notice_init"
+        android:textSize="18sp" />
 </LinearLayout>
