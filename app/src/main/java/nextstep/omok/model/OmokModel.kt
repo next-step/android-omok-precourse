@@ -1,11 +1,14 @@
 package nextstep.omok.model
 
 import nextstep.omok.OmokContract
+import nextstep.omok.util.GameStateValidator
 
 class OmokModel: OmokContract.OmokModel {
     private var currentPlayer: Player = Player.WithBlackStone
+    private var currentGameState: GameState = GameState.OnGoing
     private val board: MutableList<MutableList<IntersectionState>> = mutableListOf()
-    private var turn: Int = 0
+    private var turn: Int = 1
+    private val gameStateValidator : GameStateValidator by lazy { GameStateValidator() }
 
     init {
         for(i in 0..14) {
@@ -32,11 +35,29 @@ class OmokModel: OmokContract.OmokModel {
         return currentPlayer
     }
 
-    override fun updateGameStatus(gameStatus: GameState) {
-        TODO("Not yet implemented")
+    override fun updateGameStatus() {
+        val winner = gameStateValidator.getWinner(board)
+        if (winner == null) {
+            return
+        } else {
+            endGame()
+        }
     }
 
     override fun addTurnCount() {
-        TODO("Not yet implemented")
+        turn++
+    }
+
+    override fun getTurn(): Int {
+        return turn
+    }
+
+
+    override fun getGameState(): GameState {
+        return currentGameState
+    }
+
+    private fun endGame() {
+        currentGameState = GameState.End
     }
 }

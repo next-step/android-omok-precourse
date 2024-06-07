@@ -17,8 +17,10 @@ interface OmokContract {
         fun togglePlayer()
         fun updateBoard(rowIndex: Int, colIndex: Int, stone: IntersectionState)
         fun getPlayer(): Player
-        fun updateGameStatus(gameStatus: GameState)
+        fun updateGameStatus()
         fun addTurnCount()
+        fun getTurn(): Int
+        fun getGameState(): GameState
     }
 
     interface OmokPresenter {
@@ -26,7 +28,7 @@ interface OmokContract {
         // Player에 맞는 돌을 놓는다.
         // turn이 9이상일 때부터, 게임이 종료되었는지 판단한다.
 
-        fun onGameEnd(): Boolean
+        fun onGameEnd()
         // 승자를 표시한다.
         // 더 이상 게임을 진행할 수 없다.
     }

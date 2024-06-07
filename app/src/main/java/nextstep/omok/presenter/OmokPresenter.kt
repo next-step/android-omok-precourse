@@ -1,6 +1,7 @@
 package nextstep.omok.presenter
 
 import nextstep.omok.OmokContract
+import nextstep.omok.model.GameState
 
 class OmokPresenter(
     private var activity: OmokContract.OmokView,
@@ -9,11 +10,28 @@ class OmokPresenter(
     override fun onIntersectionClick(rowIndex: Int, colIndex: Int) {
         model.updateBoard(rowIndex, colIndex, model.getPlayer().stone)
         activity.placeStone(rowIndex, colIndex, model.getPlayer())
-        model.togglePlayer()
+
+        if (model.getTurn() > 8) {
+            model.updateGameStatus()
+            checkGameState()
+        } else {
+            model.togglePlayer()
+            model.addTurnCount()
+        }
     }
 
-    override fun onGameEnd(): Boolean {
-        TODO("Not yet implemented")
+    override fun onGameEnd() {
     }
 
+    private fun checkGameState() {
+        when (model.getGameState()) {
+            GameState.OnGoing -> {
+                model.togglePlayer()
+                model.addTurnCount()
+            }
+            GameState.End -> {
+                onGameEnd()
+            }
+        }
+    }
 }
