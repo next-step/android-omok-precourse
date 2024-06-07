@@ -8,32 +8,42 @@ class OmokPresenter(
     private var model: OmokContract.OmokModel
 ) : OmokContract.OmokPresenter {
     override fun onIntersectionClick(rowIndex: Int, colIndex: Int) {
+        updateBoard(rowIndex, colIndex)
+        checkWinnerExist()
+    }
+
+    private fun updateBoard(rowIndex: Int, colIndex: Int) {
         model.updateBoard(rowIndex, colIndex, model.getPlayer().stone)
         activity.placeStone(rowIndex, colIndex, model.getPlayer())
+    }
 
+    private fun checkWinnerExist() {
         if (model.getTurn() > 8) {
             model.updateGameStatus()
-            checkGameState()
+            checkCurrentGameState()
         } else {
-            model.togglePlayer()
-            model.addTurnCount()
+            onGameOnGoing()
         }
-        activity.showTurn(model.getTurn(), model.getPlayer())
     }
 
-    override fun onGameEnd() {
-        activity.endGame(model.getPlayer())
-    }
-
-    private fun checkGameState() {
+    private fun checkCurrentGameState() {
         when (model.getGameState()) {
             GameState.OnGoing -> {
-                model.togglePlayer()
-                model.addTurnCount()
+                onGameOnGoing()
             }
             GameState.End -> {
                 onGameEnd()
             }
         }
+    }
+
+    private fun onGameOnGoing() {
+        model.togglePlayer()
+        model.addTurnCount()
+        activity.showTurn(model.getTurn(), model.getPlayer())
+    }
+
+    private fun onGameEnd() {
+        activity.endGame(model.getPlayer())
     }
 }
