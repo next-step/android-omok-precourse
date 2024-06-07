@@ -12,6 +12,7 @@ import nextstep.omok.R
 import nextstep.omok.model.OmokModel
 import nextstep.omok.model.PlayerType
 import nextstep.omok.presenter.OmokPresenter
+import nextstep.omok.util.adaptPlayerText
 
 class MainActivity : AppCompatActivity(), OmokContract.OmokView {
     private lateinit var presenter: OmokContract.OmokPresenter
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
     }
 
     override fun showTurn(currentTurn: Int, currentPlayerType: PlayerType) {
-        notice.text = getString(R.string.notice_turn, currentTurn, currentPlayerType)
+        notice.text = getString(R.string.notice_turn, currentTurn, adaptPlayerText(currentPlayerType))
     }
 
     override fun placeStone(rowIndex: Int, colIndex: Int, playerType: PlayerType) {
@@ -64,6 +65,6 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
     }
 
     private fun showWinner(winner: PlayerType) {
-        notice.text = getString(R.string.notice_winner, winner)
+        notice.text = getString(R.string.notice_winner, adaptPlayerText(winner))
     }
 }
