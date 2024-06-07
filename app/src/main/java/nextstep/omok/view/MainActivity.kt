@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import nextstep.omok.OmokContract
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
     private lateinit var board: TableLayout
     private lateinit var rows: List<TableRow>
     private lateinit var imageViews: MutableList<List<ImageView>>
+    private lateinit var textView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
                 }
             }
         }
+
+        textView = findViewById<TextView>(R.id.winner)
     }
 
     override fun showTurn(currentTurn: Int) {
@@ -48,7 +52,20 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
         imageViews[rowIndex][colIndex].setImageResource(playerType.resourceId)
     }
 
-    override fun showWinner(winner: Player) {
-        TODO("Not yet implemented")
+    override fun endGame(winner: Player) {
+        detachClickListener()
+        showWinner(winner)
+    }
+
+    private fun detachClickListener() {
+        rows.forEachIndexed { rowIndex, _ ->
+            imageViews[rowIndex].forEachIndexed { _, imageView ->
+                imageView.setOnClickListener(null)
+            }
+        }
+    }
+
+    private fun showWinner(winner: Player) {
+        textView.text = "승자는 $winner 입니다."
     }
 }

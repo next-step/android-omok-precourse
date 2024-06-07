@@ -21,6 +21,7 @@ class OmokPresenter(
     }
 
     override fun onGameEnd() {
+        activity.endGame(model.getPlayer())
     }
 
     private fun checkGameState() {

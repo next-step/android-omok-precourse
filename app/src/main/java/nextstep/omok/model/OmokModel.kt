@@ -9,6 +9,7 @@ class OmokModel: OmokContract.OmokModel {
     private val board: MutableList<MutableList<IntersectionState>> = mutableListOf()
     private var turn: Int = 1
     private val gameStateValidator : GameStateValidator by lazy { GameStateValidator() }
+    private var winner: Player? = null
 
     init {
         for(i in 0..14) {
@@ -40,6 +41,7 @@ class OmokModel: OmokContract.OmokModel {
         if (winner == null) {
             return
         } else {
+            this.winner = winner
             endGame()
         }
     }

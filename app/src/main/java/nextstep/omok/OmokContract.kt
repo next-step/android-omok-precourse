@@ -10,7 +10,7 @@ interface OmokContract {
 
         fun placeStone(rowIndex: Int, colIndex: Int, playerType: Player)
 
-        fun showWinner(winner: Player)
+        fun endGame(winner: Player)
     }
 
     interface OmokModel {
