@@ -1,26 +1,33 @@
 package nextstep.omok
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
-    private var turn = 0
-    private var table = Array(15) { IntArray(15) { 0 } }
-    val board = findViewById<TableLayout>(R.id.board)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setupBoard()
     }
 
-    private fun setupBoard() {}
+    private fun setupBoard() {
+        val board = findViewById<TableLayout>(R.id.board)
+        board.children.filterIsInstance<TableRow>().forEachIndexed { rowIndex, tableRow ->
+            setupRow(tableRow, rowIndex)
+        }
+    }
+
+    private fun setupRow(tableRow: TableRow, rowIndex: Int) {
+        tableRow.children.filterIsInstance<ImageView>().forEachIndexed { columnIndex, imageView ->
+            imageView.setOnClickListener {
+                placeStone()
+            }
+        }
+    }
 
     private fun placeStone() {}
 
@@ -37,4 +44,6 @@ class MainActivity : AppCompatActivity() {
     private fun showWinDialog() {}
 
 }
+
+
 
