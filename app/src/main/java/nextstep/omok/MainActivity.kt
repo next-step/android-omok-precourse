@@ -7,7 +7,8 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
+var turn = 1
+val board = MutableList(15) { MutableList(15) { 0 } }
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,5 +33,14 @@ fun imageViewClick(idLists: List<ImageView>, whosTurn: TextView){
         afterClick(k, idLists,whosTurn)
     }
 
+}
+fun afterClick(k: Int, idLists: List<ImageView>, whosTurn: TextView) {
+    if (k < 255) {
+        val clickView = idLists[k]
+        clickView.setOnClickListener {
+            createStone(clickView,k,whosTurn)
+
+        }
+    }
 }
 
