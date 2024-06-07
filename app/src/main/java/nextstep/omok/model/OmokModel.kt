@@ -9,7 +9,6 @@ class OmokModel : OmokContract.OmokModel {
     private var turn: Int = 1
     private var currentGameState: GameState = GameState.OnGoing
     private val gameStateValidator: GameStateValidator by lazy { GameStateValidator }
-    private var winner: PlayerType? = null
 
     /* currentPlayer 관련 함수 */
     override fun togglePlayer() {
@@ -43,7 +42,6 @@ class OmokModel : OmokContract.OmokModel {
         if (winner == null) {
             return
         } else {
-            this.winner = winner
             endGame()
         }
     }
