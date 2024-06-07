@@ -4,7 +4,7 @@ import nextstep.omok.OmokContract
 import nextstep.omok.util.GameStateValidator
 
 class OmokModel : OmokContract.OmokModel {
-    private var currentPlayerType: PlayerType = PlayerType.WithBlackStone
+    private var currentPlayer: CurrentPlayer = CurrentPlayer
     private var currentGameState: GameState = GameState.OnGoing
     private val omokBoard = OmokBoard()
     private var turn: Int = 1
@@ -12,18 +12,15 @@ class OmokModel : OmokContract.OmokModel {
     private var winner: PlayerType? = null
 
     override fun togglePlayer() {
-        currentPlayerType = when (currentPlayerType) {
-            PlayerType.WithBlackStone -> PlayerType.WithWhiteStone
-            PlayerType.WithWhiteStone -> PlayerType.WithBlackStone
-        }
+        currentPlayer.togglePlayer()
+    }
+
+    override fun getPlayer(): PlayerType {
+        return currentPlayer.getPlayer()
     }
 
     override fun updateBoard(rowIndex: Int, colIndex: Int, stone: IntersectionState) {
         omokBoard.updateBoard(rowIndex, colIndex, stone)
-    }
-
-    override fun getPlayer(): PlayerType {
-        return currentPlayerType
     }
 
     override fun updateGameStatus() {
