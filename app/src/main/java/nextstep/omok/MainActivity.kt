@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
+    private var turn = 0
+    private val boardSize = 15
+    private var table = Array(boardSize) { IntArray(boardSize) { 0 } }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,14 +27,22 @@ class MainActivity : AppCompatActivity() {
     private fun setupRow(tableRow: TableRow, rowIndex: Int) {
         tableRow.children.filterIsInstance<ImageView>().forEachIndexed { columnIndex, imageView ->
             imageView.setOnClickListener {
-                placeStone()
+                placeStone(imageView, rowIndex, columnIndex)
             }
         }
     }
 
-    private fun placeStone() {}
+    private fun getStoneResource(): Int = if (turn % 2 == 0) R.drawable.black_stone else R.drawable.white_stone
 
-    private fun updateBoardState() {}
+    fun placeStone(view: ImageView, row: Int, col: Int) {
+        if (table[row][col] == 0) {
+            val stoneResource = getStoneResource()
+            view.setImageResource(stoneResource)
+            updateBoardState(row, col)
+        }
+    }
+
+    private fun updateBoardState(row:Int, col:Int) {}
 
     private fun countStones() {}
 
