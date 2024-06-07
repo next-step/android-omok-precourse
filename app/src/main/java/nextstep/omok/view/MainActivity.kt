@@ -17,9 +17,9 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
 
     private lateinit var presenter: OmokContract.OmokPresenter
     private lateinit var board: TableLayout
+    private lateinit var notice: TextView
     private lateinit var rows: List<TableRow>
     private lateinit var imageViews: MutableList<List<ImageView>>
-    private lateinit var textView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +27,13 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
 
         presenter = OmokPresenter(activity = this, model = OmokModel())
         board = findViewById(R.id.board)
+        notice = findViewById(R.id.notice)
+
         rows = board.children.filterIsInstance<TableRow>().toList()
         imageViews = mutableListOf()
         rows.forEachIndexed { rowIndex, tableRow ->
             imageViews.add(rowIndex, tableRow.children.filterIsInstance<ImageView>().toList())
         }
-
         rows.forEachIndexed { rowIndex, _ ->
             imageViews[rowIndex].forEachIndexed { colIndex, imageView ->
                 imageView.setOnClickListener {
@@ -41,11 +42,10 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
             }
         }
 
-        textView = findViewById<TextView>(R.id.winner)
     }
 
-    override fun showTurn(currentTurn: Int) {
-        TODO("Not yet implemented")
+    override fun showTurn(currentTurn: Int, currentPlayer: Player) {
+        notice.text = getString(R.string.notice_turn, currentTurn, currentPlayer)
     }
 
     override fun placeStone(rowIndex: Int, colIndex: Int, playerType: Player) {
@@ -66,6 +66,6 @@ class MainActivity : AppCompatActivity(), OmokContract.OmokView {
     }
 
     private fun showWinner(winner: Player) {
-        textView.text = "승자는 $winner 입니다."
+        notice.text = getString(R.string.notice_winner, winner)
     }
 }

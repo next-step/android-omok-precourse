@@ -18,6 +18,7 @@ class OmokPresenter(
             model.togglePlayer()
             model.addTurnCount()
         }
+        activity.showTurn(model.getTurn(), model.getPlayer())
     }
 
     override fun onGameEnd() {

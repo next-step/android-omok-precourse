@@ -6,7 +6,7 @@ import nextstep.omok.model.Player
 
 interface OmokContract {
     interface OmokView {
-        fun showTurn(currentTurn: Int)
+        fun showTurn(currentTurn: Int, currentPlayer: Player)
 
         fun placeStone(rowIndex: Int, colIndex: Int, playerType: Player)
 
