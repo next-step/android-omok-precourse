@@ -12,6 +12,8 @@ const val PLAYER_BLACK = 'B'
 const val PLAYER_WHITE = 'W'
 
 class MainActivity : AppCompatActivity() {
+
+    private var currentPlayer = PLAYER_BLACK
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializePlayer() {
-        var currentPlayer = PLAYER_BLACK
+        currentPlayer = PLAYER_BLACK
     }
 
     private fun setCellClickListener() {
@@ -53,6 +55,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun processClickedCell(row: Int, col: Int) {
-        Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show()
+        val board = findViewById<TableLayout>(R.id.board)
+        val cell = (board.getChildAt(row) as TableRow).getChildAt(col) as ImageView
+        if (cell.drawable == null) {
+            if (currentPlayer == PLAYER_BLACK) {
+                cell.setImageResource(R.drawable.black_stone)
+                cell.tag = PLAYER_BLACK
+                currentPlayer = PLAYER_WHITE
+            }
+            else {
+                cell.setImageResource(R.drawable.white_stone)
+                cell.tag = PLAYER_WHITE
+                currentPlayer = PLAYER_BLACK
+            }
+        }
+        else {
+            Toast.makeText(this, "해당 위치에는 돌이 이미 존재합니다.\n다른 위치를 선택하세요.", Toast.LENGTH_SHORT).show()
+        }
     }
 }
