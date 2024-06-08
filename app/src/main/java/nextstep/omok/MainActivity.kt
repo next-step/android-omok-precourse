@@ -54,22 +54,24 @@ class MainActivity : AppCompatActivity() {
         boardState[position] = 1   //white
         currentStone = 0}
 
-        checkVertical(position)
+        checkState(position)
         checkHorizontal(position)
         checkDiagonal(position)
     }
 
-    private fun checkVertical(position: Int){
+    private fun checkState(position: Int){
         val row = position / boardSize
         val column = position % boardSize
-        val stone = boardState[position]
+        val stone = boardState[position]?: return
 
+        checkVertical(position,row,column,stone)
+    }
+    private fun checkVertical(position: Int, row: Int, column: Int, stone: Int){
         val topCount = (row - 1 downTo 0).takeWhile { boardState[it * boardSize + column] == stone }.count()
         val bottomCount = (row + 1 until boardSize).takeWhile { boardState[it * boardSize + column] == stone }.count()
 
         val count = topCount + bottomCount
 
-        //showToast(count.toString())
         if (count>=4 && stone==0) showToast("흑돌 승리!")
         else if (count>=4 && stone==1) showToast("백돌 승리!")
     }
