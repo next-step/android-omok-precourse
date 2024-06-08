@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         currentStone = 0}
 
         checkVertical(position)
+        checkHorizontal(position)
     }
 
     private fun checkVertical(position: Int){
@@ -72,5 +73,18 @@ class MainActivity : AppCompatActivity() {
         else if (count>=4 && stone==1) showToast("백돌 승리!")
     }
 
+    private fun checkHorizontal(position: Int){
+        val row = position / boardSize
+        val column = position % boardSize
+        val stone = boardState[position]
+
+        val leftCount = (column - 1 downTo 0).takeWhile { boardState[row * boardSize + it] == stone }.count()
+        val rightCount = (column + 1 until boardSize).takeWhile { boardState[row * boardSize + it] == stone }.count()
+
+        val count = leftCount + rightCount
+
+        if (count>=4 && stone==0) showToast("흑돌 승리!")
+        else if (count>=4 && stone==1) showToast("백돌 승리!")
+    }
 
 }
