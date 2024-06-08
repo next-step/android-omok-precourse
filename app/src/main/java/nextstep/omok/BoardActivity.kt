@@ -11,5 +11,14 @@ class BoardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
 
+        // 프래그먼트 추가
+        if (savedInstanceState==null){
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, GameBoardFragment())
+                .commit()
+        }
+
+
+
     }
 }
