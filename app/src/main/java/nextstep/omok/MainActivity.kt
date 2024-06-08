@@ -9,11 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
-sealed class Result {
-    object Success : Result()
-    data class Failure(val reason: String) : Result()
-}
-
 class MainActivity : AppCompatActivity() {
 
     var currentPlayer = "흑돌"
