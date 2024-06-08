@@ -84,3 +84,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun countStone(row: Int, column: Int, dx: Int, dy: Int): Int {
+        var count = 0
+        var nx = row
+        var ny = column
+        while (true) {
+            nx += dx
+            ny += dy
+            if (nx < 0 || nx >= BOARDSIZE || ny < 0 || ny >= BOARDSIZE) break
+            if (boardState[nx][ny] != player) break
+            count += 1
+        }
+        return count
+    }
