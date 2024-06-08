@@ -97,4 +97,17 @@ class MainActivity : AppCompatActivity() {
     private fun switchTurn() {
         currentTurn = if (currentTurn == Stone.BLACK) Stone.WHITE else Stone.BLACK
     }
+
+    private fun showGameOverDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("게임 종료")
+            .setMessage("게임이 종료되었습니다. 새로운 게임을 시작하세요.")
+            .setPositiveButton("OK") { _, _ ->
+                game = OmokGame(boardSize)
+                currentTurn = Stone.BLACK
+                startNewGame()
+            }
+            .setCancelable(false)
+            .show()
+    }
 }
