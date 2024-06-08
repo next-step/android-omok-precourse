@@ -18,6 +18,6 @@ class MainActivity : AppCompatActivity() {
             .filterIsInstance<TableRow>()
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.white_stone) } }
     }
 }
