@@ -13,6 +13,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val board = findViewById<TableLayout>(R.id.board)
+        initializeBoard(board)
+    }
+
+    private fun initializeBoard(board:TableLayout){
         board
             .children
             .filterIsInstance<TableRow>()
@@ -20,4 +24,5 @@ class MainActivity : AppCompatActivity() {
             .filterIsInstance<ImageView>()
             .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
     }
+
 }
