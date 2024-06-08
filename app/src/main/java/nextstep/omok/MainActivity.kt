@@ -47,11 +47,11 @@ class MainActivity : AppCompatActivity() {
     private fun placeStone(view: ImageView,position: Int) {
         if (currentStone == 0) {
             view.setImageResource(R.drawable.black_stone)
-            boardState[position] = 0;   //black
+            boardState[position] = 0   //black
             currentStone = 1
         } else {
         view.setImageResource(R.drawable.white_stone)
-        boardState[position] = 1;   //white
+        boardState[position] = 1   //white
         currentStone = 0}
 
         checkVertical(position)
@@ -71,4 +71,6 @@ class MainActivity : AppCompatActivity() {
         if (count>=4 && stone==0) showToast("흑돌 승리!")
         else if (count>=4 && stone==1) showToast("백돌 승리!")
     }
+
+
 }
