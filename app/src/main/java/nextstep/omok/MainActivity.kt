@@ -14,10 +14,15 @@ class MainActivity : AppCompatActivity() {
 
         val board = findViewById<TableLayout>(R.id.board)
         board
-            .children
-            .filterIsInstance<TableRow>()
-            .flatMap { it.children }
-            .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+            .children //모든 자식 요소 가져오기
+            .filterIsInstance<TableRow>() //TableRow인 요소만 필터링
+            .flatMap { it.children } //각 TableRow의 자식 요소를 평탄화
+            .filterIsInstance<ImageView>() //ImageView인 요소만 필터링
+            .forEach { view -> view.setOnClickListener { onStonePlace(view) } } // 클릭 시 이미지를 흑돌로 세팅(기존에는 백그라운드만 있다!)
     }
+
+    fun onStonePlace(view: ImageView){
+        view.setImageResource(R.drawable.white_stone)
+    }
+
 }
