@@ -98,3 +98,12 @@ class MainActivity : AppCompatActivity() {
         }
         return count
     }
+
+    fun updateGameState() {
+        turn += 1
+        if (player == BLACK) {
+            player = WHITE
+        } else if (player == WHITE) {
+            player = BLACK
+        }
+    }
