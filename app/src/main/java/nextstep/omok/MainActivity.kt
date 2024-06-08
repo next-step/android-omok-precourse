@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -107,3 +108,23 @@ class MainActivity : AppCompatActivity() {
             player = BLACK
         }
     }
+
+    fun showGameState() {
+        var outputString = ""
+        val statusWindow = findViewById<TextView>(R.id.StatusWindow)
+        if (player == BLACK) {
+            outputString = "흑의 차례"
+        } else if (player == WHITE) {
+            outputString = "백의 차레"
+        }
+
+        if (winner == BLACK) {
+            outputString = "흑의 승"
+        } else if (winner == WHITE) {
+            outputString = "백의 승"
+        } else if (winner == TIE) {
+            outputString = "무승부"
+        }
+        statusWindow.text = outputString
+    }
+}
