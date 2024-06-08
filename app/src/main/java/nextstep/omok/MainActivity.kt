@@ -21,6 +21,12 @@ val derivative = arrayOf(
 )
 
 class MainActivity : AppCompatActivity() {
+
+    var turn = 1
+    var player = BLACK
+    var winner = EMPTY
+    val boardState = Array(BOARDSIZE) { Array(BOARDSIZE) { EMPTY } }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
