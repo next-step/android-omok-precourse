@@ -58,4 +58,8 @@ class OmokGame {
         }
         currentPlayer = PLAYER_BLACK
     }
+
+    fun getStone(row: Int, col: Int): Char? {
+        return board[row][col]
+    }
 }
