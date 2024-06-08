@@ -33,22 +33,26 @@ class GameView(context: Context) : View(context) {
             for (j in 0 until boardSize) {
                 when (game.getStone(i, j)) {
                     Stone.BLACK -> canvas.drawCircle(
-                        i * cellSize + cellSize / 2,
-                        j * cellSize + cellSize / 2,
-                        cellSize / 2,
-                        blackPaint
+                        i * cellSize + cellSize / 2, j * cellSize + cellSize / 2, cellSize / 2, blackPaint
                     )
-
                     Stone.WHITE -> canvas.drawCircle(
-                        i * cellSize + cellSize / 2,
-                        j * cellSize + cellSize / 2,
-                        cellSize / 2,
-                        whitePaint
+                        i * cellSize + cellSize / 2, j * cellSize + cellSize / 2, cellSize / 2, whitePaint
                     )
-
                     else -> {}
                 }
             }
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val x = (event.x / cellSize).toInt()
+            val y = (event.y / cellSize).toInt()
+            if (game.placeStone(x, y)) {
+                invalidate()
+            }
+            return true
+        }
+        return super.onTouchEvent(event)
     }
 }
