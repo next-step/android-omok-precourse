@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/popup_color"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:elevation="20dp"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="승리"
+        android:textSize="36sp"
+        android:fontFamily="@font/seoulhangangeb"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="24dp"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/newGameButton"
+        android:backgroundTint="@color/white"
+        android:text="새 게임"
+        android:textSize="25dp"
+        android:fontFamily="@font/seoulhangangeb"
+        android:textColor="@android:color/black"
+        android:layout_width="170dp"
+        android:layout_height="65dp"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/mainMenuButton"
+        android:backgroundTint="@color/white"
+        android:text="메인으로"
+        android:textSize="25dp"
+        android:fontFamily="@font/seoulhangangeb"
+        android:textColor="@android:color/black"
+        android:layout_width="170dp"
+        android:layout_height="65dp"
+        android:padding="5dp"
+        android:gravity="center" />
+</androidx.appcompat.widget.LinearLayoutCompat>
