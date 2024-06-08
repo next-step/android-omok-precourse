@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val board = findViewById<TableLayout>(R.id.board)
-        board
-            .children
-            .filterIsInstance<TableRow>()
-            .flatMap { it.children }
-            .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.white_stone) } }
+//        val board = findViewById<TableLayout>(R.id.board)
+//        board
+//            .children
+//            .filterIsInstance<TableRow>()
+//            .flatMap { it.children }
+//            .filterIsInstance<ImageView>()
+//            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.white_stone) } }
     }
 }

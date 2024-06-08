@@ -5,8 +5,8 @@
         <shape android:shape="rectangle">
             <corners android:radius="8dp" />
             <size android:width="180dp" android:height="70dp" />
-            <solid android:color="#20000000" /> <!-- 그림자 색상 -->
-            <padding android:left="2dp" android:top="1dp" android:right="2dp" android:bottom="3dp" />
+            <solid android:color="#08000000" /> <!-- 그림자 색상 -->
+            <padding android:left="2dp" android:top="0dp" android:right="2dp" android:bottom="6dp" />
         </shape>
     </item>
 
