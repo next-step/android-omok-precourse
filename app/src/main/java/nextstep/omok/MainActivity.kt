@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity() {
             if (game.checkWin(row, col)) {
                 showWinMessage()
                 resetBoard()
+            } else if (game.isBoardFull()) {
+                showDrawMessage()
+                resetBoard()
             } else {
                 game.togglePlayer()
             }
@@ -59,6 +62,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showWinMessage() {
         Toast.makeText(this, "${game.currentPlayer}가 승리하였습니다.", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showDrawMessage() {
+        Toast.makeText(this, "더 이상 돌을 놓을 위치가 존재하지 않습니다.\n무승부입니다.", Toast.LENGTH_LONG).show()
     }
 
     private fun resetBoard() {

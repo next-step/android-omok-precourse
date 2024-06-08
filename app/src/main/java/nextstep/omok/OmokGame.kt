@@ -62,4 +62,8 @@ class OmokGame {
     fun getStone(row: Int, col: Int): Char? {
         return board[row][col]
     }
+
+    fun isBoardFull(): Boolean {
+        return board.all { row -> row.all { cell -> cell != null }}
+    }
 }

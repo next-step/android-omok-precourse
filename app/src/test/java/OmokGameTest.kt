@@ -41,6 +41,17 @@ class OmokGameTest {
     }
 
     @Test
+    fun testIsBoardFull() {
+        for (row in 0 until BOARD_SIZE) {
+            for (col in 0 until BOARD_SIZE) {
+                game.placeStone(row, col)
+                game.togglePlayer()
+            }
+        }
+        assertTrue(game.isBoardFull())
+    }
+
+    @Test
     fun testResetGame() {
         game.placeStone(0, 0)
         game.resetGame()
