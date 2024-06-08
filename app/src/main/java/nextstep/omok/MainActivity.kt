@@ -69,3 +69,18 @@ class MainActivity : AppCompatActivity() {
         val column: Int = idx % BOARDSIZE
         return Pair(row, column)
     }
+
+    fun checkWinner(row: Int, column: Int) {
+        if (turn == BOARDSIZE * BOARDSIZE) winner = TIE
+
+        for ((dx, dy) in derivative) {
+            var count = 1
+
+            count += countStone(row, column, dx, dy)
+            count += countStone(row, column, -dx, -dy)
+
+            if (count >= WINCOUNT) {
+                winner = player
+            }
+        }
+    }
