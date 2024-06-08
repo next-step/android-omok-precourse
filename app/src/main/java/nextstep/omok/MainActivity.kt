@@ -52,4 +52,14 @@ class MainActivity : AppCompatActivity() {
         checkWinner(row, column)
         updateGameState()
         showGameState()
-    }}
+    }
+
+    fun placeStone(row: Int, column: Int, view: ImageView) {
+        if (player == BLACK) {
+            view.setImageResource(R.drawable.black_stone)
+            boardState[row][column] = BLACK
+        } else {
+            view.setImageResource(R.drawable.white_stone)
+            boardState[row][column] = WHITE
+        }
+    }
