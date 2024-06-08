@@ -37,6 +37,19 @@ class MainActivity : AppCompatActivity() {
             .filterIsInstance<TableRow>()
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
-            .forEach { view -> view.setOnClickListener { view.setImageResource(R.drawable.black_stone) } }
+            .forEachIndexed { idx, view ->
+                view.setOnClickListener { game(idx, view) }
+            }
+
+        showGameState()
     }
-}
+
+    fun game(idx: Int, view: ImageView) {
+        val (row, column) = getPosition(idx)
+        if (winner != EMPTY || boardState[row][column] != EMPTY) return
+
+        placeStone(row, column, view)
+        checkWinner(row, column)
+        updateGameState()
+        showGameState()
+    }}
