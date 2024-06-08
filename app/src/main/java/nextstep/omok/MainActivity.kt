@@ -60,4 +60,22 @@ class MainActivity : AppCompatActivity() {
         frameLayout.addView(stoneImageView)
         return frameLayout
     }
+
+    private fun setupBoardClickListeners(board: TableLayout) {
+        board.children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<FrameLayout>()
+            .forEachIndexed { index, frameLayout ->
+                val x = index % boardSize
+                val y = index / boardSize
+                setupCellClickListener(frameLayout, x, y)
+            }
+    }
+
+    private fun setupCellClickListener(frameLayout: FrameLayout, x: Int, y: Int) {
+        frameLayout.setOnClickListener {
+            handleBoardClick(x, y, frameLayout.getChildAt(1) as ImageView)
+        }
+    }
 }
