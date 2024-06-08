@@ -27,4 +27,28 @@ class GameView(context: Context) : View(context) {
             canvas.drawLine(0f, i * cellSize, boardSize * cellSize, i * cellSize, boardPaint)
         }
     }
+
+    private fun drawStones(canvas: Canvas) {
+        for (i in 0 until boardSize) {
+            for (j in 0 until boardSize) {
+                when (game.getStone(i, j)) {
+                    Stone.BLACK -> canvas.drawCircle(
+                        i * cellSize + cellSize / 2,
+                        j * cellSize + cellSize / 2,
+                        cellSize / 2,
+                        blackPaint
+                    )
+
+                    Stone.WHITE -> canvas.drawCircle(
+                        i * cellSize + cellSize / 2,
+                        j * cellSize + cellSize / 2,
+                        cellSize / 2,
+                        whitePaint
+                    )
+
+                    else -> {}
+                }
+            }
+        }
+    }
 }
