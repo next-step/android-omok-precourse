@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity() {
         currentStone = 0}
 
         checkState(position)
-
-        checkDiagonal(position)
     }
 
     private fun checkState(position: Int){
@@ -66,6 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         checkVertical(row,column,stone)
         checkHorizontal(row,column,stone)
+        checkDiagonal(row,column,stone)
     }
     private fun checkVertical(row: Int, column: Int, stone: Int){
         val topCount = (row - 1 downTo 0).takeWhile { boardState[it * boardSize + column] == stone }.count()
@@ -88,11 +87,7 @@ class MainActivity : AppCompatActivity() {
         else if (count>=4 && stone==1) showToast("백돌 승리!")
     }
 
-    private fun checkDiagonal(position: Int){
-        val row = position / boardSize
-        val column = position % boardSize
-        val stone = boardState[position]
-
+    private fun checkDiagonal(row: Int, column: Int, stone: Int){
         // 왼->오 대각선
         val leftTopCount = (1..minOf(row, column)).takeWhile { boardState[(row - it) * boardSize + (column - it)] == stone }.count()
         val rightBottomCount = (1..minOf(boardSize - row - 1, boardSize - column - 1)).takeWhile { boardState[(row + it) * boardSize + (column + it)] == stone }.count()
@@ -104,8 +99,8 @@ class MainActivity : AppCompatActivity() {
         val countd1 = leftTopCount + rightBottomCount
         val countd2 = rightTopCount + leftBottomCount
 
-        if (countd1>=4 || countd2>=4 && stone==0) showToast("흑돌 승리!")
-        else if (countd1>=4 || countd2>=4 && stone==1) showToast("백돌 승리!")
+        if ((countd1>=4 || countd2>=4) && stone==0) showToast("흑돌 승리!")
+        else if ((countd1>=4 || countd2>=4) && stone==1) showToast("백돌 승리!")
     }
 
 }
