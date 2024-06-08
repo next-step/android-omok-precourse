@@ -55,12 +55,8 @@ class MainActivity : AppCompatActivity() {
         currentStone = 0}
 
         if (boardState.filterNotNull().size >= 3){
-            checkWin(position)
+            //checkWin(position)
         }
-    }
-
-    private fun checkWin(position: Int): Boolean {
-        return checkHorizontal(position) || checkVertical(position) || checkDiagonal(position)
     }
 
     private fun checkHorizontal(position: Int): Boolean {
