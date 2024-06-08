@@ -70,4 +70,15 @@ class MainActivity : AppCompatActivity() {
         return (leftCount + rightCount) >= 4 // stone 포함시 5 이상
     }
 
+    private fun checkVertical(position: Int): Boolean {
+        val row = position / boardSize
+        val column = position % boardSize
+        val stone = boardState[position] ?: return false
+
+        val topCount = (row - 1 downTo 0).takeWhile { boardState[it * boardSize + column] == stone }.count()
+        val bottomCount = (row + 1 until boardSize).takeWhile { boardState[it * boardSize + column] == stone }.count()
+
+        return (topCount + bottomCount) >= 4 // stone 포함시 5 이상
+    }
+
 }
