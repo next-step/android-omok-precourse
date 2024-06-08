@@ -110,4 +110,18 @@ class MainActivity : AppCompatActivity() {
             .setCancelable(false)
             .show()
     }
+
+    private fun getCellDrawable(row: Int, col: Int): Int {
+        return when {
+            row == 0 && col == 0 -> R.drawable.board_top_left
+            row == 0 && col == boardSize - 1 -> R.drawable.board_top_right
+            row == boardSize - 1 && col == 0 -> R.drawable.board_bottom_left
+            row == boardSize - 1 && col == boardSize - 1 -> R.drawable.board_bottom_right
+            row == 0 -> R.drawable.board_top
+            row == boardSize - 1 -> R.drawable.board_bottom
+            col == 0 -> R.drawable.board_left
+            col == boardSize - 1 -> R.drawable.board_right
+            else -> R.drawable.board_center
+        }
+    }
 }
