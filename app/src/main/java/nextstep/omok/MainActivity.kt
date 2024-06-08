@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         checkVertical(position)
     }
 
-    fun checkVertical(position: Int){
+    private fun checkVertical(position: Int){
         val row = position / boardSize
         val column = position % boardSize
         val stone = boardState[position]
@@ -71,5 +71,4 @@ class MainActivity : AppCompatActivity() {
         if (count>=4 && stone==0) showToast("흑돌 승리!")
         else if (count>=4 && stone==1) showToast("백돌 승리!")
     }
-
 }
