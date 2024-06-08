@@ -81,4 +81,20 @@ class MainActivity : AppCompatActivity() {
         return (topCount + bottomCount) >= 4 // stone 포함시 5 이상
     }
 
+    private fun checkDiagonal(position: Int): Boolean {
+        val row = position / boardSize
+        val column = position % boardSize
+        val stone = boardState[position] ?: return false
+
+        // 왼쪽 위에서 오른쪽 아래 방향 대각선
+        val leftTopCount = (1..minOf(row, column)).takeWhile { boardState[(row - it) * boardSize + (column - it)] == stone }.count()
+        val rightBottomCount = (1..minOf(boardSize - row - 1, boardSize - column - 1)).takeWhile { boardState[(row + it) * boardSize + (column + it)] == stone }.count()
+
+        // 오른쪽 위에서 왼쪽 아래 방향 대각선
+        val rightTopCount = (1..minOf(row, boardSize - column - 1)).takeWhile { boardState[(row - it) * boardSize + (column + it)] == stone }.count()
+        val leftBottomCount = (1..minOf(boardSize - row - 1, column)).takeWhile { boardState[(row + it) * boardSize + (column - it)] == stone }.count()
+
+        return (leftTopCount + rightBottomCount) >= 4 || (rightTopCount + leftBottomCount) >= 4 // stone 포함시 5 이상
+    }
+
 }
