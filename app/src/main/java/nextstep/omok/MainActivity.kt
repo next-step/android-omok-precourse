@@ -60,25 +60,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkWin(position: Int): Boolean {
-        return checkDirection(position, -1, 0) || // 가로
-               checkDirection(position, 0, -1) || // 세로
-               checkDirection(position, -1, -1) || // 왼->오 대각선
-               checkDirection(position, -1, 1) // 오->왼 대각선
+        return checkHorizontal(position) || checkVertical(position) || checkDiagonal(position)
     }
 
-    private fun checkDirection(position: Int, dRow: Int, dColumn: Int): Boolean {
+    private fun checkHorizontal(position: Int): Boolean {
         val row = position / boardSize
         val column = position % boardSize
         val stone = boardState[position] ?: return false
 
-        val count = (1 until 5).count { i ->
-            val newRow = row + i * dRow
-            val newColumn = column + i * dColumn
-            newRow in 0 until boardSize && newColumn in 0 until boardSize && boardState[newRow * boardSize + newColumn] == stone
-        }
+        val leftCount = (column - 1 downTo 0).takeWhile { boardState[row * boardSize + it] == stone }.count()
+        val rightCount = (column + 1 until boardSize).takeWhile { boardState[row * boardSize + it] == stone }.count()
 
-        return count >= 4
+        return (leftCount + rightCount) >= 4 // stone 포함시 5 이상
     }
 
+    private fun checkVertical(position: Int): Boolean {
+        val row = position / boardSize
+        val column = position % boardSize
+        val stone = boardState[position] ?: return false
+
+        val topCount = (row - 1 downTo 0).takeWhile { boardState[it * boardSize + column] == stone }.count()
+        val bottomCount = (row + 1 until boardSize).takeWhile { boardState[it * boardSize + column] == stone }.count()
+
+        return (topCount + bottomCount) >= 4 // stone 포함시 5 이상
+    }
+
+    private fun checkDiagonal(position: Int): Boolean {
+        val row = position / boardSize
+        val column = position % boardSize
+        val stone = boardState[position] ?: return false
+
+        // 왼쪽 위에서 오른쪽 아래 방향 대각선
+        val leftTopCount = (1..minOf(row, column)).takeWhile { boardState[(row - it) * boardSize + (column - it)] == stone }.count()
+        val rightBottomCount = (1..minOf(boardSize - row - 1, boardSize - column - 1)).takeWhile { boardState[(row + it) * boardSize + (column + it)] == stone }.count()
+
+        // 오른쪽 위에서 왼쪽 아래 방향 대각선
+        val rightTopCount = (1..minOf(row, boardSize - column - 1)).takeWhile { boardState[(row - it) * boardSize + (column + it)] == stone }.count()
+        val leftBottomCount = (1..minOf(boardSize - row - 1, column)).takeWhile { boardState[(row + it) * boardSize + (column - it)] == stone }.count()
+
+        return (leftTopCount + rightBottomCount) >= 4 || (rightTopCount + leftBottomCount) >= 4 // stone 포함시 5 이상
+    }
 
 }
