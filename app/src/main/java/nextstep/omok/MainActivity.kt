@@ -30,8 +30,14 @@ class MainActivity : AppCompatActivity() {
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
             .forEach { view ->
+                view.tag = null
                 view.setOnClickListener {
-                    turn = changeTurn(view)
+                    if (view.tag == null) {
+                        turn = changeTurn(view)
+                        view.tag = if (turn) "white" else "black"
+                    }
+
+
                 }
 
             }
