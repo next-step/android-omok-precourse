@@ -110,8 +110,7 @@ class MainActivity : AppCompatActivity() {
         // 게임 초기화
         isBlackTurn = true
         boardState = Array(boardSize) { IntArray(boardSize) }
-        // UI를 다시 그리기
-        redrawBoard()
+
     }
 
     // 보드의 모든 이미지 초기화
@@ -124,12 +123,6 @@ class MainActivity : AppCompatActivity() {
                 imageView.setImageDrawable(null)
             }
         }
-    }
-
-    // UI를 다시 그리는 함수
-    private fun redrawBoard() {
-        // 이미지뷰에 돌을 다시 그리는 코드
-        // 생략
     }
 
     // 게임 다시 시작 다이얼로그 표시
