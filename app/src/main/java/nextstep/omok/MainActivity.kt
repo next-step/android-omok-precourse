@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
 
     private val boardSize = 15
     private val boardState = Array<Int?>(boardSize * boardSize) { null }
-    //private val boardState = ArrayList<Int?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +53,6 @@ class MainActivity : AppCompatActivity() {
         view.setImageResource(R.drawable.white_stone)
         boardState[position] = 1;   //white
         currentStone = 0}
-
-        if (boardState.filterNotNull().size >= 3){
-            //checkWin(position)
-        }
     }
 
 }
