@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private var currentStone = 0  //0:black, 1:white
 
     private val boardSize = 15
-    private val boardState = Array<Int?>(boardSize * boardSize) { null }
+    private var boardState = Array<Int?>(boardSize * boardSize) { null }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,13 +99,14 @@ class MainActivity : AppCompatActivity() {
         return (countd1>=4 || countd2>=4)
     }
 
-    private fun displayResult(){
-        if(currentStone == 1) {
-            showToast("흑돌 승리!")
-        }
-        else if (currentStone == 0){
-            showToast("백돌 승리!")
+    private fun displayResult() {
+        
+        if (currentStone == 1) {
+            showToast("흑돌 승리! \n게임이 종료됩니다!")
+            finish()
+        } else if (currentStone == 0) {
+            showToast("백돌 승리! \n게임이 종료됩니다!")
+            finish()
         }
     }
-
 }
