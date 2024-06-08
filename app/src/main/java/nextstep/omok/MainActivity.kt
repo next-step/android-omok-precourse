@@ -16,7 +16,7 @@ sealed class Result {
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentPlayer = "흑돌"
+    var currentPlayer = "흑돌"
     private var gameActive = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun placeStone(view: ImageView) {
+    fun placeStone(view: ImageView) {
         if (view.drawable != null) return
         setImageForCurrentPlayer(view)
         if (checkWin(view)) handleWin()
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         showMessage("$currentPlayer 차례입니다.")
     }
 
-    private fun checkDirection(view: ImageView, rowDelta: Int, colDelta: Int): Boolean {
+    fun checkDirection(view: ImageView, rowDelta: Int, colDelta: Int): Boolean {
         val board = findViewById<TableLayout>(R.id.board)
         val row = (view.parent as? TableRow)?.let { board.indexOfChild(it) } ?: return false
         val col = (view.parent as? TableRow)?.indexOfChild(view) ?: return false
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         showMessage("흑돌 차례입니다.")
     }
 
-    private fun clearBoard() {
+    fun clearBoard() {
         val board = findViewById<TableLayout>(R.id.board)
         board.children
             .filterIsInstance<TableRow>()
@@ -129,5 +129,4 @@ class MainActivity : AppCompatActivity() {
                 it.tag = null
             }
     }
-
 }
