@@ -9,76 +9,76 @@
 
 ### 🎯 Tasks
 
-- [] onCreate
+- onCreate
 
 액티비티가 생성될 때 게임을 초기화하고 시작 메시지를 표시
 
 
-- [] initializeGame
+- initializeGame
 
 게임을 초기화
 
 
-- [] setupBoard
+- setupBoard
 
 오목판을 설정하고 각 셀에 클릭 리스너를 추가
 
 
-- [] placeStone
+- placeStone
 
 돌을 놓는 로직 처리
 
 
-- [] setImageForCurrentPlayer
+- setImageForCurrentPlayer
 
 현재 플레이어의 돌 이미지를 설정
 
 
-- [] handleWin
+- handleWin
 
 플레이어가 이겼을 때의 로직을 관리
 
 
-- [] switchPlayer
+- switchPlayer
 
 플레이어를 전환하고 메시지를 표시
 
 
-- [] checkWin
+- checkWin
 
 승리 조건을 확인
 
 
-- [] checkDirection
+- checkDirection
 
 특정 방향으로 연속된 돌의 개수를 확인
 
 
-- [] countStones
+- countStones
 
 특정 방향과 그 반대 방향으로 연속된 돌의 수를 합산
 
 
-- [] countDirection
+- countDirection
 
 주어진 방향으로 연속된 돌의 개수를 계산
 
 
-- [] showDialog
+- showDialog
 
 게임 오버 다이얼로그를 표시
 
 
-- [] restartGame
+- restartGame
 
 게임을 재시작
 
 
-- [] clearBoard
+- clearBoard
 
 오목판을 초기화
 
 
-- [] showMessage
+- showMessage
 
 토스트 메시지를 표시
