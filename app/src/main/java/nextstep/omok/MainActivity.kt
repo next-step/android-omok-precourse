@@ -63,3 +63,9 @@ class MainActivity : AppCompatActivity() {
             boardState[row][column] = WHITE
         }
     }
+
+    fun getPosition(idx: Int): Pair<Int, Int> {
+        val row: Int = idx / BOARDSIZE
+        val column: Int = idx % BOARDSIZE
+        return Pair(row, column)
+    }
