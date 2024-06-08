@@ -93,4 +93,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateStoneImage(stoneImageView: ImageView) {
         stoneImageView.setImageResource(if (currentTurn == Stone.BLACK) R.drawable.black_stone else R.drawable.white_stone)
     }
+
+    private fun switchTurn() {
+        currentTurn = if (currentTurn == Stone.BLACK) Stone.WHITE else Stone.BLACK
+    }
 }
