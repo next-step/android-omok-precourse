@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private val boardSize = 15
     private val boardState = Array<Int?>(boardSize * boardSize) { null }
+    //private val boardState = ArrayList<Int?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,17 +58,6 @@ class MainActivity : AppCompatActivity() {
         if (boardState.filterNotNull().size >= 3){
             //checkWin(position)
         }
-    }
-
-    private fun checkHorizontal(position: Int): Boolean {
-        val row = position / boardSize
-        val column = position % boardSize
-        val stone = boardState[position] ?: return false
-
-        val leftCount = (column - 1 downTo 0).takeWhile { boardState[row * boardSize + it] == stone }.count()
-        val rightCount = (column + 1 until boardSize).takeWhile { boardState[row * boardSize + it] == stone }.count()
-
-        return (leftCount + rightCount) >= 4 // stone 포함시 5 이상
     }
 
 }
