@@ -78,4 +78,19 @@ class MainActivity : AppCompatActivity() {
             handleBoardClick(x, y, frameLayout.getChildAt(1) as ImageView)
         }
     }
+
+    private fun handleBoardClick(x: Int, y: Int, stoneImageView: ImageView) {
+        if (game.placeStone(x, y)) {
+            updateStoneImage(stoneImageView)
+            if (game.checkWin(x, y)) {
+                showGameOverDialog()
+            } else {
+                switchTurn()
+            }
+        }
+    }
+
+    private fun updateStoneImage(stoneImageView: ImageView) {
+        stoneImageView.setImageResource(if (currentTurn == Stone.BLACK) R.drawable.black_stone else R.drawable.white_stone)
+    }
 }
