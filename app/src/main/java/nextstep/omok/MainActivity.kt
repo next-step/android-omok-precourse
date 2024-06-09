@@ -10,15 +10,8 @@ import androidx.core.view.children
 class MainActivity : AppCompatActivity() {
 
     private var turn = true
-    fun changeTurn(view: ImageView): Boolean {
-        if (turn)
-            view.setImageResource(R.drawable.black_stone)
-        else
-            view.setImageResource(R.drawable.white_stone)
-        return !turn
-    }
-
-
+    private var boardSize: Int = 15
+    private var boardStoneColor = Array(boardSize) { Array<String?>(boardSize) { null } }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,16 +23,28 @@ class MainActivity : AppCompatActivity() {
             .flatMap { it.children }
             .filterIsInstance<ImageView>()
             .forEach { view ->
-                view.tag = null
                 view.setOnClickListener {
-                    if (view.tag == null) {
+                    val row = (view.parent as? TableRow)?.indexOfChild(view) ?: -1
+                    val column =
+                        (view.parent.parent as? TableLayout)?.indexOfChild(view.parent as? TableRow) ?: -1
+                    if (stoneColor(row, column) == null) {
                         turn = changeTurn(view)
-                        view.tag = if (turn) "white" else "black"
+                        boardStoneColor[row][column] = if (turn) "white" else "black"
                     }
-
-
                 }
 
             }
+    }
+
+    private fun changeTurn(view: ImageView): Boolean {
+        if (turn)
+            view.setImageResource(R.drawable.black_stone)
+        else
+            view.setImageResource(R.drawable.white_stone)
+        return !turn
+    }
+
+    private fun stoneColor(row: Int, column: Int): String? {
+        return boardStoneColor[row][column]
     }
 }
