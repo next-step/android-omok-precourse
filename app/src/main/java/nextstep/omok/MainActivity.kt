@@ -82,10 +82,7 @@ class MainActivity : AppCompatActivity() {
         imgWhite: ImageView,
         imgBlack: ImageView
     ) {
-        if (checkedBoard[row][col] != Stone.EMPTY) {
-            Toast.makeText(this, "이미 돌이 놓여 있습니다", Toast.LENGTH_SHORT).show()
-            return
-        }
+        if (!isvalidPositon(row, col)) return
 
         val stoneResId = when (currentPlayer) {
             PlayerTurn.BLACK -> R.drawable.black_stone
@@ -98,9 +95,17 @@ class MainActivity : AppCompatActivity() {
 
         if (checkWin(row, col, checkedBoard)) {
             showResultScreen()
-            return
         }else{
             changeTurn(imgWhite, imgBlack)
+        }
+    }
+
+    private fun isvalidPositon(row: Int,col: Int):Boolean{
+        return if (checkedBoard[row][col] != Stone.EMPTY) {
+            Toast.makeText(this, "이미 돌이 놓여 있습니다", Toast.LENGTH_SHORT).show()
+            false
+        } else {
+            true
         }
     }
 
