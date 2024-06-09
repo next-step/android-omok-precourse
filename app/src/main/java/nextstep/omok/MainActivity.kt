@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun placeStone(view: ImageView) {
         if (player == "black") {
             view.setImageResource(R.drawable.black_stone)
@@ -63,4 +64,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun checkGameSet(row: Int, col: Int): Boolean {
+        for (direction in derivative) {
+            var count = 1
+
+            count += countStones(row, col, direction[0], direction[1])
+            count += countStones(row, col, -direction[0], -direction[1])
+
+            if (count >= 5) {
+                return true
+            }
+        }
+        return false
+    }
+
+    fun countStones(row: Int, col: Int, rowDir: Int, colDir: Int): Int {
+        var currentRow = row + rowDir
+        var currentCol = col + colDir
+        var count = 0
+
+        while (currentRow in 0 until boardSize && currentCol in 0 until boardSize && boardState[currentRow][currentCol] == player) {
+            count++
+            currentRow += rowDir
+            currentCol += colDir
+        }
+        return count
+    }
 }
