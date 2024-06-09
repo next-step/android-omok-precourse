@@ -17,6 +17,7 @@ class BoardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_board)
 
         turnImage = findViewById(R.id.turnImage)
+        newGame = findViewById(R.id.newGameButton)
 
         // 프래그먼트 추가
         if (savedInstanceState==null){
@@ -31,7 +32,6 @@ class BoardActivity : AppCompatActivity() {
         GameModel.resetGame()
         updateTurnImage()
 
-        newGame = findViewById(R.id.newGameButton)
         newGame.setOnClickListener {
             resetGame()
         }

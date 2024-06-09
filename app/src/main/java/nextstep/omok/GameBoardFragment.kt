@@ -36,10 +36,10 @@ class GameBoardFragment: Fragment() {
 
     private fun handleCellClick(x: Int, y: Int) {
         if (GameModel.placeStone(x, y)) {
-            Log.d("testt", "${x} ${y} 돌 놓기 성공")
             updateCell(x, y, GameModel.currentPlayer)
-            if (GameModel.checkWinCondition()) {
+            if (GameModel.checkWinCondition(x, y)) {
                 GameModel.handelWin()
+                Log.d("testt", "${GameModel.currentPlayer}승리")
             } else {
                 GameModel.switchPlayer()
                 (activity as? BoardActivity)?.updateTurnImage()
@@ -54,7 +54,7 @@ class GameBoardFragment: Fragment() {
     }
 
     // 보드 초기화
-    fun resetBoard() { // 변경된 부분
+    fun resetBoard() {
         board.children.filterIsInstance<TableRow>().forEach { row ->
             row.children.filterIsInstance<ImageView>().forEach { cell ->
                 cell.setImageResource(0) // 이미지를 초기화
