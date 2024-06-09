@@ -11,163 +11,153 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
-import androidx.core.view.get
 
 class MainActivity : AppCompatActivity() {
 
-    var isblackturn : Boolean = true
-    lateinit var nowTurnDisplay : TextView
-    lateinit var  reset : Button
-    lateinit var imageViewArray : Array<Array<ImageView?>>
-    var stoneAraay = Array(15){ IntArray(15){0} }
+    var isblackturn: Boolean = true
+    lateinit var nowTurnDisplay: TextView
+    lateinit var reset: Button
+    var stoneArray = Array(15) { IntArray(15) { 0 } }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        nowTurnDisplay = findViewById<TextView>(R.id.nowTurnDisplay)
-        reset = findViewById<Button>(R.id.reset)
-
+        reset = findViewById(R.id.reset)
+        nowTurnDisplay = findViewById(R.id.nowTurnDisplay)
         val board = findViewById<TableLayout>(R.id.board)
-        var rowIndex =0 //세로
 
-        board
-            .children //모든 자식 요소 가져오기
-            .filterIsInstance<TableRow>() //TableRow인 요소만 필터링
+        var rowIndex = 0
+        board.children
+            .filterIsInstance<TableRow>()
             .forEach { tableRow ->
-                var colIndex =0 //가로
+                var colIndex = 0
                 tableRow.children.filterIsInstance<ImageView>().forEach { view ->
-                    view.setOnClickListener { onStonePlace(board,view) }
-                    view.tag = "$rowIndex,$colIndex" //태그 달기
+                    view.setOnClickListener { onStonePlace(view) }
+                    view.tag = "$rowIndex,$colIndex"
                     colIndex++
                 }
                 rowIndex++
             }
 
-        val ROWS = 15 // 행의 개수
-        val COLS = 15 // 열의 개수
-
-        imageViewArray = Array(ROWS) { row ->
-            Array<ImageView?>(COLS) { col ->
-                // 각 셀의 좌표를 찾기 위해 빈 값으로 초기화
-                var imageView: ImageView? = null
-
-                // 각 TableRow에서 ImageView를 찾아서 좌표에 할당
-                val tableRow = board.getChildAt(row) as? TableRow
-                tableRow?.let { rowLayout ->
-                    imageView = rowLayout.getChildAt(col) as? ImageView
-                }
-                // 좌표 할당된 ImageView 반환
-                imageView
-            }
-        }
-
-
-
         reset.setOnClickListener { resetGame(board) }
     }
 
-    //돌 놓을 때 빈 공간인지 확인하는 함수
     fun isEmptyPlace(row: Int, col: Int): Boolean {
-        return imageViewArray[row][col]?.drawable == null
+        return row in 0..14 && col in 0..14 && stoneArray[row][col] == 0
     }
 
-    //클릭해서 돌을 놓을 때
-    fun onStonePlace(board: TableLayout, view: ImageView){
-
-        val tag = view.tag as? String
+    fun onStonePlace(view: ImageView) {
+        val tag = view.tag as? String //좌표태그를 tag변수에 초기화
         tag?.let {
-            val (rowIndex, colIndex) = it.split(",").map { it.toInt() }
-            if (isEmptyPlace(rowIndex, colIndex)) {
-                if (isblackturn) { //흑돌 놓기
+            val (rowIndex, colIndex) = it.split(",").map { it.toInt() } // ,기준 split하여 좌표값 설정
+            if (isEmptyPlace(rowIndex, colIndex)) { //해당 좌표에 돌을 놓을 수 있다면
+                if (isblackturn) { //흑돌차례일 때
                     view.setImageResource(R.drawable.black_stone)
-                    stoneAraay[rowIndex][colIndex] = 1
-                }
-                else { //백돌 놓기
+                    stoneArray[rowIndex][colIndex] = 1
+                } else { //백돌차례일 때
                     view.setImageResource(R.drawable.white_stone)
-                    stoneAraay[rowIndex][colIndex] = 2
+                    stoneArray[rowIndex][colIndex] = 2
                 }
-                Log.d("testt", it) //놓은 돌의 좌표값
-
-                checkSameStone(rowIndex, colIndex) //주변 돌들의 일치 여부 체크
-                isblackturn = !isblackturn //턴바꾸기
-                displayNowTurn(isblackturn)
-            } else {
+                Log.d("testt", it) //놓은 돌의 좌표 로그 출력
+                checkWin(rowIndex, colIndex) //승리조건 판별
+                isblackturn = !isblackturn //턴 넘기기
+                displayNowTurn(isblackturn) //바뀐 턴 표시하기
+            } else { //놓을 수 없는 곳에 클릭했을 때
                 Toast.makeText(this, "빈 곳에 놓아주세요", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    //현재 차례를 보여주는 함수
-    fun displayNowTurn(isblackturn : Boolean){
-        if(isblackturn){
-            nowTurnDisplay.text="현재 차례\nBLACK"
+    //차례를 표시하는 TextView
+    fun displayNowTurn(isblackturn: Boolean) {
+        if (isblackturn) {
+            nowTurnDisplay.text = "현재 차례\nBLACK"
             nowTurnDisplay.setBackgroundColor(Color.BLACK)
             nowTurnDisplay.setTextColor(Color.WHITE)
-        }
-        else{
-            nowTurnDisplay.text="현재 차례\nWHITE"
+        } else {
+            nowTurnDisplay.text = "현재 차례\nWHITE"
             nowTurnDisplay.setBackgroundColor(Color.WHITE)
             nowTurnDisplay.setTextColor(Color.BLACK)
         }
     }
 
-    //초기화 버튼
-    fun resetGame(board : TableLayout){
-        board
-            .children //모든 자식 요소 가져오기
-            .filterIsInstance<TableRow>() //TableRow인 요소만 필터링
-            .flatMap { it.children } //각 TableRow의 자식 요소를 평탄화
-            .filterIsInstance<ImageView>() //ImageView인 요소만 필터링
-            .forEach { view -> view.setImageResource(0) } // 리소스 제거
+    //게임리셋 버튼
+    fun resetGame(board: TableLayout) {
+        board.children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { view -> view.setImageResource(0) } //각 이미지뷰 리소스를 0으로 설정
 
-        isblackturn = true
-        displayNowTurn(isblackturn)
+        stoneArray = Array(15) { IntArray(15) { 0 } } //좌표 데이터도 초기화
+        isblackturn = true //흑돌 선공 결정
+        displayNowTurn(isblackturn) //현재 차례 흑돌 설정
     }
 
-    //돌을 놓고 연속된 돌을 확인하는 함수
-    fun checkSameStone(row: Int, col: Int) {
+    //승리판별
+    fun checkWin(row: Int, col: Int) {
         val directions = listOf(
             listOf(1 to 0, -1 to 0),   // 수평 방향
             listOf(0 to 1, 0 to -1),   // 수직 방향
             listOf(1 to 1, -1 to -1),  // 대각선 방향 (오른쪽 아래로)
             listOf(1 to -1, -1 to 1)   // 대각선 방향 (오른쪽 위로)
         )
-        var count = 1
+        val stone = stoneArray[row][col] // 흑,백 판별 흑이면 1 백이면 2
         for (direction in directions) {
             val (dx1, dy1) = direction[0]
             val (dx2, dy2) = direction[1]
+            var count = 1
 
-
-            val stone = stoneAraay[row][col] //좌표값으로 흑/백 판별
-
-            // 현재 돌 위치를 기준으로 주변 돌을 검사하여 연속된 돌의 개수를 세기
             for (i in 1 until 5) {
                 val newRow1 = row + i * dx1
                 val newCol1 = col + i * dy1
                 val newRow2 = row + i * dx2
                 val newCol2 = col + i * dy2
 
-                var newstone1 = stoneAraay[newRow1][newCol1]
-                var newstone2 = stoneAraay[newRow2][newCol2]
-
-                if ((stone == newstone1) || (stone == newstone2))  { //놓은 돌 기준으로 양방향으로 뻗어나가며 비교
+                if (checkSameStone(newRow1,newCol1,stone)||checkSameStone(newRow2,newCol2,stone)) { //주변 돌들과 놓은 돌 비교
                     count++
-                } else {
-                    break
                 }
+                else break
 
             }
-            Log.d("testt",count.toString())
+            Log.d("testt", "Count: $count")
 
             if (count >= 5) {
-                val winner = if (isblackturn) "흑돌" else "백돌"
-                Toast.makeText(this, "$winner 승리!", Toast.LENGTH_SHORT).show()
-                // 게임 종료 또는 다른 필요한 로직을 추가할 수 있습니다.
+                whenWin(stone)
             }
         }
     }
 
+    fun checkSameStone(newRow : Int, newCol : Int, stone : Int):Boolean{
+        return (newRow in 0..14 && newCol in 0..14 && stoneArray[newRow][newCol] == stone)
+    }
 
+    //게임 종료시 재실행 여부 확인
+    fun showEndGameDialog(winner: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("게임 종료")
+        builder.setMessage("$winner 승리!\n다시 하시겠습니까?")
+
+        builder.setPositiveButton("다시하기") { dialog, _ ->
+            resetGame(findViewById(R.id.board))
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("종료하기") { dialog, _ ->
+            finish()
+        }
+
+        builder.setCancelable(false)
+        builder.show()
+    }
+
+    //승리 Toast메세지 출력
+    fun whenWin(stone : Int){
+        val winner = if (stone == 1) "흑돌" else "백돌"
+        Toast.makeText(this, "$winner 승리!", Toast.LENGTH_SHORT).show()
+        showEndGameDialog(winner)
+    }
 
 }
 
