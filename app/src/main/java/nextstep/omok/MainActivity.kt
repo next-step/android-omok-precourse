@@ -2,11 +2,16 @@ package nextstep.omok
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 
 enum class PlayerTurn {
@@ -49,11 +54,29 @@ class MainActivity : AppCompatActivity() {
         view.setImageResource(stoneResId)
 
         checkedBoard[row][col] = if (currentPlayer == PlayerTurn.BLACK) Stone.BLACK else Stone.WHITE
+
         if (checkWin(row, col, checkedBoard)) {
-            Toast.makeText(this, "승리", Toast.LENGTH_SHORT).show()
+            showResultScreen()
             return
+        }else{
+            changeTurn(imgWhite, imgBlack)
         }
-        changeTurn(imgWhite, imgBlack)
+    }
+
+    private fun showResultScreen(){
+        val resultTextView = findViewById<TextView>(R.id.result_textView)
+        val resultLayout = findViewById<ViewGroup>(R.id.result_layout)
+
+        when (currentPlayer){
+            PlayerTurn.BLACK -> resultTextView.text = "Black Wins!"
+            PlayerTurn.WHITE -> resultTextView.text = "White Wins!"
+        }
+        resultLayout.visibility = View.VISIBLE
+    }
+
+    private fun hideResultScreen(){
+        val resultLayout = findViewById<View>(R.id.result_layout)
+        resultLayout.visibility = View.INVISIBLE
     }
 
     private fun changeTurn(imgWhite: ImageView, imgBlack: ImageView) {
@@ -108,13 +131,27 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    private fun init(board:ViewGroup){
+        currentPlayer = PlayerTurn.BLACK
+        checkedBoard = MutableList(boardSize){
+            MutableList(boardSize) { Stone.EMPTY }}
+        board
+            .children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { it.setImageResource(0) }
+        hideResultScreen()
+    }
 
+    private fun start(){
         val imgWhite = findViewById<ImageView>(R.id.img_white)
         val imgBlack = findViewById<ImageView>(R.id.img_black)
         val board = findViewById<TableLayout>(R.id.board)
+        val restartBtn = findViewById<Button>(R.id.restart_btn)
+
+        imgWhite.alpha = 0.2f
+        imgBlack.alpha = 1.0f
 
         board
             .children
@@ -129,6 +166,17 @@ class MainActivity : AppCompatActivity() {
                     placeStone(view, row, col, imgWhite, imgBlack)
                 }
             }
+
+        restartBtn.setOnClickListener {
+            init(board)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        start()
 
     }
 }
