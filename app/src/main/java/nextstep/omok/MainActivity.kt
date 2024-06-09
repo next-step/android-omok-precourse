@@ -46,4 +46,18 @@ class MainActivity : AppCompatActivity() {
         BOARD_ARRAY[rowIndex][colIndex] = if (isBlackTurn) 1 else 2
         view.setImageResource(if (isBlackTurn) R.drawable.black_stone else R.drawable.white_stone)
     }
+
+    private fun countStones(row: Int, col: Int, dRow: Int, dCol: Int, player: Int): Int {
+        var count = 0
+        var r = row + dRow
+        var c = col + dCol
+
+        while (r in 0 until BOARD_SIZE && c in 0 until BOARD_SIZE && BOARD_ARRAY[r][c] == player) {
+            count++
+            r += dRow
+            c += dCol
+        }
+        return count
+    }
+
 }
