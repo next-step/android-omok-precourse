@@ -1,6 +1,8 @@
 class Referee(private val boardSize: Int, private val boardState: Array<Int?>) {
 
     fun checkState(position: Int): Boolean {
+        if (position !in boardState.indices) return false
+
         val row = position / boardSize
         val column = position % boardSize
         val stone = boardState[position] ?: return false
