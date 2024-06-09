@@ -52,4 +52,13 @@ class GameBoardFragment: Fragment() {
         val cell = row?.getChildAt(y) as? ImageView
         cell?.setImageResource(player.stoneResId)
     }
+
+    // 보드 초기화
+    fun resetBoard() { // 변경된 부분
+        board.children.filterIsInstance<TableRow>().forEach { row ->
+            row.children.filterIsInstance<ImageView>().forEach { cell ->
+                cell.setImageResource(0) // 이미지를 초기화
+            }
+        }
+    }
 }

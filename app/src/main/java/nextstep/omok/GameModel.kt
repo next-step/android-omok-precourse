@@ -12,6 +12,7 @@ object GameModel {
                 board[i][j] = null // 보드의 각 위치를 null로 초기화
             }
         }
+        currentPlayer = Player.BLACK // 흑돌로 초기화
     }
     fun switchPlayer() {
         // TODO: 플레이어 전환 로직
