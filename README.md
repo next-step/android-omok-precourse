@@ -31,10 +31,10 @@
 ---
 
 ## 2. 스크린샷
-![메인](https://github.com/aengzu/android-omok-precourse/assets/102356873/0edbcc04-3a2a-4b76-81d3-de27f51c0c09)
-![게임진행1](https://github.com/aengzu/android-omok-precourse/assets/102356873/955802a5-7011-4fa2-ade0-0efe625701e1)
-![게임진행2](https://github.com/aengzu/android-omok-precourse/assets/102356873/aa9fee4f-944e-43e8-b8e0-5685241ed0c3)
-![게임승리](https://github.com/aengzu/android-omok-precourse/assets/102356873/6a86bb06-2253-4776-bff3-1566ab2c76dc)
-
-
+<p align="center">
+  <img src="https://github.com/aengzu/android-omok-precourse/assets/102356873/0edbcc04-3a2a-4b76-81d3-de27f51c0c09" width="200" />
+  <img src="https://github.com/aengzu/android-omok-precourse/assets/102356873/955802a5-7011-4fa2-ade0-0efe625701e1" width="200" />
+  <img src="https://github.com/aengzu/android-omok-precourse/assets/102356873/aa9fee4f-944e-43e8-b8e0-5685241ed0c3" width="200" />
+  <img src="https://github.com/aengzu/android-omok-precourse/assets/102356873/6a86bb06-2253-4776-bff3-1566ab2c76dc" width="200" />
+</p>
 
