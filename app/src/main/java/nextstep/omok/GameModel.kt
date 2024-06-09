@@ -16,15 +16,22 @@ object GameModel {
     fun switchPlayer() {
         // TODO: 플레이어 전환 로직
     }
-    fun checkWinCondition() {
+    fun checkWinCondition():Boolean{
         // TODO: 승리 조건 확인 로직
+        return false
     }
-    fun placeStone() {
+    fun placeStone(x: Int, y: Int): Boolean {
         // TODO: 현재 플레이어가 돌을 놓는 로직
+        if (board[x][y] == null) {
+            board[x][y] = currentPlayer // 현재 플레이어가 돌을 놓음
+            return true
+        }
+        return false
     }
 
     fun handelWin() {
         // TODO : 승리 조건이 만족되었을 때 처리 로직
+        return
     }
 
 

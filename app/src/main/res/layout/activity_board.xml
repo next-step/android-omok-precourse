@@ -44,20 +44,7 @@
 
 
 
-    <!-- 수 놓기 버튼 -->
-    <TextView
-        android:id="@+id/placeStoneButton"
-        android:background="@drawable/custom_button"
-        android:text="수 놓기"
-        android:textSize="30dp"
-        android:fontFamily="@font/seoulhangangeb"
-        android:textColor="@android:color/black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        />
+
 
     <!-- 새 게임 버튼 -->
     <TextView
@@ -71,7 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="32dp"
         />
 
