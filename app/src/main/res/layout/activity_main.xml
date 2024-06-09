@@ -1202,7 +1202,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
             <ImageView
-                android:id="@+id/btn_black"
+                android:id="@+id/img_black"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -1210,7 +1210,7 @@
                 android:src="@drawable/black_stone"/>
 
             <ImageView
-                android:id="@+id/btn_white"
+                android:id="@+id/img_white"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 app:layout_constraintTop_toTopOf="parent"
