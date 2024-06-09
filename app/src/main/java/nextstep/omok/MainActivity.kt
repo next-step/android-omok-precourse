@@ -100,5 +100,20 @@ class MainActivity : AppCompatActivity() {
         showWinner.text = if (winnerPlayer == "black") "흑돌 승리!" else "백돌 승리!"
         gameOver = true
     }
+    private fun showDraw() {
+        val showWinner = findViewById<TextView>(R.id.showWinner)
+        showWinner.text = "무승부!"
+        gameOver = true
+    }
 
+    private fun isBoardFull(): Boolean {
+        for (row in boardState) {
+            for (cell in row) {
+                if (cell == "") {
+                    return false
+                }
+            }
+        }
+        return true
+    }
 }
