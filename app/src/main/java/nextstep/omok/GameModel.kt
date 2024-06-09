@@ -15,6 +15,7 @@ object GameModel {
     }
     fun switchPlayer() {
         // TODO: 플레이어 전환 로직
+        currentPlayer = if (currentPlayer == Player.BLACK) Player.WHITE else Player.BLACK
     }
     fun checkWinCondition():Boolean{
         // TODO: 승리 조건 확인 로직
