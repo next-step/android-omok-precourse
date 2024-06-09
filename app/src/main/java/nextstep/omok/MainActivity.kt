@@ -2,9 +2,11 @@ package nextstep.omok
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 
@@ -13,9 +15,14 @@ class MainActivity : AppCompatActivity() {
     private var turn = true
     private var boardSize: Int = 15
     private var boardStoneColor = Array(boardSize) { Array<String?>(boardSize) { null } }
+    private lateinit var printWin: TextView
+    private lateinit var restartButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        printWin = findViewById(R.id.printWin)
+        restartButton = findViewById(R.id.restartButton)
 
         val board = findViewById<TableLayout>(R.id.board)
         board
@@ -27,7 +34,8 @@ class MainActivity : AppCompatActivity() {
                 view.setOnClickListener {
                     val row = (view.parent as? TableRow)?.indexOfChild(view) ?: -1
                     val column =
-                        (view.parent.parent as? TableLayout)?.indexOfChild(view.parent as? TableRow) ?: -1
+                        (view.parent.parent as? TableLayout)?.indexOfChild(view.parent as? TableRow)
+                            ?: -1
                     if (stoneColor(row, column) == null) {
                         turn = changeTurn(view)
                         boardStoneColor[row][column] = if (turn) "white" else "black"
@@ -37,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                                 "testt",
                                 "Win detected for ${boardStoneColor[row][column]!!} stones."
                             )
+                            revealWin(boardStoneColor[row][column]!!)
                         }
                     }
                 }
@@ -55,37 +64,44 @@ class MainActivity : AppCompatActivity() {
     private fun stoneColor(row: Int, column: Int): String? {
         return boardStoneColor[row][column]
     }
-
+    
     private fun checkWin(row: Int, column: Int, color: String): Boolean {
-        val color = boardStoneColor[row][column] ?: return false
         val directions = arrayOf(
             intArrayOf(0, 1), intArrayOf(1, 0), intArrayOf(1, 1), intArrayOf(-1, 1)
         )
 
-        for (i in directions) {
+        for (now in directions) {
             var count = 1
-            val (nowX, nowY) = i
-            var nextX = row + nowX
-            var nextY = column + nowY
+            var nextX = row + now[0]
+            var nextY = column + now[1]
 
             while (nextX in 0 until boardSize && nextY in 0 until boardSize && boardStoneColor[nextX][nextY] == color) {
                 count++
                 Log.d("testt", "Counting stone at: ($nextX, $nextY), count: $count")
-                nextX += nowX
-                nextY += nowY
+                nextX += now[0]
+                nextY += now[1]
             }
 
-            nextX = row - nowX
-            nextY = column - nowY
+            nextX = row - now[0]
+            nextY = column - now[1]
             while (nextX in 0 until boardSize && nextY in 0 until boardSize && boardStoneColor[nextX][nextY] == color) {
                 count++
                 Log.d("testt", "Counting stone at: ($nextX, $nextY), count: $count")
-                nextX += nowX
-                nextY += nowY
+                nextX += now[0]
+                nextY += now[1]
             }
 
             if (count >= 5) return true
         }
         return false
     }
+
+    private fun revealWin(winner:String){
+        val winMessage = if (winner == "black") "흑돌 승리!" else "백돌 승리!"
+        printWin.text = winMessage
+        printWin.visibility = TextView.VISIBLE
+        restartButton.visibility = Button.VISIBLE
+    }
+
+
 }
