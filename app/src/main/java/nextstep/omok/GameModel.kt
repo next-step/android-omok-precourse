@@ -6,6 +6,7 @@ import android.util.Log
 object GameModel {
     var currentPlayer: Player = Player.BLACK // 우선 흑돌로 현재 플레이어 초기화
     var board: Array<Array<Player?>> = Array(15) { arrayOfNulls<Player>(15) } // 15x15 보드, null로 초기화
+    var winner: Player? = null // 승리한 플레이어를 저장
 
     // 방향 체크할 때 쓰기 위한 변수
     private val directions = mapOf(
@@ -28,6 +29,7 @@ object GameModel {
         // NOTE: 플레이어 전환 로직
         currentPlayer = if (currentPlayer == Player.BLACK) Player.WHITE else Player.BLACK
     }
+
     fun checkWinCondition(x: Int, y: Int):Boolean{
         // NOTE: 승리 조건 확인 로직
         return checkDirection(x, y, directions["Horizontal"]!!) ||  // 가로
@@ -61,7 +63,7 @@ object GameModel {
 
 
     fun placeStone(x: Int, y: Int): Boolean {
-        // TODO: 현재 플레이어가 돌을 놓는 로직
+        // NOTE: 현재 플레이어가 돌을 놓는 로직
         if (board[x][y] == null) {
             board[x][y] = currentPlayer // 현재 플레이어가 돌을 놓음
             return true
@@ -69,9 +71,10 @@ object GameModel {
         return false
     }
 
-    fun handelWin() {
-        // TODO : 승리 조건이 만족되었을 때 처리 로직
-        return
+    fun handelWin(): Player? {
+        // NOTE : 승리 조건이 만족되었을 때 winner 를 현재 플레이어로 초기화
+        winner = currentPlayer
+        return winner
     }
 
     fun getCurrentPlayerStoneResId(): Int {

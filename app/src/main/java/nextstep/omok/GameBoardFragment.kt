@@ -39,7 +39,7 @@ class GameBoardFragment: Fragment() {
             updateCell(x, y, GameModel.currentPlayer)
             if (GameModel.checkWinCondition(x, y)) {
                 GameModel.handelWin()
-                Log.d("testt", "${GameModel.currentPlayer}승리")
+                (activity as? BoardActivity)?.showWinDialog()
             } else {
                 GameModel.switchPlayer()
                 (activity as? BoardActivity)?.updateTurnImage()
