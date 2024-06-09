@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private var boardStoneColor = Array(boardSize) { Array<String?>(boardSize) { null } }
     private lateinit var printWin: TextView
     private lateinit var restartButton: Button
+    private var gameOver = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -41,10 +42,6 @@ class MainActivity : AppCompatActivity() {
                         boardStoneColor[row][column] = if (turn) "white" else "black"
                         Log.d("testt", "Stone placed at: ($row, $column)")
                         if (checkWin(row, column, boardStoneColor[row][column]!!)) {
-                            Log.d(
-                                "testt",
-                                "Win detected for ${boardStoneColor[row][column]!!} stones."
-                            )
                             revealWin(boardStoneColor[row][column]!!)
                         }
                     }
@@ -57,11 +54,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeTurn(view: ImageView): Boolean {
-        if (turn)
-            view.setImageResource(R.drawable.black_stone)
-        else
-            view.setImageResource(R.drawable.white_stone)
-        return !turn
+        if (!gameOver) {
+            if (turn)
+                view.setImageResource(R.drawable.black_stone)
+            else
+                view.setImageResource(R.drawable.white_stone)
+            return !turn
+        }
+        return turn
     }
 
     private fun stoneColor(row: Int, column: Int): String? {
@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity() {
 
             while (nextX in 0 until boardSize && nextY in 0 until boardSize && boardStoneColor[nextX][nextY] == color) {
                 count++
-                Log.d("testt", "Counting stone at: ($nextX, $nextY), count: $count")
                 nextX += nowX
                 nextY += nowY
             }
@@ -91,12 +90,14 @@ class MainActivity : AppCompatActivity() {
             nextY = column - nowY
             while (nextX in 0 until boardSize && nextY in 0 until boardSize && boardStoneColor[nextX][nextY] == color) {
                 count++
-                Log.d("testt", "Counting stone at: ($nextX, $nextY), count: $count")
                 nextX -= nowX
                 nextY -= nowY
             }
 
-            if (count >= 5) return true
+            if (count >= 5) {
+                gameOver = true
+                return true
+            }
         }
         return false
     }
@@ -108,7 +109,8 @@ class MainActivity : AppCompatActivity() {
         restartButton.visibility = Button.VISIBLE
     }
 
-    private fun restartGame(){
+    private fun restartGame() {
+        gameOver = false
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
                 boardStoneColor[i][j] = null
@@ -127,5 +129,5 @@ class MainActivity : AppCompatActivity() {
         restartButton.visibility = Button.INVISIBLE
 
         turn = true
-        }
+    }
 }
