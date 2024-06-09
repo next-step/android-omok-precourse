@@ -31,11 +31,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCellClicked(view: ImageView, rowIndex: Int, colIndex: Int) {
-        if (!isCellOccupied(rowIndex, colIndex)) {
+        if (isCellOccupied(rowIndex, colIndex)) {
             return
         }
         placeStone(view, rowIndex, colIndex)
-        isBlackTurn = !isBlackTurn
+        if (checkWin(rowIndex, colIndex)) {
+            return
+        } else {
+            isBlackTurn = !isBlackTurn
+        }
     }
 
     private fun isCellOccupied(rowIndex: Int, colIndex: Int): Boolean {
@@ -45,6 +49,15 @@ class MainActivity : AppCompatActivity() {
     private fun placeStone(view: ImageView, rowIndex: Int, colIndex: Int) {
         BOARD_ARRAY[rowIndex][colIndex] = if (isBlackTurn) 1 else 2
         view.setImageResource(if (isBlackTurn) R.drawable.black_stone else R.drawable.white_stone)
+    }
+
+    private fun checkWin(row: Int, col: Int): Boolean {
+        val player = BOARD_ARRAY[row][col]
+        val directions = listOf(Pair(1, 0), Pair(0, 1), Pair(1, 1), Pair(1, -1))
+        return directions.any { direction ->
+            countStones(row, col, direction.first, direction.second, player)
+            + countStones(row, col, -direction.first, -direction.second, player) > 3
+        }
     }
 
     private fun countStones(row: Int, col: Int, dRow: Int, dCol: Int, player: Int): Int {
