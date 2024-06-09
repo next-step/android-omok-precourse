@@ -34,6 +34,47 @@ class MainActivity : AppCompatActivity() {
         MutableList(boardSize) { Stone.EMPTY }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        start()
+    }
+
+    private fun start(){
+        val imgWhite = findViewById<ImageView>(R.id.img_white)
+        val imgBlack = findViewById<ImageView>(R.id.img_black)
+        val board = findViewById<TableLayout>(R.id.board)
+        val restartBtn = findViewById<Button>(R.id.restart_btn)
+
+        initImgOpacity(imgWhite,imgBlack)
+
+        setBoard(imgWhite,imgBlack,board)
+
+        restartBtn.setOnClickListener {
+            init(board)
+        }
+    }
+    private fun initImgOpacity(imgWhite: ImageView, imgBlack: ImageView) {
+        imgWhite.alpha = 0.2f
+        imgBlack.alpha = 1.0f
+    }
+
+    private fun setBoard(imgWhite: ImageView, imgBlack: ImageView,board: TableLayout){
+        board
+            .children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEachIndexed { idx, view ->
+                var row = idx / boardSize
+                var col = idx % boardSize
+
+                view.setOnClickListener {
+                    placeStone(view, row, col, imgWhite, imgBlack)
+                }
+            }
+    }
+
     private fun placeStone(
         view: ImageView,
         row: Int,
@@ -144,39 +185,7 @@ class MainActivity : AppCompatActivity() {
         hideResultScreen()
     }
 
-    private fun start(){
-        val imgWhite = findViewById<ImageView>(R.id.img_white)
-        val imgBlack = findViewById<ImageView>(R.id.img_black)
-        val board = findViewById<TableLayout>(R.id.board)
-        val restartBtn = findViewById<Button>(R.id.restart_btn)
 
-        imgWhite.alpha = 0.2f
-        imgBlack.alpha = 1.0f
 
-        board
-            .children
-            .filterIsInstance<TableRow>()
-            .flatMap { it.children }
-            .filterIsInstance<ImageView>()
-            .forEachIndexed { idx, view ->
-                var row = idx / boardSize
-                var col = idx % boardSize
 
-                view.setOnClickListener {
-                    placeStone(view, row, col, imgWhite, imgBlack)
-                }
-            }
-
-        restartBtn.setOnClickListener {
-            init(board)
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        start()
-
-    }
 }
