@@ -55,5 +55,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private fun placeStone(view: ImageView) {
+        if (player == "black") {
+            view.setImageResource(R.drawable.black_stone)
+        } else {
+            view.setImageResource(R.drawable.white_stone)
+        }
+    }
 
 }
