@@ -51,6 +51,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+        restartButton.setOnClickListener {
+            restartGame()
+        }
     }
 
     private fun changeTurn(view: ImageView): Boolean {
@@ -105,5 +108,24 @@ class MainActivity : AppCompatActivity() {
         restartButton.visibility = Button.VISIBLE
     }
 
+    private fun restartGame(){
+        for (i in 0 until boardSize) {
+            for (j in 0 until boardSize) {
+                boardStoneColor[i][j] = null
+            }
+        }
+        val board = findViewById<TableLayout>(R.id.board)
+        board
+            .children
+            .filterIsInstance<TableRow>()
+            .flatMap { it.children }
+            .filterIsInstance<ImageView>()
+            .forEach { view ->
+                view.setImageResource(0)
+            }
+        printWin.visibility = TextView.INVISIBLE
+        restartButton.visibility = Button.INVISIBLE
 
+        turn = true
+        }
 }
