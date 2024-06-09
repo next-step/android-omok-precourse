@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Omok</string>
+
+    <string name="notice_init">현재는 1번째 차례입니다. 흑돌의 순서입니다.</string>
+    <string name="notice_turn">현재는 %1$d번째 차례입니다. %2$s의 순서입니다.</string>
+    <string name="notice_winner">게임 종료! 승자는 %1$s 입니다.</string>
 </resources>
