@@ -49,7 +49,11 @@ class MainActivity : AppCompatActivity() {
         view.setImageResource(stoneResId)
 
         checkedBoard[row][col] = if (currentPlayer == PlayerTurn.BLACK) Stone.BLACK else Stone.WHITE
-        changeTurn(imgWhite,imgBlack)
+        if (checkWin(row, col, checkedBoard)) {
+            Toast.makeText(this, "승리", Toast.LENGTH_SHORT).show()
+            return
+        }
+        changeTurn(imgWhite, imgBlack)
     }
 
     private fun changeTurn(imgWhite: ImageView, imgBlack: ImageView) {
@@ -58,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 imgWhite.alpha = 1.0f
                 imgBlack.alpha = 0.2f
             }
+
             PlayerTurn.WHITE -> {
                 imgWhite.alpha = 0.2f
                 imgBlack.alpha = 1.0f
@@ -65,6 +70,42 @@ class MainActivity : AppCompatActivity() {
         }
         currentPlayer = currentPlayer.changeTurn()
 
+    }
+
+    private fun checkWin(row: Int, col: Int, board: List<MutableList<Stone>>): Boolean {
+        val directions = listOf(
+            Pair(1, 0),
+            Pair(0, 1),
+            Pair(1, 1),
+            Pair(1, -1)
+        )
+        val stoneType = board[row][col]
+        for ((dx, dy) in directions) {
+            var count = 1 + countStone(row, col, dx, dy, stoneType, board)+
+                    countStone(row, col, -dx, -dy, stoneType, board)
+            if (count >= 5) return true
+        }
+        return false
+    }
+
+    private fun countStone(
+        row: Int, col: Int,
+        dx: Int, dy: Int, stoneType: Stone,
+        board: List<MutableList<Stone>>
+    ): Int {
+        var count = 0
+        var x = row + dx
+        var y = col + dy
+
+        while (x in 0 until boardSize
+            && y in 0 until boardSize
+            && board[x][y] == stoneType
+        ) {
+            count++
+            x += dx
+            y += dy
+        }
+        return count
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,8 +126,7 @@ class MainActivity : AppCompatActivity() {
                 var col = idx % boardSize
 
                 view.setOnClickListener {
-                    Log.d("omok", row.toString() + col.toString())
-                    placeStone(view, row, col, imgWhite,imgBlack)
+                    placeStone(view, row, col, imgWhite, imgBlack)
                 }
             }
 
