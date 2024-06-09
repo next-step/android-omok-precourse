@@ -90,4 +90,8 @@ class MainActivity : AppCompatActivity() {
         }
         return count
     }
+
+    private fun changePlayer() {
+        player = if (player == "black") "white" else "black"
+    }
 }
