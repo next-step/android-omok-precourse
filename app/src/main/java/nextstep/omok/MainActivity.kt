@@ -64,31 +64,33 @@ class MainActivity : AppCompatActivity() {
     private fun stoneColor(row: Int, column: Int): String? {
         return boardStoneColor[row][column]
     }
-    
+
     private fun checkWin(row: Int, column: Int, color: String): Boolean {
+        val color = boardStoneColor[row][column] ?: return false
         val directions = arrayOf(
             intArrayOf(0, 1), intArrayOf(1, 0), intArrayOf(1, 1), intArrayOf(-1, 1)
         )
 
         for (now in directions) {
             var count = 1
-            var nextX = row + now[0]
-            var nextY = column + now[1]
+            val (nowX, nowY) = now
+            var nextX = row + nowX
+            var nextY = column + nowY
 
             while (nextX in 0 until boardSize && nextY in 0 until boardSize && boardStoneColor[nextX][nextY] == color) {
                 count++
                 Log.d("testt", "Counting stone at: ($nextX, $nextY), count: $count")
-                nextX += now[0]
-                nextY += now[1]
+                nextX += nowX
+                nextY += nowY
             }
 
-            nextX = row - now[0]
-            nextY = column - now[1]
+            nextX = row - nowX
+            nextY = column - nowY
             while (nextX in 0 until boardSize && nextY in 0 until boardSize && boardStoneColor[nextX][nextY] == color) {
                 count++
                 Log.d("testt", "Counting stone at: ($nextX, $nextY), count: $count")
-                nextX += now[0]
-                nextY += now[1]
+                nextX -= nowX
+                nextY -= nowY
             }
 
             if (count >= 5) return true
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun revealWin(winner:String){
+    private fun revealWin(winner: String) {
         val winMessage = if (winner == "black") "흑돌 승리!" else "백돌 승리!"
         printWin.text = winMessage
         printWin.visibility = TextView.VISIBLE
