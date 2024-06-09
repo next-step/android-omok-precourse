@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
 
     private val BOARD_SIZE = 15
     private val BOARD_ARRAY = Array(BOARD_SIZE) { IntArray(BOARD_SIZE) }
+    private var isBlackTurn = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,5 +27,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun placeStone(view: ImageView, rowIndex: Int, colIndex: Int) {
+        BOARD_ARRAY[rowIndex][colIndex] = if (isBlackTurn) 1 else 2
+        view.setImageResource(if (isBlackTurn) R.drawable.black_stone else R.drawable.white_stone)
     }
 }
