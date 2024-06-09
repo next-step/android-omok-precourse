@@ -94,4 +94,11 @@ class MainActivity : AppCompatActivity() {
     private fun changePlayer() {
         player = if (player == "black") "white" else "black"
     }
+
+    private fun showWinner() {
+        val showWinner = findViewById<TextView>(R.id.showWinner)
+        showWinner.text = if (winnerPlayer == "black") "흑돌 승리!" else "백돌 승리!"
+        gameOver = true
+    }
+
 }
