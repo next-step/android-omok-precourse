@@ -40,26 +40,27 @@ class MainActivity : AppCompatActivity() {
         start()
     }
 
-    private fun start(){
+    private fun start() {
         val imgWhite = findViewById<ImageView>(R.id.img_white)
         val imgBlack = findViewById<ImageView>(R.id.img_black)
         val board = findViewById<TableLayout>(R.id.board)
         val restartBtn = findViewById<Button>(R.id.restart_btn)
 
-        initImgOpacity(imgWhite,imgBlack)
+        initImgOpacity(imgWhite, imgBlack)
 
-        setBoard(imgWhite,imgBlack,board)
+        setBoard(imgWhite, imgBlack, board)
 
         restartBtn.setOnClickListener {
             init(board)
         }
     }
+
     private fun initImgOpacity(imgWhite: ImageView, imgBlack: ImageView) {
         imgWhite.alpha = 0.2f
         imgBlack.alpha = 1.0f
     }
 
-    private fun setBoard(imgWhite: ImageView, imgBlack: ImageView,board: TableLayout){
+    private fun setBoard(imgWhite: ImageView, imgBlack: ImageView, board: TableLayout) {
         board
             .children
             .filterIsInstance<TableRow>()
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun placeStone(
+    fun placeStone(
         view: ImageView,
         row: Int,
         col: Int,
@@ -95,12 +96,12 @@ class MainActivity : AppCompatActivity() {
 
         if (checkWin(row, col, checkedBoard)) {
             showResultScreen()
-        }else{
+        } else {
             changeTurn(imgWhite, imgBlack)
         }
     }
 
-    private fun isvalidPositon(row: Int,col: Int):Boolean{
+    private fun isvalidPositon(row: Int, col: Int): Boolean {
         return if (checkedBoard[row][col] != Stone.EMPTY) {
             Toast.makeText(this, "이미 돌이 놓여 있습니다", Toast.LENGTH_SHORT).show()
             false
@@ -109,18 +110,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showResultScreen(){
+    private fun showResultScreen() {
         val resultTextView = findViewById<TextView>(R.id.result_textView)
         val resultLayout = findViewById<ViewGroup>(R.id.result_layout)
 
-        when (currentPlayer){
+        when (currentPlayer) {
             PlayerTurn.BLACK -> resultTextView.text = "Black Wins!"
             PlayerTurn.WHITE -> resultTextView.text = "White Wins!"
         }
         resultLayout.visibility = View.VISIBLE
     }
 
-    private fun hideResultScreen(){
+    private fun hideResultScreen() {
         val resultLayout = findViewById<View>(R.id.result_layout)
         resultLayout.visibility = View.INVISIBLE
     }
@@ -150,14 +151,14 @@ class MainActivity : AppCompatActivity() {
         )
         val stoneType = board[row][col]
         for ((dx, dy) in directions) {
-            var count = 1 + countStone(row, col, dx, dy, stoneType, board)+
+            var count = 1 + countStone(row, col, dx, dy, stoneType, board) +
                     countStone(row, col, -dx, -dy, stoneType, board)
             if (count >= 5) return true
         }
         return false
     }
 
-    private fun countStone(
+    fun countStone(
         row: Int, col: Int,
         dx: Int, dy: Int, stoneType: Stone,
         board: List<MutableList<Stone>>
@@ -177,10 +178,11 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
-    private fun init(board:ViewGroup){
+    fun init(board: ViewGroup) {
         currentPlayer = PlayerTurn.BLACK
-        checkedBoard = MutableList(boardSize){
-            MutableList(boardSize) { Stone.EMPTY }}
+        checkedBoard = MutableList(boardSize) {
+            MutableList(boardSize) { Stone.EMPTY }
+        }
         board
             .children
             .filterIsInstance<TableRow>()
@@ -189,8 +191,5 @@ class MainActivity : AppCompatActivity() {
             .forEach { it.setImageResource(0) }
         hideResultScreen()
     }
-
-
-
 
 }
