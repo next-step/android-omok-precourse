@@ -29,6 +29,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun onCellClicked(view: ImageView, rowIndex: Int, colIndex: Int) {
+        placeStone(view, rowIndex, colIndex)
+        isBlackTurn = !isBlackTurn
+    }
+
     private fun placeStone(view: ImageView, rowIndex: Int, colIndex: Int) {
         BOARD_ARRAY[rowIndex][colIndex] = if (isBlackTurn) 1 else 2
         view.setImageResource(if (isBlackTurn) R.drawable.black_stone else R.drawable.white_stone)
