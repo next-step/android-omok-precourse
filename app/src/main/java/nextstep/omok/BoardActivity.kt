@@ -1,15 +1,20 @@
 package nextstep.omok
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class BoardActivity : AppCompatActivity() {
+    private lateinit var turnImage: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_board)
+
+        turnImage = findViewById(R.id.turnImage)
+        updateTurnImage()
 
         val gameBoardFragment = GameBoardFragment()
 
@@ -26,5 +31,10 @@ class BoardActivity : AppCompatActivity() {
 
 
 
+    }
+
+    // 턴 이미지 업데이트
+    fun updateTurnImage() {
+        turnImage.setImageResource(GameModel.getCurrentPlayerStoneResId())
     }
 }

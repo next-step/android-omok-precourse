@@ -35,5 +35,10 @@ object GameModel {
         return
     }
 
+    fun getCurrentPlayerStoneResId(): Int {
+        // 현재 플레이어의 돌 리소스 파일 ID를 반환
+        return currentPlayer.stoneResId
+    }
+
 
 }

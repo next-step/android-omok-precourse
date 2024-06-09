@@ -42,6 +42,7 @@ class GameBoardFragment: Fragment() {
                 GameModel.handelWin()
             } else {
                 GameModel.switchPlayer()
+                (activity as? BoardActivity)?.updateTurnImage()
             }
         }
     }
