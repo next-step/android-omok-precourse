@@ -31,8 +31,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onCellClicked(view: ImageView, rowIndex: Int, colIndex: Int) {
+        if (!isCellOccupied(rowIndex, colIndex)) {
+            return
+        }
         placeStone(view, rowIndex, colIndex)
         isBlackTurn = !isBlackTurn
+    }
+
+    private fun isCellOccupied(rowIndex: Int, colIndex: Int): Boolean {
+        return BOARD_ARRAY[rowIndex][colIndex] != 0
     }
 
     private fun placeStone(view: ImageView, rowIndex: Int, colIndex: Int) {
