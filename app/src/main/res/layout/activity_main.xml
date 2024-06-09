@@ -593,7 +593,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/board_center" />
 
+<!--            (7,7)-->
             <ImageView
+                android:id="@+id/center"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="@drawable/board_center" />
@@ -1188,6 +1190,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/reset"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
