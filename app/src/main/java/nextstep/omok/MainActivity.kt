@@ -21,8 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeBoard() {
         findViewById<TableLayout>(R.id.board).apply {
-            children.filterIsInstance<TableRow>().forEach { row ->
-                row.children.filterIsInstance<ImageView>().forEach {view ->
+            children.filterIsInstance<TableRow>().forEachIndexed { rowIndex, row ->
+                row.children.filterIsInstance<ImageView>().forEachIndexed { colIndex, view ->
+                    view.setOnClickListener { onCellClicked(view, rowIndex, colIndex) }
                     view.setImageResource(0)
                 }
             }
