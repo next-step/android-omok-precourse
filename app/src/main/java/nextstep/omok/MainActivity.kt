@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
         placeStone(view, rowIndex, colIndex)
         if (checkWin(rowIndex, colIndex)) {
-            return
+            resetBoard()
         } else {
             isBlackTurn = !isBlackTurn
         }
@@ -73,4 +73,13 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
+    private fun resetBoard() {
+        BOARD_ARRAY.forEach { row -> row.fill(0) }
+        findViewById<TableLayout>(R.id.board).children.filterIsInstance<TableRow>().forEach { row ->
+            row.children.filterIsInstance<ImageView>().forEach { view ->
+                view.setImageResource(0)
+            }
+        }
+        isBlackTurn = true
+    }
 }
