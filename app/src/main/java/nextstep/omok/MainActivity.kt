@@ -13,11 +13,11 @@ val derivative = arrayOf(
 )
 
 class MainActivity : AppCompatActivity() {
-    private val boardSize: Int = 15;
-    private var player: String = "black"
-    private var winnerPlayer: String = ""
-    private var gameOver: Boolean = false
-    private val boardState = Array(boardSize) { Array(boardSize) { "" } }
+    val boardSize: Int = 15;
+    var player: String = "black"
+    var winnerPlayer: String = ""
+    var gameOver: Boolean = false
+    var boardState = Array(boardSize) { Array(boardSize) { "" } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun placeStone(view: ImageView) {
+    fun placeStone(view: ImageView) {
         if (player == "black") {
             view.setImageResource(R.drawable.black_stone)
         } else {
@@ -91,22 +91,22 @@ class MainActivity : AppCompatActivity() {
         return count
     }
 
-    private fun changePlayer() {
+    fun changePlayer() {
         player = if (player == "black") "white" else "black"
     }
 
-    private fun showWinner() {
+    fun showWinner() {
         val showWinner = findViewById<TextView>(R.id.showWinner)
         showWinner.text = if (winnerPlayer == "black") "흑돌 승리!" else "백돌 승리!"
         gameOver = true
     }
-    private fun showDraw() {
+    fun showDraw() {
         val showWinner = findViewById<TextView>(R.id.showWinner)
         showWinner.text = "무승부!"
         gameOver = true
     }
 
-    private fun isBoardFull(): Boolean {
+    fun isBoardFull(): Boolean {
         for (row in boardState) {
             for (cell in row) {
                 if (cell == "") {
