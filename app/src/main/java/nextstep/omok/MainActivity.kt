@@ -13,7 +13,7 @@ val derivative = arrayOf(
 )
 
 class MainActivity : AppCompatActivity() {
-    val boardSize: Int = 15;
+    val boardSize: Int = 15
     var player: String = "black"
     var winnerPlayer: String = ""
     var gameOver: Boolean = false
