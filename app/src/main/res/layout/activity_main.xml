@@ -1179,5 +1179,13 @@
                 android:background="@drawable/board_bottom_right" />
         </TableRow>
 
+        <TextView
+            android:id="@+id/showWinner"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="30dp" />
+
     </TableLayout>
 </LinearLayout>
